@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://characters/actions/AttachWithFists.gd" type="Script" id=1]
+
+[node name="AttachWithFists" type="Node"]
+script = ExtResource( 1 )
+preconditions = {
+"hold_box": false
+}
+effects = {
+"attack": true
+}
+cost = 10.0

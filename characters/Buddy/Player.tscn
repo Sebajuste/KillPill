@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://characters/Buddy/Buddy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://characters/Buddy/Player.gd" type="Script" id=2]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=1]
+
+[node name="Player" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="Body" parent="." index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0245099, 0 )
+
+[node name="BodyRightHand" parent="." index="3"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.530717, -0.0725174, -0.00196791 )
+
+[node name="AnimationTree" parent="." index="10"]
+parameters/Move/playback = SubResource( 1 )
