@@ -12,3 +12,4 @@ effects = {
 "builder_ready": true,
 "hold_box": false
 }
+cost = 7.0

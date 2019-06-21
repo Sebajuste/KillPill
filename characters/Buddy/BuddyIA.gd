@@ -121,6 +121,8 @@ func _idle(delta):
 			constructor = c
 			break
 	
+	var constructor_distance = (constructor.global_transform.origin - self.global_transform.origin).length()
+	
 	$GoapPlanner.world_state["builder_ready"] = constructor.ready_to_build()
 	$GoapPlanner.world_state["builder_full"] = constructor.ready_to_build()
 	$GoapPlanner.world_state["hold_box"] = is_holding()
@@ -128,6 +130,7 @@ func _idle(delta):
 	$GoapPlanner.world_state["have_ammo"] = $BodyRightHand/RightHand.get_child_count() == 0 or $BodyRightHand/RightHand.get_child(0).ammo > 0
 	$GoapPlanner.world_state["see_ammo"] = not get_tree().get_nodes_in_group("ammo").empty()
 	$GoapPlanner.world_state["see_ennemy"] = not self.ennemies.empty()
+	$GoapPlanner.world_state["near_constructor"] = constructor_distance < 10
 	
 	#print("world_state : ", $GoapPlanner.world_state )
 	
@@ -140,7 +143,7 @@ func _idle(delta):
 		var action_plan = ""
 		for a in action_list:
 			action_plan += "> %s " % a.get_name()
-		#print("Action Plan : ", action_plan)
+		print("[%s] Action Plan : " % get_name(), action_plan)
 		
 	
 
@@ -192,13 +195,18 @@ func _animation(delta):
 		if typeof(result) == TYPE_BOOL and result:
 			pass
 		elif (typeof(result) == TYPE_BOOL and not result) or not result or not yield(action, "on_action_end"):
-			#print("GOAP cannot reach")
+			
+			var plan = ""
+			for a in _action_list:
+				plan += "> " + a.get_name() + " "
+			
+			print("[%s] GOAP cannot reach =" % get_name(), plan )
 			_action_list = null
 			_state = State.IDLE
 			return
 		
 		if _action_list.empty():
-			#print("GOAP done")
+			print("[%s] GOAP done" % get_name() )
 			_action_list = null
 		
 		_state = State.IDLE

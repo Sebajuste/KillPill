@@ -10,3 +10,4 @@ preconditions = {
 effects = {
 "see_ammo": true
 }
+cost = 10.0
