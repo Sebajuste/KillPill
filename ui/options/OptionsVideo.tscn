@@ -1,9 +1,11 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ui/options/OptionsVideo.gd" type="Script" id=1]
 
 [node name="OptionsVideo" type="VBoxContainer"]
-editor/display_folded = true
 margin_right = 394.0
 margin_bottom = 521.0
+script = ExtResource( 1 )
 
 [node name="Label" type="Label" parent="."]
 margin_right = 394.0
@@ -31,12 +33,11 @@ text = "Resolution : "
 align = 2
 valign = 1
 
-[node name="OptionButton" type="OptionButton" parent="HBoxContainer"]
+[node name="ResolutionList" type="OptionButton" parent="HBoxContainer"]
 margin_left = 104.0
 margin_right = 394.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
-align = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 margin_top = 75.0
@@ -50,7 +51,7 @@ rect_min_size = Vector2( 100, 30 )
 align = 2
 valign = 1
 
-[node name="CheckBox" type="CheckBox" parent="HBoxContainer2"]
+[node name="Fullscreen" type="CheckBox" parent="HBoxContainer2"]
 margin_left = 104.0
 margin_right = 198.0
 margin_bottom = 30.0
@@ -68,8 +69,30 @@ rect_min_size = Vector2( 100, 30 )
 align = 2
 valign = 1
 
-[node name="CheckBox" type="CheckBox" parent="HBoxContainer3"]
+[node name="Vsync" type="CheckBox" parent="HBoxContainer3"]
 margin_left = 104.0
-margin_right = 169.0
+margin_right = 173.0
 margin_bottom = 30.0
-text = "Vsync"
+text = "V Sync"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="."]
+margin_top = 143.0
+margin_right = 394.0
+margin_bottom = 173.0
+
+[node name="Label" type="Label" parent="HBoxContainer4"]
+margin_right = 100.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 100, 30 )
+align = 2
+valign = 1
+
+[node name="Antialiasing" type="CheckBox" parent="HBoxContainer4"]
+margin_left = 104.0
+margin_right = 206.0
+margin_bottom = 30.0
+text = "Antialiasing"
+[connection signal="item_selected" from="HBoxContainer/ResolutionList" to="." method="_on_ResolutionList_item_selected"]
+[connection signal="toggled" from="HBoxContainer2/Fullscreen" to="." method="_on_Fullscreen_toggled"]
+[connection signal="toggled" from="HBoxContainer3/Vsync" to="." method="_on_Vsync_toggled"]
+[connection signal="toggled" from="HBoxContainer4/Antialiasing" to="." method="_on_Antialiasing_toggled"]
