@@ -103,6 +103,8 @@ func _idle(delta):
 			constructor = c
 			break
 	
+	var constructor_distance = (constructor.global_transform.origin - self.global_transform.origin).length()
+	
 	$GoapPlanner.world_state["builder_ready"] = constructor.ready_to_build()
 	$GoapPlanner.world_state["builder_full"] = constructor.ready_to_build()
 	$GoapPlanner.world_state["hold_box"] = is_holding()
@@ -110,6 +112,7 @@ func _idle(delta):
 	$GoapPlanner.world_state["have_ammo"] = $BodyRightHand/RightHand.get_child_count() == 0 or $BodyRightHand/RightHand.get_child(0).ammo > 0
 	$GoapPlanner.world_state["see_ammo"] = not get_tree().get_nodes_in_group("ammo").empty()
 	$GoapPlanner.world_state["see_ennemy"] = not self.ennemies.empty()
+	$GoapPlanner.world_state["near_constructor"] = constructor_distance < 10
 	
 	#print("world_state : ", $GoapPlanner.world_state )
 	

@@ -8,5 +8,6 @@ preconditions = {
 "hold_box": true
 }
 effects = {
+"box_dropped": true,
 "hold_box": false
 }

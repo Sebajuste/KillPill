@@ -94,7 +94,11 @@ func _on_Timer_timeout():
 	# Build & Equipe
 	#
 	for team_member in team:
-		set_goal(team_member, { "build_done": true })
+		#set_goal(team_member, { "build_done": true })
+		set_goal(team_member, { "near_constructor": true, "box_dropped": true })
+		var take_boxe_action = team_member.get_node("GoapPlanner/TakeBox")
+		if take_boxe_action:
+			take_boxe_action.min_distance = 5.0
 		
 		if not team_member.has_object() and weapons_count > 0:
 			set_goal(team_member, { "have_weapon": true })

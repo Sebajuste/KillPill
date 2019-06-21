@@ -10,3 +10,4 @@ preconditions = {
 effects = {
 "hold_box": true
 }
+cost = 10.0
