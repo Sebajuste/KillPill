@@ -125,7 +125,7 @@ func _idle(delta):
 		var action_plan = ""
 		for a in action_list:
 			action_plan += "> %s " % a.get_name()
-		#print("Action Plan : ", action_plan)
+		print("[%s] Action Plan : " % get_name(), action_plan)
 		
 	
 
@@ -177,13 +177,18 @@ func _animation(delta):
 		if typeof(result) == TYPE_BOOL and result:
 			pass
 		elif (typeof(result) == TYPE_BOOL and not result) or not result or not yield(action, "on_action_end"):
-			#print("GOAP cannot reach")
+			
+			var plan = ""
+			for a in _action_list:
+				plan += "> " + a.get_name() + " "
+			
+			print("[%s] GOAP cannot reach =" % get_name(), plan )
 			_action_list = null
 			_state = State.IDLE
 			return
 		
 		if _action_list.empty():
-			#print("GOAP done")
+			print("[%s] GOAP done" % get_name() )
 			_action_list = null
 		
 		_state = State.IDLE

@@ -13,13 +13,19 @@ func get_constructor(actor):
 	
 	return constructor
 
+func is_reachable() -> bool:
+	
+	var boxes = get_tree().get_nodes_in_group("box")
+	
+	if boxes.empty():
+		false
+	
+	return true
+
 func execute(actor):
 	
 	var constructor = get_constructor(actor)
 	
-	var constructor_distance = 0
-	if constructor != null:
-		constructor_distance = (actor.global_transform.origin - constructor.global_transform.origin).length()
 	
 	
 	var boxes = get_tree().get_nodes_in_group("box")
@@ -30,11 +36,16 @@ func execute(actor):
 	for box in boxes:
 		var distance = (actor.global_transform.origin - box.global_transform.origin).length()
 		
+		var constructor_distance = 0
+		if constructor != null:
+			constructor_distance = (box.global_transform.origin - constructor.global_transform.origin).length()
+		
 		if not box.catched and (constructor == null or constructor_distance > min_distance) and ( nearest_box == null or distance < nearset_distance):
 			nearset_distance = distance
 			nearest_box = box
 	
 	if nearest_box == null:
+		print("no near box")
 		return false
 	
 	
