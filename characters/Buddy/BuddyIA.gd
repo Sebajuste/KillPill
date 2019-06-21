@@ -38,6 +38,24 @@ func cancel_move():
 		emit_signal("on_move_reached", false)
 	
 
+
+
+func constructor_put_box(constructor, box) -> bool:
+	
+	if constructor.is_in_group("constructor") and constructor.team == team:
+		
+		$HoldPosition.remove_child(box)
+		var added = constructor.add_object_target(box)
+		if added:
+			$BodyRightHand/RightHand.visible = true
+			$AnimationTree.set("parameters/HoldObject/blend_amount", 0.0)
+			return true
+		else:
+			$HoldPosition.add_child(box)
+	
+	return false
+
+
 func _control(delta) -> Vector3:
 	return _move_control
 

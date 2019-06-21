@@ -3,7 +3,7 @@ extends Node
 export var team = ""
 export var max_team = 5
 
-func get_base():
+func get_constructor():
 	
 	var constructors = get_tree().get_nodes_in_group("constructor")
 	for constructor in constructors:
@@ -81,7 +81,7 @@ func _on_Timer_timeout():
 	
 	# Define goal for each team member
 	
-	var base = get_base()
+	var constructor = get_constructor()
 	
 	var weapons = get_weapons()
 	var weapons_count = weapons.size()
@@ -93,6 +93,9 @@ func _on_Timer_timeout():
 	#
 	# Build & Equipe
 	#
+	
+	constructor.target_pattern_name = "gun"
+	
 	for team_member in team:
 		set_goal(team_member, { "build_done": true })
 		
@@ -112,13 +115,13 @@ func _on_Timer_timeout():
 		return
 	
 	#
-	# Protect base
+	# Protect constructor
 	#
 	for ennemy in get_ennemies():
 		
-		var base_distance = (base.global_transform.origin - ennemy.global_transform.origin).length()
+		var constructor_distance = (constructor.global_transform.origin - ennemy.global_transform.origin).length()
 		
-		if base_distance < 15:
+		if constructor_distance < 15:
 			
 			for team_member in team:
 				
