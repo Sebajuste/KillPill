@@ -16,8 +16,7 @@
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
-[node name="BuddyIA" instance=ExtResource( 1 )]
-editor/display_folded = false
+[node name="BuddyIA" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 ia = true
 
@@ -28,6 +27,7 @@ collision_mask = 38
 editor/display_folded = true
 
 [node name="PathDebug" type="ImmediateGeometry" parent="." index="9"]
+visible = false
 
 [node name="GoapPlanner" type="Node" parent="." index="10"]
 script = ExtResource( 3 )
