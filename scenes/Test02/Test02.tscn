@@ -36,6 +36,7 @@ albedo_color = Color( 0.94902, 0.827451, 0.588235, 1 )
 [node name="Game" type="Node"]
 
 [node name="Environment" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
 environment = SubResource( 2 )
@@ -102,11 +103,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.367, 2, 18.862 )
 color = "Blue"
 
 [node name="BuddyIA" parent="Characters" instance=ExtResource( 6 )]
+editor/display_folded = false
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.973, -20 )
 team = "Team_1"
 color = "Red"
 
 [node name="BuddyIA2" parent="Characters" instance=ExtResource( 6 )]
+editor/display_folded = false
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0337, 0.973, 18.03 )
 color = "Blue"
 

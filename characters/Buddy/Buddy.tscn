@@ -77,6 +77,7 @@ node_connections = [ "output", 0, "HoldObject", "HoldObject", 0, "Punch", "HoldO
 [node name="Buddy" type="KinematicBody" groups=[
 "character",
 ]]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.973, 0 )
 collision_layer = 2
 collision_mask = 3
@@ -87,7 +88,6 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0,
 shape = SubResource( 1 )
 
 [node name="Body" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00430261, 0 )
 
 [node name="Body" type="MeshInstance" parent="Body"]
 transform = Transform( 0.4, 0, 0, 0, -1.94131e-008, -0.44, 0, 0.44412, -1.9233e-008, 0, 0, 0 )
@@ -96,7 +96,7 @@ material/0 = ExtResource( 2 )
 
 [node name="BodyLeftHand" type="Spatial" parent="."]
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.518391, -0.0696238, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.518391, -0.0696238, 0.108053 )
 
 [node name="CSGCombiner" type="CSGCombiner" parent="BodyLeftHand"]
 editor/display_folded = true
@@ -116,7 +116,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0450835, 0.0211042, 0.07839
 
 [node name="BodyRightHand" type="Spatial" parent="."]
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.52351, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.520949, 0, -0.0194278 )
 
 [node name="CSGCombiner2" type="CSGCombiner" parent="BodyRightHand"]
 editor/display_folded = true
@@ -136,7 +136,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0588321, -0.0119864, 0.07833
 
 [node name="BodyRightFoot" type="CSGCombiner" parent="."]
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.529327, -0.707403, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.529, -0.707, 0.0927713 )
 
 [node name="CSGCylinder" type="CSGCylinder" parent="BodyRightFoot"]
 transform = Transform( 0.2, 0, 0, 0, -1.74846e-008, -0.25, 0, 0.4, -1.09278e-008, 0, 0, 0 )
@@ -149,7 +149,7 @@ material = ExtResource( 4 )
 
 [node name="BodyLeftFoot" type="CSGCombiner" parent="."]
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.521512, -0.707403, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.521732, -0.706464, -0.0927713 )
 
 [node name="CSGCylinder" type="CSGCylinder" parent="BodyLeftFoot"]
 transform = Transform( 0.2, 0, 0, 0, -1.74846e-008, -0.25, 0, 0.4, -1.09278e-008, 0, 0, 0 )

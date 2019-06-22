@@ -25,6 +25,8 @@ var dead = false
 
 var velocity = Vector3()
 
+var look_dir = Vector3()
+
 var ennemies := []
 
 func has_object() -> bool:
@@ -298,6 +300,13 @@ func _process(delta):
 			state_machines.travel("idle")
 		else:
 			state_machines.start("idle")
+	
+	if look_dir != Vector3():
+		var look_pos = global_transform.origin - look_dir
+		var rotTransform = global_transform.looking_at(look_pos, Vector3.UP)
+		global_transform = Transform(rotTransform.basis, global_transform.origin)
+		
+		pass
 	
 	pass
 
