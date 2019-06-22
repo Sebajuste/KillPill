@@ -175,6 +175,9 @@ func _on_Timer_timeout():
 		
 		if nearest_member != null:
 			set_goal(nearest_member, { "builder_ready": true })
+			var take_boxe_action = nearest_member.get_node("GoapPlanner/TakeBox")
+			if take_boxe_action:
+				take_boxe_action.min_distance = 0.0
 	
 	if constructor.target_pattern_name != "" and constructor.target_ready_to_build():
 		
@@ -192,6 +195,9 @@ func _on_Timer_timeout():
 		
 		if nearest_member != null:
 			set_goal(nearest_member, { "build_done": true })
+			var take_boxe_action = nearest_member.get_node("GoapPlanner/TakeBox")
+			if take_boxe_action:
+				take_boxe_action.min_distance = 0.0
 	
 	
 	#

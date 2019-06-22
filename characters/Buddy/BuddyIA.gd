@@ -244,7 +244,7 @@ func _animation(delta):
 			return
 		
 		if _action_list.empty():
-			print("[%s] GOAP done" % get_name() )
+			#print("[%s] GOAP done" % get_name() )
 			_action_list = null
 		
 		_state = State.IDLE

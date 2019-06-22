@@ -16,7 +16,8 @@
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
-[node name="BuddyIA" index="0" instance=ExtResource( 1 )]
+[node name="BuddyIA" instance=ExtResource( 1 )]
+editor/display_folded = false
 script = ExtResource( 2 )
 ia = true
 
