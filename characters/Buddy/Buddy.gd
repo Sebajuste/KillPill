@@ -9,6 +9,7 @@ const GRAVITY := -9.8
 signal on_health_change
 signal on_drop_object
 signal on_take_object
+signal on_death
 
 export var team : String = "Team_0"
 
@@ -227,6 +228,7 @@ func damage(position, normal, bullet):
 	if health < 0:
 		dead = true
 		queue_free()
+		emit_signal("on_death")
 	
 
 func set_color(value):

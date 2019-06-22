@@ -5,6 +5,7 @@
 [ext_resource path="res://ui/options/OptionsVideo.tscn" type="PackedScene" id=3]
 
 [node name="Options" type="Control"]
+pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 1.29236
@@ -65,6 +66,7 @@ margin_bottom = 62.0
 text = "Video"
 
 [node name="AudioOptions" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+visible = false
 margin_top = 66.0
 margin_right = 200.0
 margin_bottom = 86.0
