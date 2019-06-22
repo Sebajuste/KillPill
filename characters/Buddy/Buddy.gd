@@ -18,7 +18,7 @@ export var max_health = 100
 
 export var ia = false
 
-export(String, "Blue", "Red") var color setget set_color
+export(String, "Blue", "Red", "Yellow") var color setget set_color
 
 var health = max_health
 
@@ -242,6 +242,9 @@ func set_color(value):
 		
 		"Red":
 			var material = load("res://characters/Buddy/BodyRed.material")
+			$Body/Body.set_surface_material(0, material)
+		"Yellow":
+			var material = load("res://characters/Buddy/BodyYellow.material")
 			$Body/Body.set_surface_material(0, material)
 
 
