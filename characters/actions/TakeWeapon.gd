@@ -1,6 +1,6 @@
 extends "res://addons/goap/goap_action.gd"
 
-func is_reachable() -> bool:
+func is_reachable(context: Dictionary) -> bool:
 	
 	for weapon in get_tree().get_nodes_in_group("weapon"):
 		

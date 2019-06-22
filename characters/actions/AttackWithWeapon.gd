@@ -1,28 +1,49 @@
 extends "res://addons/goap/goap_action.gd"
 
-func execute(actor):
-	
-	var characters = get_tree().get_nodes_in_group("character")
+
+var target_ref = null
+
+
+func is_reachable(context: Dictionary) -> bool:
 	
 	var target = null
 	var nearset_distance := 0.0
 	
-	for character in characters:
-		var distance = (actor.global_transform.origin - character.global_transform.origin).length()
+	target_ref = null
+	
+	for ennemy in context["ennemies"]:
+		var distance = (context["position"] - ennemy.global_transform.origin).length()
 		
-		if character.team != actor.team and not character.dead and ( target == null or distance < nearset_distance ):
+		if not ennemy.dead and ( target == null or distance < nearset_distance ):
 			nearset_distance = distance
-			target = character
+			target = ennemy
+	
+	if target != null:
+		target_ref = weakref( target )
+	
+	return target != null
+
+func execute(actor):
+	
+	var target = target_ref.get_ref()
 	
 	if target == null:
+		print("No target !")
 		return false
 	
-	#var dir = (target.global_transform.origin - actor.global_transform.origin).normalized()
-	#actor.global_transform.basis.z  = dir
+	var distance = (actor.global_transform.origin - target.global_transform.origin).length()
 	
-	#var rotTransform = actor.global_transform.looking_at(target.global_transform.origin, Vector3.UP)
-	#var thisRotation = Quat(actor.global_transform.basis).slerp(rotTransform.basis, turret_rotation_speed * delta)
-	#actor.global_transform = Transform(thisRotation, actor.global_transform.origin)
+	if distance < 20:
+		
+		actor.go_to(target.global_transform.origin, 20)
+		
+		if not yield(actor, "on_move_reached"):
+			emit_signal("on_action_end", false)
+	
+	
+	if not target_ref.get_ref():
+		emit_signal("on_action_end", false)
+		return false
 	
 	var target_transform = target.global_transform
 	target_transform.origin.y = actor.global_transform.origin.y
@@ -30,4 +51,9 @@ func execute(actor):
 	var rotTransform = target_transform.looking_at(actor.global_transform.origin, Vector3.UP)
 	actor.global_transform = Transform(rotTransform.basis, actor.global_transform.origin)
 	
-	return actor.shoot()
+	var result = actor.shoot()
+	emit_signal("on_action_end", result)
+	
+	print("shoot result: ", result)
+	
+	return result

@@ -42,5 +42,16 @@ func equals(other) -> bool:
 	return true
 	#return self.state == other.state
 
-func heuristic(other) -> float:
-	return .heuristic(other)
+func heuristic(goal_node, context: Dictionary) -> float:
+	
+	var validation := 0
+	
+	for key in goal_node.state:
+		if state.has(key) and state[key] == goal_node.state[key]:
+			validation += 1
+	
+	var action_heuristic := 0.0
+	if action != null:
+		action_heuristic = action.heuristic(context)
+	
+	return .heuristic(goal_node, context) + (goal_node.state.size() - validation) + action_heuristic

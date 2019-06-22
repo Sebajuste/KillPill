@@ -6,9 +6,11 @@
 script = ExtResource( 1 )
 preconditions = {
 "builder_full": false,
+"builder_ready": false,
 "hold_box": true
 }
 effects = {
 "builder_ready": true,
 "hold_box": false
 }
+cost = 7.0

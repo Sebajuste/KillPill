@@ -10,3 +10,4 @@ preconditions = {
 effects = {
 "have_weapon": true
 }
+cost = 5.0

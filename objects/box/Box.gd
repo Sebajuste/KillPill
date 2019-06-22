@@ -40,7 +40,7 @@ func damage(position, normal, bullet):
 		else:
 			drop = Health.instance()
 		
-		var root = get_tree().get_root().get_child(0)
+		var root = get_tree().get_root().get_node("Game")
 		root.find_node("Objects").add_child(drop)
 		
 		drop.global_transform.origin = self.global_transform.origin + Vector3.UP * 2

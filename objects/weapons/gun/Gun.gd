@@ -39,7 +39,6 @@ func shoot() -> bool:
 	var thisRotation = Quat(global_transform.basis).slerp(rotTransform.basis, 1)
 	bullet.global_transform = Transform(thisRotation, position)
 	
-	#bullet.apply_central_impulse( direction)
 	bullet.velocity = direction * 20
 	
 	var root_node = get_tree().get_root().get_child(0)

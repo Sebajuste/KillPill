@@ -1,13 +1,15 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
-[ext_resource path="res://scenes/Test02/Camera.gd" type="Script" id=1]
-[ext_resource path="res://prefabs/wall/Wall.tscn" type="PackedScene" id=2]
-[ext_resource path="res://tools/BoxEmitter.tscn" type="PackedScene" id=3]
-[ext_resource path="res://tools/Constructor/Constructor.tscn" type="PackedScene" id=4]
-[ext_resource path="res://characters/Buddy/Player.tscn" type="PackedScene" id=5]
-[ext_resource path="res://characters/Buddy/BuddyIA.tscn" type="PackedScene" id=6]
-[ext_resource path="res://tools/Team.tscn" type="PackedScene" id=7]
-[ext_resource path="res://ui/PlayerUI.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/Test02/Test02.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Test02/Camera.gd" type="Script" id=2]
+[ext_resource path="res://prefabs/wall/Wall.tscn" type="PackedScene" id=3]
+[ext_resource path="res://tools/BoxEmitter.tscn" type="PackedScene" id=4]
+[ext_resource path="res://tools/Constructor/Constructor.tscn" type="PackedScene" id=5]
+[ext_resource path="res://characters/Buddy/Player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://characters/Buddy/BuddyIA.tscn" type="PackedScene" id=7]
+[ext_resource path="res://tools/Team.tscn" type="PackedScene" id=8]
+[ext_resource path="res://ui/PlayerUI.tscn" type="PackedScene" id=9]
+[ext_resource path="res://ui/game-over/GameOver.tscn" type="PackedScene" id=10]
 
 [sub_resource type="ProceduralSky" id=1]
 
@@ -33,9 +35,11 @@ albedo_color = Color( 0.94902, 0.827451, 0.588235, 1 )
 
 [sub_resource type="BoxShape" id=6]
 
-[node name="Test02" type="Node"]
+[node name="Game" type="Node"]
+script = ExtResource( 1 )
 
 [node name="Environment" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
 environment = SubResource( 2 )
@@ -46,7 +50,7 @@ shadow_enabled = true
 
 [node name="Camera" type="Camera" parent="Environment"]
 transform = Transform( 1, 0, 0, 0, 0.710869, 0.703324, 0, -0.703324, 0.710869, -21.367, 8.70249, 25.304 )
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="Navigation" type="Navigation" parent="Environment"]
 editor/display_folded = true
@@ -66,66 +70,67 @@ material/0 = SubResource( 5 )
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Navigation/NavigationMeshInstance/Ground/MeshInstance/StaticBody"]
 shape = SubResource( 6 )
 
-[node name="Wall" parent="Environment/Navigation/NavigationMeshInstance" instance=ExtResource( 2 )]
+[node name="Wall" parent="Environment/Navigation/NavigationMeshInstance" instance=ExtResource( 3 )]
 transform = Transform( 8.7813, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 17.1639 )
 
-[node name="Wall2" parent="Environment/Navigation/NavigationMeshInstance" instance=ExtResource( 2 )]
+[node name="Wall2" parent="Environment/Navigation/NavigationMeshInstance" instance=ExtResource( 3 )]
 transform = Transform( 8.7813, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -16.1737 )
 
-[node name="BoxEmitter" parent="Environment" instance=ExtResource( 3 )]
+[node name="BoxEmitter" parent="Environment" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.317, 0 )
 start = 5
 
-[node name="Constructor" parent="Environment" instance=ExtResource( 4 )]
+[node name="ConstructorBlue" parent="Environment" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.6506, 0, 20.6155 )
 
-[node name="Constructor2" parent="Environment" instance=ExtResource( 4 )]
+[node name="ConstructorRed" parent="Environment" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.2488, 0, -22.6055 )
 team = "Team_1"
 
-[node name="WallW" parent="Environment" instance=ExtResource( 2 )]
+[node name="WallW" parent="Environment" instance=ExtResource( 3 )]
 transform = Transform( -1.96701e-006, 0, 6.487, 0, 1, 0, -45, 0, -2.83556e-007, -41.8414, 1, 5.78133e-008 )
 
-[node name="WallE" parent="Environment" instance=ExtResource( 2 )]
+[node name="WallE" parent="Environment" instance=ExtResource( 3 )]
 transform = Transform( -1.96701e-006, 0, 6.487, 0, 1, 0, -45, 0, -2.83556e-007, 40, 1, 0 )
 
-[node name="WallN" parent="Environment" instance=ExtResource( 2 )]
+[node name="WallN" parent="Environment" instance=ExtResource( 3 )]
 transform = Transform( -45, 0, -5.67112e-007, 0, 1, 0, 3.93402e-006, 0, -6.487, 0, 1, -40 )
 
-[node name="WallS" parent="Environment" instance=ExtResource( 2 )]
+[node name="WallS" parent="Environment" instance=ExtResource( 3 )]
 transform = Transform( -45, 0, -5.67112e-007, 0, 1, 0, 3.93402e-006, 0, -6.487, 0, 1, 40 )
 
 [node name="Characters" type="Node" parent="."]
 
-[node name="Player" parent="Characters" instance=ExtResource( 5 )]
+[node name="Player" parent="Characters" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.367, 2, 18.862 )
 color = "Blue"
 
-[node name="BuddyIA3" parent="Characters" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0337, 0.973, 18.03 )
-color = "Blue"
-
-[node name="BuddyIA" parent="Characters" instance=ExtResource( 6 )]
+[node name="BuddyIA" parent="Characters" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.973, -20 )
 team = "Team_1"
 color = "Red"
 
-[node name="BuddyIA2" parent="Characters" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.0552, 0.973, -20 )
-team = "Team_1"
-color = "Red"
+[node name="BuddyIA2" parent="Characters" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0337, 0.973, 18.03 )
+color = "Blue"
 
 [node name="Teams" type="Node" parent="."]
 
-[node name="TeamBlue" parent="Teams" instance=ExtResource( 7 )]
+[node name="TeamBlue" parent="Teams" instance=ExtResource( 8 )]
 team = "Team_0"
+color = "Blue"
 
-[node name="TeamRed" parent="Teams" instance=ExtResource( 7 )]
+[node name="TeamRed" parent="Teams" instance=ExtResource( 8 )]
 team = "Team_1"
+color = "Red"
 
 [node name="Objects" type="Node" parent="."]
 
-[node name="PlayerUI" parent="." instance=ExtResource( 8 )]
+[node name="PlayerUI" parent="." instance=ExtResource( 9 )]
+
+[node name="GameOver" parent="." instance=ExtResource( 10 )]
+visible = false
+[connection signal="on_death" from="Characters/Player" to="." method="_on_Player_on_death"]
 [connection signal="on_drop_object" from="Characters/Player" to="PlayerUI" method="_on_Player_on_drop_object"]
 [connection signal="on_health_change" from="Characters/Player" to="PlayerUI" method="_on_Player_on_health_change"]
 [connection signal="on_take_object" from="Characters/Player" to="PlayerUI" method="_on_Player_on_take_object"]

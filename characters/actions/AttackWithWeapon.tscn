@@ -12,3 +12,4 @@ preconditions = {
 effects = {
 "attack": true
 }
+cost = 2.0
