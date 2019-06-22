@@ -17,7 +17,7 @@ func get_actions() -> Array:
 	
 	return actions
 
-func create_plan() -> Array:
+func create_plan(context := {}) -> Array:
 	
 	var astar: AStarGoapGrid = AStarGoapGrid.new( get_actions() )
 	
@@ -27,7 +27,7 @@ func create_plan() -> Array:
 	var to = AStarGoapGridNode.new(null)
 	to.state = goal_state
 	
-	var path = astar.find_path(from, to)
+	var path = astar.find_path(from, to, context)
 	
 	var action_list = []
 	

@@ -10,5 +10,5 @@ func _init(p: Vector2):
 func equals(other) -> bool:
 	return self.position == other.position
 
-func heuristic(other) -> float:
-	return .heuristic(other) + (position - other.position).length()
+func heuristic(goal, context: Dictionary) -> float:
+	return .heuristic(goal, context) + (position - goal.position).length()

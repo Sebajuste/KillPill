@@ -70,7 +70,7 @@ nodes/Punch/position = Vector2( 360, 60 )
 nodes/PunchAnim/node = SubResource( 13 )
 nodes/PunchAnim/position = Vector2( 40, 260 )
 nodes/output/position = Vector2( 1020, 60 )
-node_connections = [ "output", 0, "HoldObject", "Punch", 0, "Move", "Punch", 1, "PunchAnim", "HoldObject", 0, "Punch", "HoldObject", 1, "Animation" ]
+node_connections = [ "output", 0, "HoldObject", "HoldObject", 0, "Punch", "HoldObject", 1, "Animation", "Punch", 0, "Move", "Punch", 1, "PunchAnim" ]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=15]
 

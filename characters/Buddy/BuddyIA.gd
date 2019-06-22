@@ -10,14 +10,20 @@ var _move_path: PoolVector3Array
 var _move_index := -1
 var _move_control := Vector3()
 var _move_target_ref = null
+var _target_final = null
+var _target_min_distance = 1.5
+
 
 var _action_list
 
 
 
-func go_to(target: Vector3):
+func go_to(target: Vector3, min_distance := 1.5):
 	
-	var root = get_tree().get_root().get_child(0)
+	_target_final = target
+	_target_min_distance = min_distance
+	
+	var root = get_tree().get_root().get_node("Game")
 	
 	var nav = root.get_node("Environment/Navigation")
 	
@@ -61,6 +67,10 @@ func _control(delta) -> Vector3:
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	$PathDebug.set_as_toplevel(true)
+	
+	$PathDebug.global_transform = Transform()
 	
 	ia = true
 	
@@ -111,8 +121,14 @@ func _process(delta):
 			pass
 	
 	._process(delta)
+	
+	_update_path_debug()
+	
 
 func _idle(delta):
+	
+	if $GoapPlanner.goal_state.empty():
+		return
 	
 	var constructors = get_tree().get_nodes_in_group("constructor")
 	var constructor = null
@@ -123,18 +139,25 @@ func _idle(delta):
 	
 	var constructor_distance = (constructor.global_transform.origin - self.global_transform.origin).length()
 	
-	$GoapPlanner.world_state["builder_ready"] = constructor.ready_to_build()
-	$GoapPlanner.world_state["builder_full"] = constructor.ready_to_build()
+	$GoapPlanner.world_state["builder_ready"] = constructor.target_ready_to_build()
+	$GoapPlanner.world_state["builder_full"] = constructor.target_ready_to_build()
 	$GoapPlanner.world_state["hold_box"] = is_holding()
-	$GoapPlanner.world_state["have_weapon"] = $BodyRightHand/RightHand.get_child_count() > 0
-	$GoapPlanner.world_state["have_ammo"] = $BodyRightHand/RightHand.get_child_count() == 0 or $BodyRightHand/RightHand.get_child(0).ammo > 0
+	$GoapPlanner.world_state["have_weapon"] = has_object()
+	$GoapPlanner.world_state["have_ammo"] = not has_object() or $BodyRightHand/RightHand.get_child(0).ammo > 0
 	$GoapPlanner.world_state["see_ammo"] = not get_tree().get_nodes_in_group("ammo").empty()
 	$GoapPlanner.world_state["see_ennemy"] = not self.ennemies.empty()
 	$GoapPlanner.world_state["near_constructor"] = constructor_distance < 10
 	
+	var context = {
+		"team": team,
+		"position": global_transform.origin,
+		"constructor": constructor,
+		"ennemies": self.ennemies
+	}
+	
 	#print("world_state : ", $GoapPlanner.world_state )
 	
-	var action_list = $GoapPlanner.create_plan()
+	var action_list = $GoapPlanner.create_plan(context)
 	
 	if not action_list.empty():
 		_action_list = action_list
@@ -143,9 +166,13 @@ func _idle(delta):
 		var action_plan = ""
 		for a in action_list:
 			action_plan += "> %s " % a.get_name()
-		print("[%s] Action Plan : " % get_name(), action_plan)
+		#print("[%s] Action Plan : " % get_name(), action_plan, $GoapPlanner.world_state, $GoapPlanner.goal_state)
 		
-	
+	else:
+		print("[%s] Cannot create plan state: " % get_name())
+		print("> state: ", $GoapPlanner.world_state)
+		print("> goal : ", $GoapPlanner.goal_state)
+		$GoapPlanner.goal_state = {}
 
 func _move(delta):
 	
@@ -153,7 +180,9 @@ func _move(delta):
 	
 	if _move_index != -1:
 		
-		if _move_index >= _move_path.size():
+		var target_distance = (global_transform.origin - _target_final).length()
+		
+		if _move_index >= _move_path.size() or target_distance < _target_min_distance:
 			_move_target_ref = null
 			_move_index = -1
 			_state = State.IDLE
@@ -172,6 +201,14 @@ func _move(delta):
 		
 		if distance > 1.5:
 			_move_control = (move_target - global_transform.origin).normalized()
+			
+			
+			# Todo : avoid obstacle
+			
+			#var result = $CatchArea.get_overlapping_bodies()
+			
+			
+			
 		else:
 			_move_index += 1
 		
@@ -199,10 +236,11 @@ func _animation(delta):
 			var plan = ""
 			for a in _action_list:
 				plan += "> " + a.get_name() + " "
-			
+			plan += "> %s" % action.get_name()
 			print("[%s] GOAP cannot reach =" % get_name(), plan )
 			_action_list = null
 			_state = State.IDLE
+			
 			return
 		
 		if _action_list.empty():
@@ -210,4 +248,25 @@ func _animation(delta):
 			_action_list = null
 		
 		_state = State.IDLE
+	
+
+func _update_path_debug():
+	
+	$PathDebug.clear()
+	
+	if _move_path.size() > 1:
+		$PathDebug.begin(Mesh.PRIMITIVE_LINE_STRIP)
+		
+		$PathDebug.add_vertex( global_transform.origin )
+		
+		for index in range(_move_index, _move_path.size() ):
+			$PathDebug.add_vertex( _move_path[index] )
+		
+		if _move_target_ref:
+			var target = _move_target_ref.get_ref()
+			if target:
+				$PathDebug.add_vertex(target.global_transform.origin)
+		
+		$PathDebug.end()
+	
 	

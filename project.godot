@@ -60,6 +60,10 @@ config/name="Kill Pill"
 run/main_scene="res://scenes/Test02/Test02.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+configuration="*res://scripts/singletons/configuration.gd"
+
 [display]
 
 window/size/width=1280

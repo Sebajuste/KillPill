@@ -15,7 +15,7 @@ func emit():
 	
 	var box = Box.instance()
 	
-	var root_node = get_tree().get_root().get_child(0).find_node("Objects")
+	var root_node = get_tree().get_root().get_node("Game/Objects")
 	root_node.add_child(box)
 	
 	box.global_transform.origin = self.global_transform.origin + Vector3(rand_range(-1, 1), 0, rand_range(-1, 1) )

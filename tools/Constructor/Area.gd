@@ -11,6 +11,7 @@ func has_object() -> bool:
 func add_object(object) -> bool:
 	if not has_object():
 		$ObjectContainer.add_child(object)
+		object.catched = true
 		return true
 	return false
 
@@ -18,6 +19,7 @@ func remove_object():
 	if has_object():
 		var object = $ObjectContainer.get_child(0)
 		$ObjectContainer.remove_child(object)
+		object.catched = false
 		return object
 	return null
 

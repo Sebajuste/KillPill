@@ -40,8 +40,8 @@ func get_nearest_nodes(position: Vector2) -> Array:
 	return nodes
 
 
-func get_near_edges(node: AStarGridNode) -> Array:
-	var links = .get_near_edges(node)
+func get_near_edges(node: AStarGridNode, context: Dictionary) -> Array:
+	var links = .get_near_edges(node, context)
 	
 	#for i in range(3):
 	#	for j in range(3):

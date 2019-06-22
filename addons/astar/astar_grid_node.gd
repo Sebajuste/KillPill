@@ -25,5 +25,5 @@ func add_link(edge):
 func equals(other: AStarGridNode) -> bool:
 	return self == other
 
-func heuristic(other: AStarGridNode) -> float:
+func heuristic(goal: AStarGridNode, context: Dictionary) -> float:
 	return 1.0

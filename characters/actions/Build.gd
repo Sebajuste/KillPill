@@ -1,6 +1,5 @@
 extends "res://addons/goap/goap_action.gd"
 
-
 func execute(actor):
 	
 	var constructors = get_tree().get_nodes_in_group("constructor")

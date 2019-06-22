@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 preconditions = {
 "builder_full": false,
+"builder_ready": false,
 "hold_box": true
 }
 effects = {

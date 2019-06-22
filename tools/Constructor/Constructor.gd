@@ -1,7 +1,7 @@
 extends Spatial
 
 
-
+signal on_build
 
 var CatchableObject = preload("res://tools/CatchableObject.tscn")
 
@@ -36,6 +36,7 @@ const PATTERNS = [
 
 export var team : String = "Team_0"
 
+var color = ""
 
 var target_pattern_name = null
 
@@ -43,17 +44,22 @@ var target_pattern_name = null
 var _users = {}
 
 
+func _max_pill_reached() -> bool:
+	var count_pill = 0
+	for pill in get_tree().get_root().get_node("Game/Characters").get_children():
+		if pill.team == self.team:
+			count_pill += 1
+	return count_pill >= 5
 
 func add_object_target(object) -> bool:
-	
-	print("add_object_target : ", target_pattern_name)
 	
 	if target_pattern_name == null:
 		return false
 	
-	var current_pattern: Array = get_current_pattern()
+	if target_pattern_name == "pill" and _max_pill_reached():
+		return false
 	
-	print("current_pattern: ", current_pattern)
+	var current_pattern: Array = get_current_pattern()
 	
 	for it_pattern in PATTERNS:
 		if it_pattern.name == target_pattern_name:
@@ -64,7 +70,7 @@ func add_object_target(object) -> bool:
 				print("Construct already ready !")
 				return false
 			
-			if _can_be_completed(pattern, current_pattern):
+			if _pattern_can_be_completed(pattern, current_pattern):
 				var area = _next_area_to_complete(pattern, current_pattern)
 				return area.add_object(object)
 			
@@ -79,11 +85,34 @@ func add_object(user, object) -> bool:
 
 
 func ready_to_build() -> bool:
-	var areas = []
-	for area in $Areas.get_children():
-		if area.has_object():
-			areas.append(area)
-	return not areas.empty()
+	
+	#if target_pattern_name == null:
+	if can_build_gun():
+		return true
+	if can_build_pill():
+		return true
+	return false
+	
+	#match target_pattern_name:
+	#	"gun":
+	#		return can_build_gun()
+	#	"pill":
+	#		return can_build_pill()
+
+func target_ready_to_build() -> bool:
+	
+	if target_pattern_name == null:
+		return false
+	
+	match target_pattern_name:
+		"gun":
+			return can_build_gun()
+		"pill":
+			return can_build_pill()
+		_:
+			return false
+	
+
 
 func is_full() -> bool:
 	return false
@@ -139,7 +168,7 @@ func can_build_pill() -> bool:
 		return true
 	return false
 
-func build():
+func build() -> bool:
 	
 	var current_pattern = get_current_pattern()
 	
@@ -152,7 +181,7 @@ func build():
 	if pattern_found != null:
 		print("pattern found: ", pattern_found)
 		
-		var root = get_tree().get_root().get_child(0)
+		var root = get_tree().get_root().get_node("Game")
 		
 		match pattern_found:
 			"gun":
@@ -161,15 +190,23 @@ func build():
 				catchable_object.set_object(gun)
 				root.find_node("Objects").add_child(catchable_object)
 				catchable_object.global_transform.origin = self.global_transform.origin
+				emit_signal("on_build", catchable_object)
 			"pill":
+				
+				if pattern_found == "pill" and _max_pill_reached():
+					return false
+				
 				var pill = Pill.instance()
 				pill.team = self.team
+				pill.color = color
 				root.find_node("Characters").add_child(pill)
 				pill.global_transform.origin = self.global_transform.origin
+				emit_signal("on_build", pill)
 		
 		_delete_pattern(current_pattern)
-		
+		return true
 	
+	return false
 
 func _delete_pattern(pattern):
 	
@@ -178,7 +215,7 @@ func _delete_pattern(pattern):
 			_find_area( Vector2(x, y) ).delete_object()
 	
 
-func _can_be_completed(target, pattern) -> bool:
+func _pattern_can_be_completed(target, pattern) -> bool:
 	
 	for x in range(target.size()):
 		for y in range(target[x].size()):
