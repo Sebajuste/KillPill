@@ -7,7 +7,7 @@
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
 [node name="Player" instance=ExtResource( 1 )]
-editor/display_folded = false
+editor/display_folded = true
 script = ExtResource( 2 )
 
 [node name="Body" parent="." index="1"]

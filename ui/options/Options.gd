@@ -3,7 +3,14 @@ extends Control
 
 signal on_close
 
-
+func reload():
+	
+	for option in $Panel/MarginContainer/VBoxContainer/HBoxContainer/OptionsContainer.get_children():
+		
+		if option.has_method("reload"):
+			option.reload()
+		
+	
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

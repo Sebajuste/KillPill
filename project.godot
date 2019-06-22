@@ -57,7 +57,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Kill Pill"
-run/main_scene="res://scenes/Test02/Test02.tscn"
+run/main_scene="res://ui/main-menu/MainMenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
