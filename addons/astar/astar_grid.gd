@@ -13,7 +13,7 @@ class PathSorter:
 func add_grid_node(node):
 	pass
 
-func get_near_edges(node):
+func get_near_edges(node, context: Dictionary):
 	var edges = []
 	for link in node.links:
 		edges.append(link)
@@ -36,14 +36,17 @@ func _search(list: Array, needle):
 	return null
 
 
-func find_path(from: AStarGridNode, goal: AStarGridNode) -> Array:
+func find_path(from: AStarGridNode, goal: AStarGridNode, context := {}) -> Array:
+	
+	if _equals_goal(from, goal):
+		return []
 	
 	var open_list: Array = []
 	#var closed_map: Dictionary = {}
 	var closed_list: Array = []
 	
 	var start_path_node = AStarPathNode.new(null, from)
-	start_path_node.priority = from.get_weight() + from.heuristic(goal)
+	start_path_node.priority = from.get_weight() + from.heuristic(goal, context)
 	#closed_map[start_path_node.grid_node] = start_path_node
 	#closed_list.append( start_path_node )
 	open_list.append( start_path_node )
@@ -53,7 +56,7 @@ func find_path(from: AStarGridNode, goal: AStarGridNode) -> Array:
 	while not open_list.empty():
 		
 		count += 1
-		if count > 200:
+		if count > 50:
 			print("Max loop reached")
 			
 			break
@@ -66,12 +69,12 @@ func find_path(from: AStarGridNode, goal: AStarGridNode) -> Array:
 		if _equals_goal(grid_node, goal):
 			return _build_path_list(path_node)
 		
-		for edge in get_near_edges(grid_node):
+		for edge in get_near_edges(grid_node, context):
 			
 			var neighbor: AStarGridNode = edge.to
 			
 			var new_cost: float = path_node.cost + edge.cost + neighbor.get_weight()
-			var priority: float = new_cost + neighbor.heuristic(goal)
+			var priority: float = new_cost + neighbor.heuristic(goal, context)
 			
 			#var visited_path_node: AStarPathNode = closed_map.get(neighbor, null)
 			var visited_path_node: AStarPathNode = _search(closed_list, neighbor)

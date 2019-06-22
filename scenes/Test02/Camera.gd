@@ -15,7 +15,12 @@ func _ready():
 	
 	set_as_toplevel(true)
 	
-	_player_ref = weakref( get_tree().get_root().get_child(0).get_node("Characters/Player") )
+	var player = get_tree().get_root().get_node("Game/Characters/Player")
+	
+	print( get_tree().get_root().get_child(0).get_name() )
+	print("player: ", player)
+	
+	_player_ref = weakref( player )
 	
 	_pos_delta = self.global_transform.origin - _player_ref.get_ref().global_transform.origin
 	

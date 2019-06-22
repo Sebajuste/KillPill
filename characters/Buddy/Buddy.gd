@@ -17,7 +17,7 @@ export var max_health = 100
 
 export var ia = false
 
-export(String, "Blue", "Red") var color
+export(String, "Blue", "Red") var color setget set_color
 
 var health = max_health
 
@@ -60,7 +60,7 @@ func drop_object():
 		var catchable_object = CatchableObject.instance()
 		catchable_object.set_object(object)
 		
-		var root = get_tree().get_root().get_child(0)
+		var root = get_tree().get_root().get_node("Game")
 		root.find_node("Objects").add_child(catchable_object)
 		
 		catchable_object.global_transform.origin = global_transform.origin
@@ -102,8 +102,8 @@ func release_hold() -> bool:
 		
 		$HoldPosition.remove_child(object)
 		
-		var root = get_tree().get_root().get_child(0)
-		root.find_node("Objects").add_child(object)
+		var root = get_tree().get_root().get_node("Game")
+		root.get_node("Objects").add_child(object)
 		
 		var dir = ($HoldPosition.global_transform.basis.z + Vector3.UP).normalized()
 		object.global_transform.origin = global_transform.origin + dir
@@ -125,7 +125,8 @@ func shoot() -> bool:
 		if right_hand.get_child_count() > 0:
 			var weapon = right_hand.get_child(0)
 			return weapon.shoot()
-	
+	else:
+		print("[%s] Cannot shoot. He is holding box !" % get_name() )
 	return false
 
 func punch() -> bool:
@@ -226,12 +227,9 @@ func damage(position, normal, bullet):
 		queue_free()
 	
 
-
-func _control(delta) -> Vector3:
-	return Vector3()
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
+func set_color(value):
+	
+	color = value
 	
 	match color:
 		"Blue":
@@ -241,6 +239,15 @@ func _ready():
 		"Red":
 			var material = load("res://characters/Buddy/BodyRed.material")
 			$Body/Body.set_surface_material(0, material)
+
+
+func _control(delta) -> Vector3:
+	return Vector3()
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	
+	set_color(color)
 	
 	emit_signal("on_health_change", health, max_health)
 	

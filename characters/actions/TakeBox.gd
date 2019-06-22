@@ -13,14 +13,18 @@ func get_constructor(actor):
 	
 	return constructor
 
-func is_reachable() -> bool:
+func is_reachable(context: Dictionary) -> bool:
 	
 	var boxes = get_tree().get_nodes_in_group("box")
 	
 	if boxes.empty():
 		false
 	
-	return true
+	for box in boxes:
+		if not box.catched:
+			return true
+	
+	return false
 
 func execute(actor):
 	

@@ -33,7 +33,7 @@ albedo_color = Color( 0.94902, 0.827451, 0.588235, 1 )
 
 [sub_resource type="BoxShape" id=6]
 
-[node name="Test02" type="Node"]
+[node name="Game" type="Node"]
 
 [node name="Environment" type="Node" parent="."]
 
@@ -76,10 +76,10 @@ transform = Transform( 8.7813, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -16.1737 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.317, 0 )
 start = 5
 
-[node name="Constructor" parent="Environment" instance=ExtResource( 4 )]
+[node name="ConstructorBlue" parent="Environment" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.6506, 0, 20.6155 )
 
-[node name="Constructor2" parent="Environment" instance=ExtResource( 4 )]
+[node name="ConstructorRed" parent="Environment" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.2488, 0, -22.6055 )
 team = "Team_1"
 
@@ -101,27 +101,24 @@ transform = Transform( -45, 0, -5.67112e-007, 0, 1, 0, 3.93402e-006, 0, -6.487, 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.367, 2, 18.862 )
 color = "Blue"
 
-[node name="BuddyIA3" parent="Characters" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0337, 0.973, 18.03 )
-color = "Blue"
-
 [node name="BuddyIA" parent="Characters" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.973, -20 )
 team = "Team_1"
 color = "Red"
 
 [node name="BuddyIA2" parent="Characters" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.0552, 0.973, -20 )
-team = "Team_1"
-color = "Red"
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0337, 0.973, 18.03 )
+color = "Blue"
 
 [node name="Teams" type="Node" parent="."]
 
 [node name="TeamBlue" parent="Teams" instance=ExtResource( 7 )]
 team = "Team_0"
+color = "Blue"
 
 [node name="TeamRed" parent="Teams" instance=ExtResource( 7 )]
 team = "Team_1"
+color = "Red"
 
 [node name="Objects" type="Node" parent="."]
 

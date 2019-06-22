@@ -20,7 +20,15 @@
 script = ExtResource( 2 )
 ia = true
 
-[node name="GoapPlanner" type="Node" parent="." index="8"]
+[node name="CatchArea" parent="." index="6"]
+collision_mask = 38
+
+[node name="EnnemyDetection" parent="." index="7"]
+editor/display_folded = true
+
+[node name="PathDebug" type="ImmediateGeometry" parent="." index="9"]
+
+[node name="GoapPlanner" type="Node" parent="." index="10"]
 script = ExtResource( 3 )
 world_state = {
 "builder_full": false,
@@ -86,6 +94,7 @@ effects = {
 [node name="BringBoxToConstruct" parent="GoapPlanner" index="6" instance=ExtResource( 10 )]
 preconditions = {
 "builder_full": false,
+"builder_ready": false,
 "hold_box": true
 }
 effects = {
@@ -122,5 +131,5 @@ effects = {
 "attack": true
 }
 
-[node name="AnimationTree" parent="." index="11"]
+[node name="AnimationTree" parent="." index="12"]
 parameters/Move/playback = SubResource( 1 )
