@@ -17,6 +17,7 @@ func _physics_process(delta):
 	
 	var collision = move_and_collide(velocity * delta)
 	if collision:
+		$AudioStreamPlayer3D.play()
 		velocity = velocity.bounce(collision.normal)
 		if collision.collider.has_method("damage"):
 			collision.collider.damage(collision.position, collision.normal, self)

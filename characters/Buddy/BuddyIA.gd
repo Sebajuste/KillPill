@@ -219,7 +219,7 @@ func _move(delta):
 
 func _animation(delta):
 	
-	if _action_list and not _action_list.empty():
+	if _action_list != null and not _action_list.empty():
 		
 		var action = _action_list.pop_front()
 		

@@ -1,7 +1,7 @@
 extends Node
 
 export var team := ""
-export(String, "Blue", "Red") var color
+export(String, "Blue", "Red", "Yellow") var color
 export var max_team = 5
 
 

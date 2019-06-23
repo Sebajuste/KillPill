@@ -1,5 +1,7 @@
 extends KinematicBody
 
+var PillExplosion = preload("res://effects/explosions/PillExplosion.tscn")
+
 var CatchableObject = preload("res://tools/CatchableObject.tscn")
 
 const ACCEL= 4
@@ -18,7 +20,7 @@ export var max_health = 100
 
 export var ia = false
 
-export(String, "Blue", "Red") var color setget set_color
+export(String, "Blue", "Red", "Yellow") var color setget set_color
 
 var health = max_health
 
@@ -51,6 +53,7 @@ func take_object(object_container) -> bool:
 		var object = object_container.take_object()
 		$BodyRightHand/RightHand.add_child(object)
 		object.owned = true
+		$PickUpSound.play()
 		emit_signal("on_take_object", object)
 		return true
 	return false
@@ -168,8 +171,6 @@ Action to build and drop box on constructor
 """
 func use_front() -> bool:
 	
-	print("use front")
-	
 	var areas = $CatchArea.get_overlapping_areas()
 	
 	if is_holding():
@@ -182,10 +183,7 @@ func use_front() -> bool:
 			return constructor_put_box(area, object)
 			
 	
-	print("try to build")
-	
 	for area in areas:
-		
 		if constructor_build(area):
 			return true
 	
@@ -227,6 +225,11 @@ func damage(position, normal, bullet):
 	
 	if health < 0:
 		dead = true
+		
+		var explosion = PillExplosion.instance()
+		get_parent().add_child(explosion)
+		explosion.global_transform.origin = self.global_transform.origin
+		explosion.color = color
 		queue_free()
 		emit_signal("on_death")
 	
@@ -242,6 +245,9 @@ func set_color(value):
 		
 		"Red":
 			var material = load("res://characters/Buddy/BodyRed.material")
+			$Body/Body.set_surface_material(0, material)
+		"Yellow":
+			var material = load("res://characters/Buddy/BodyYellow.material")
 			$Body/Body.set_surface_material(0, material)
 
 

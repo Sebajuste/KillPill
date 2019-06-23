@@ -1,15 +1,17 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://characters/Buddy/Buddy.gd" type="Script" id=1]
 [ext_resource path="res://characters/Buddy/BodyBlue.material" type="Material" id=2]
 [ext_resource path="res://characters/Buddy/Hand.material" type="Material" id=3]
 [ext_resource path="res://characters/Buddy/Foot.material" type="Material" id=4]
-[ext_resource path="res://characters/Buddy/catch-cycle.anim" type="Animation" id=5]
-[ext_resource path="res://characters/Buddy/default.anim" type="Animation" id=6]
-[ext_resource path="res://characters/Buddy/gun_aim.anim" type="Animation" id=7]
-[ext_resource path="res://characters/Buddy/idle.anim" type="Animation" id=8]
-[ext_resource path="res://characters/Buddy/punch.anim" type="Animation" id=9]
-[ext_resource path="res://characters/Buddy/walk.anim" type="Animation" id=10]
+[ext_resource path="res://sounds/punch.wav" type="AudioStream" id=5]
+[ext_resource path="res://sounds/PickWeapon.wav" type="AudioStream" id=6]
+[ext_resource path="res://characters/Buddy/catch-cycle.anim" type="Animation" id=7]
+[ext_resource path="res://characters/Buddy/default.anim" type="Animation" id=8]
+[ext_resource path="res://characters/Buddy/gun_aim.anim" type="Animation" id=9]
+[ext_resource path="res://characters/Buddy/idle.anim" type="Animation" id=10]
+[ext_resource path="res://characters/Buddy/punch.anim" type="Animation" id=11]
+[ext_resource path="res://characters/Buddy/walk.anim" type="Animation" id=12]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.486064
@@ -95,7 +97,7 @@ material/0 = ExtResource( 2 )
 
 [node name="BodyLeftHand" type="Spatial" parent="."]
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.518391, -0.0696238, 0.108053 )
+transform = Transform( 0.555212, -0.742179, 0.37538, 2.98023e-008, 0.451336, 0.892354, -0.831709, -0.495446, 0.250587, 0.519608, 0.223872, 0.154406 )
 
 [node name="CSGCombiner" type="CSGCombiner" parent="BodyLeftHand"]
 editor/display_folded = true
@@ -178,14 +180,23 @@ shape = SubResource( 4 )
 [node name="HoldPosition" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44492, 0.843572 )
 
+[node name="PunchSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 5 )
+unit_db = 20.0
+max_distance = 20.0
+
+[node name="PickUpSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 6 )
+unit_db = 20.0
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/catch-cycle = ExtResource( 5 )
-anims/default = ExtResource( 6 )
-anims/gun_aim = ExtResource( 7 )
-anims/idle = ExtResource( 8 )
-anims/punch = ExtResource( 9 )
-anims/walk-cycle = ExtResource( 10 )
+anims/catch-cycle = ExtResource( 7 )
+anims/default = ExtResource( 8 )
+anims/gun_aim = ExtResource( 9 )
+anims/idle = ExtResource( 10 )
+anims/punch = ExtResource( 11 )
+anims/walk-cycle = ExtResource( 12 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 14 )

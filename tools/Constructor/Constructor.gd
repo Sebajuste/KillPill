@@ -46,7 +46,7 @@ var _users = {}
 
 func _max_pill_reached() -> bool:
 	var count_pill = 0
-	for pill in get_tree().get_root().get_node("Game/Characters").get_children():
+	for pill in get_tree().get_nodes_in_group("character"):
 		if pill.team == self.team:
 			count_pill += 1
 	return count_pill >= 5
@@ -170,11 +170,14 @@ func can_build_pill() -> bool:
 
 func build() -> bool:
 	
+	print("build called")
+	
 	var current_pattern = get_current_pattern()
 	
 	var pattern_found = null
 	for pattern in PATTERNS:
-		if pattern.pattern == current_pattern:
+		#if pattern.pattern == current_pattern:
+		if _check_pattern(current_pattern, pattern.pattern):
 			pattern_found = pattern.name
 			break
 	
@@ -207,6 +210,13 @@ func build() -> bool:
 		return true
 	
 	return false
+
+func _check_pattern(current_pattern, build_pattern) -> bool:
+	for x in range(build_pattern.size()):
+		for y in range(build_pattern[x].size()):
+			if build_pattern[x][y] == 1 and current_pattern[x][y] == 0:
+				return false
+	return true
 
 func _delete_pattern(pattern):
 	
