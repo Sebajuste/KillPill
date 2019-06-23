@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://ui/main-menu/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://ui/main-menu/KillPill_630x445.jpg" type="Texture" id=2]
 [ext_resource path="res://ui/options/Options.tscn" type="PackedScene" id=3]
+[ext_resource path="res://music/main_theme.ogg" type="AudioStream" id=4]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -81,6 +82,13 @@ margin_left = -464.0
 margin_top = -318.5
 margin_right = 464.0
 margin_bottom = 318.5
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 4 )
+volume_db = -10.0
+autoplay = true
+bus = "Music"
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/QuitButton" to="." method="_on_QuitButton_pressed"]

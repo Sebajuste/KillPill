@@ -15,14 +15,16 @@ func hold(owner) -> bool:
 	if not catched:
 		mode = RigidBody.MODE_STATIC
 		catched = true
+		$PickSound.play()
 		return true
 	return false
 
 
 func release():
-	catched = false
-	mode = RigidBody.MODE_RIGID
-	
+	if catched:
+		catched = false
+		mode = RigidBody.MODE_RIGID
+		$PickSound.play()
 
 
 
@@ -31,11 +33,11 @@ func damage(position, normal, bullet):
 	if catched:
 		return
 	
-	for i in range(5):
+	for i in range(3):
 		
 		var drop
 		
-		if randf() > 0.3:
+		if randf() > 0.5:
 			drop = Ammo.instance()
 		else:
 			drop = Health.instance()
@@ -46,7 +48,7 @@ func damage(position, normal, bullet):
 		drop.global_transform.origin = self.global_transform.origin + Vector3.UP * 2
 		drop.apply_central_impulse( Vector3(rand_range(-1, 1), rand_range(0, 1), rand_range(-1, 1) ).normalized() * 2 )
 		
-		
+	
 	
 	queue_free()
 	
@@ -58,4 +60,4 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
-#	pass
+#	pass	

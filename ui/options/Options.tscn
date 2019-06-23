@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://ui/options/Options.gd" type="Script" id=1]
-[ext_resource path="res://ui/options/OptionsAudio.tscn" type="PackedScene" id=2]
-[ext_resource path="res://ui/options/OptionsVideo.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/options/OptionsVideo.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/options/OptionsAudio.tscn" type="PackedScene" id=3]
 
 [node name="Options" type="Control"]
 pause_mode = 2
@@ -66,7 +66,6 @@ margin_bottom = 62.0
 text = "Video"
 
 [node name="AudioOptions" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-visible = false
 margin_top = 66.0
 margin_right = 200.0
 margin_bottom = 86.0
@@ -83,12 +82,12 @@ margin_right = 799.0
 margin_bottom = 511.0
 size_flags_horizontal = 3
 
-[node name="OptionsAudio" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/OptionsContainer" instance=ExtResource( 2 )]
-visible = false
+[node name="OptionsVideo" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/OptionsContainer" instance=ExtResource( 2 )]
 margin_right = 587.0
 margin_bottom = 511.0
 
-[node name="OptionsVideo" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/OptionsContainer" instance=ExtResource( 3 )]
+[node name="OptionsAudio" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/OptionsContainer" instance=ExtResource( 3 )]
+visible = false
 margin_right = 587.0
 margin_bottom = 511.0
 

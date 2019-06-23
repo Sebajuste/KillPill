@@ -14,11 +14,15 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
+	var team_dead_count = 0
+	
 	for teams in $Teams.get_children():
-		
 		if teams.get_team().empty():
-			$GameOver.visible = true
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			team_dead_count += 1
+	
+	if team_dead_count == 2:
+		$GameOver.visible = true
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
 
 

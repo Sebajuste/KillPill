@@ -20,9 +20,9 @@ func reload():
 	mute = configuration.Settings.Audio.MUTE
 	
 	
-	general_slider.value = general
-	music_slider.value = music
-	effects_slider.value = sound_effects
+	general_slider.value = ( (general + 20) * 100) / 25
+	music_slider.value = ( (music + 20) * 100) / 25
+	effects_slider.value = ( (sound_effects + 20) * 100) / 25
 	
 	mute_checkbox.pressed = mute
 	
@@ -52,17 +52,17 @@ func _ready():
 
 func _on_General_value_changed(value):
 	
-	general = value
+	general = ( (value * 25) / 100 ) - 20
 	
 
 func _on_Music_value_changed(value):
 	
-	music = value
+	music = ( (value * 25) / 100 ) - 20
 	
 
 func _on_Effects_value_changed(value):
 	
-	sound_effects = value
+	sound_effects = ( (value * 25) / 100 ) - 20
 	
 
 func _on_Mute_toggled(button_pressed):

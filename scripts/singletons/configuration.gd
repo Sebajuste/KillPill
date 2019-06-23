@@ -59,6 +59,8 @@ func apply_settings():
 	
 	get_viewport().msaa = Viewport.MSAA_4X
 	
+	print("Settings.Audio.MASTER: ", Settings.Audio.MASTER)
+	
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), Settings.Audio.MASTER)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), Settings.Audio.MUSIC)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SoundEffects"), Settings.Audio.SOUND_EFFECTS)
@@ -83,6 +85,12 @@ func load_settings():
 	return LOAD_SUCCESS
 
 func _ready():
+	
+	print("get_bus_count: ", AudioServer.get_bus_count() )
+	print("Master: ", AudioServer.get_bus_index("Master") )
+	print("Music: ", AudioServer.get_bus_index("Music") )
+	print("SoundEffects: ", AudioServer.get_bus_index("SoundEffects") )
+	
 	#Check if settings.ini exist if not create a new one with the default Settings
 	if load_settings() == LOAD_ERROR_COULDNT_OPEN :
 		save_settings()

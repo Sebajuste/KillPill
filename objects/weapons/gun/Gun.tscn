@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://objects/weapons/gun/Gun.gd" type="Script" id=1]
 [ext_resource path="res://objects/weapons/gun/Gun.material" type="Material" id=2]
 [ext_resource path="res://objects/weapons/gun/Gun2.material" type="Material" id=3]
 [ext_resource path="res://effects/flames/flame.tres" type="PlaneMesh" id=4]
 [ext_resource path="res://effects/flames/flame1.material" type="Material" id=5]
+[ext_resource path="res://sounds/shoot.wav" type="AudioStream" id=6]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -21,6 +22,20 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0.02, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.1, 1, 0, 0, 0.25, 0, 0, 0, 1, 0, 0, 0 )
+tracks/1/type = "method"
+tracks/1/path = NodePath("AudioStreamPlayer3D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.02 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
+}
 
 [node name="Gun" type="Spatial" groups=[
 "weapon",
@@ -63,6 +78,13 @@ material/0 = ExtResource( 5 )
 
 [node name="RateOfFireTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 6 )
+unit_db = 20.0
+max_db = 6.0
+max_distance = 30.0
+bus = "SoundEffects"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/shoot = SubResource( 3 )
