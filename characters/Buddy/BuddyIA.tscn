@@ -16,7 +16,7 @@
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
-[node name="BuddyIA" index="0" instance=ExtResource( 1 )]
+[node name="BuddyIA" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 ia = true
 
@@ -40,7 +40,7 @@ world_state = {
 "see_ammo": false
 }
 goal_state = {
-"build_done": true
+
 }
 
 [node name="TakeWeapon" parent="GoapPlanner" index="0" instance=ExtResource( 4 )]

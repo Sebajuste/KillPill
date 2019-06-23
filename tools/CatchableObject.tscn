@@ -37,8 +37,8 @@ shape = SubResource( 1 )
 anims/rotation = SubResource( 2 )
 
 [node name="CatchableObjectAreaDetection" type="Area" parent="." groups=[
-"object_container",
 "catchable",
+"object_container",
 ]]
 collision_layer = 4
 collision_mask = 6
