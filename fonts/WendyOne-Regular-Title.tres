@@ -3,7 +3,7 @@
 [ext_resource path="res://fonts/WendyOne-Regular.ttf" type="DynamicFontData" id=1]
 
 [resource]
-size = 32
+size = 24
 use_mipmaps = true
 extra_spacing_char = 1
 font_data = ExtResource( 1 )

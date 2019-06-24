@@ -19,6 +19,15 @@ func create_notification(title: String, message: String, options = {}) -> String
 	
 	return notification.get_name()
 
+func remove_notification(name: String) -> bool:
+	
+	var notification = $MarginContainer/VBoxContainer.get_node(name)
+	
+	if notification != null:
+		notification.queue_free()
+		return true
+	return false
+
 func _on_close_notification(notification):
 	
 	print("_on_close_notification: ", notification)
