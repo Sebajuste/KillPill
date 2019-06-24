@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://ui/PlayerUI.gd" type="Script" id=1]
+[ext_resource path="res://fonts/WendyOne-Regular.tres" type="DynamicFont" id=2]
 
 [node name="PlayerUI" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -19,13 +20,14 @@ margin_bottom = 50.0
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 margin_right = 150.0
-margin_bottom = 14.0
-text = "Munitions"
+margin_bottom = 25.0
+custom_fonts/font = ExtResource( 2 )
+text = "Ammo"
 
 [node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
-margin_top = 18.0
+margin_top = 29.0
 margin_right = 150.0
-margin_bottom = 32.0
+margin_bottom = 43.0
 grow_vertical = 2
 
 [node name="HealthContainer" type="MarginContainer" parent="."]
@@ -44,10 +46,11 @@ margin_bottom = 50.0
 
 [node name="Label" type="Label" parent="HealthContainer/VBoxContainer"]
 margin_right = 150.0
-margin_bottom = 14.0
-text = "Vie"
+margin_bottom = 25.0
+custom_fonts/font = ExtResource( 2 )
+text = "Health"
 
 [node name="ProgressBar" type="ProgressBar" parent="HealthContainer/VBoxContainer"]
-margin_top = 18.0
+margin_top = 29.0
 margin_right = 150.0
-margin_bottom = 32.0
+margin_bottom = 43.0
