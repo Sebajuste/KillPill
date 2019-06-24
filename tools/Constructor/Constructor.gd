@@ -2,6 +2,7 @@ extends Spatial
 
 
 signal on_build
+signal on_add_box
 
 var CatchableObject = preload("res://tools/CatchableObject.tscn")
 
@@ -72,7 +73,10 @@ func add_object_target(object) -> bool:
 			
 			if _pattern_can_be_completed(pattern, current_pattern):
 				var area = _next_area_to_complete(pattern, current_pattern)
-				return area.add_object(object)
+				var result = area.add_object(object)
+				if result:
+					emit_signal("on_add_box")
+				return result
 			
 	
 	return false
@@ -80,7 +84,10 @@ func add_object_target(object) -> bool:
 func add_object(user, object) -> bool:
 	var area = select_area(user)
 	if area != null:
-		return area.add_object(object)
+		var result = area.add_object(object)
+		if result:
+			emit_signal("on_add_box")
+		return result
 	return false
 
 
@@ -170,8 +177,6 @@ func can_build_pill() -> bool:
 
 func build() -> bool:
 	
-	print("build called")
-	
 	var current_pattern = get_current_pattern()
 	
 	var pattern_found = null
@@ -182,7 +187,6 @@ func build() -> bool:
 			break
 	
 	if pattern_found != null:
-		print("pattern found: ", pattern_found)
 		
 		var root = get_tree().get_root().get_node("Game")
 		
@@ -193,7 +197,7 @@ func build() -> bool:
 				catchable_object.set_object(gun)
 				root.find_node("Objects").add_child(catchable_object)
 				catchable_object.global_transform.origin = self.global_transform.origin
-				emit_signal("on_build", catchable_object)
+				emit_signal("on_build", pattern_found, catchable_object)
 			"pill":
 				
 				if pattern_found == "pill" and _max_pill_reached():
@@ -204,7 +208,7 @@ func build() -> bool:
 				pill.color = color
 				root.find_node("Characters").add_child(pill)
 				pill.global_transform.origin = self.global_transform.origin
-				emit_signal("on_build", pill)
+				emit_signal("on_build", pattern_found, pill)
 		
 		_delete_pattern(current_pattern)
 		return true
