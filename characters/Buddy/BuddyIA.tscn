@@ -30,6 +30,7 @@ editor/display_folded = true
 visible = false
 
 [node name="GoapPlanner" type="Node" parent="." index="10"]
+editor/display_folded = true
 script = ExtResource( 3 )
 world_state = {
 "builder_full": false,
@@ -132,5 +133,5 @@ effects = {
 "attack": true
 }
 
-[node name="AnimationTree" parent="." index="12"]
+[node name="AnimationTree" parent="." index="14"]
 parameters/Move/playback = SubResource( 1 )

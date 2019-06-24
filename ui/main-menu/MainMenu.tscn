@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ui/main-menu/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://ui/main-menu/KillPill_630x445.jpg" type="Texture" id=2]
-[ext_resource path="res://ui/options/Options.tscn" type="PackedScene" id=3]
-[ext_resource path="res://music/main_theme.ogg" type="AudioStream" id=4]
+[ext_resource path="res://fonts/WendyOne-Regular.tres" type="DynamicFont" id=3]
+[ext_resource path="res://ui/options/Options.tscn" type="PackedScene" id=4]
+[ext_resource path="res://music/main_theme.ogg" type="AudioStream" id=5]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -45,11 +46,20 @@ size_flags_vertical = 3
 custom_constants/separation = 30
 alignment = 2
 
-[node name="PlayButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/Options"]
+[node name="TutorialButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/Options"]
+margin_top = 330.0
+margin_right = 368.0
+margin_bottom = 360.0
+rect_min_size = Vector2( 0, 30 )
+custom_fonts/font = ExtResource( 3 )
+text = "Tutorial"
+
+[node name="PlayButton2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/Options"]
 margin_top = 390.0
 margin_right = 368.0
 margin_bottom = 420.0
 rect_min_size = Vector2( 0, 30 )
+custom_fonts/font = ExtResource( 3 )
 text = "Play"
 
 [node name="OptionsButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/Options"]
@@ -57,6 +67,7 @@ margin_top = 450.0
 margin_right = 368.0
 margin_bottom = 480.0
 rect_min_size = Vector2( 0, 30 )
+custom_fonts/font = ExtResource( 3 )
 text = "Options"
 
 [node name="QuitButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/Options"]
@@ -64,6 +75,7 @@ margin_top = 510.0
 margin_right = 368.0
 margin_bottom = 540.0
 rect_min_size = Vector2( 0, 30 )
+custom_fonts/font = ExtResource( 3 )
 text = "Quit"
 
 [node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
@@ -72,7 +84,7 @@ margin_right = 740.0
 margin_bottom = 540.0
 size_flags_horizontal = 3
 
-[node name="Options" parent="." instance=ExtResource( 3 )]
+[node name="Options" parent="." instance=ExtResource( 4 )]
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
@@ -85,11 +97,12 @@ margin_bottom = 318.5
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 4 )
+stream = ExtResource( 5 )
 volume_db = -10.0
 autoplay = true
 bus = "Music"
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/PlayButton" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/TutorialButton" to="." method="_on_TutorialButton_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/PlayButton2" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="on_close" from="Options" to="." method="_on_Options_on_close"]

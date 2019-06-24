@@ -7,7 +7,6 @@
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
 [node name="Player" instance=ExtResource( 1 )]
-editor/display_folded = true
 script = ExtResource( 2 )
 
 [node name="Body" parent="." index="1"]
@@ -21,5 +20,5 @@ editor/display_folded = false
 
 [node name="Target" parent="." index="9" instance=ExtResource( 3 )]
 
-[node name="AnimationTree" parent="." index="11"]
+[node name="AnimationTree" parent="." index="13"]
 parameters/Move/playback = SubResource( 1 )
