@@ -10,7 +10,7 @@ func emit():
 	
 	var boxes = get_tree().get_nodes_in_group("box")
 	
-	if boxes.size() > max_box:
+	if boxes.size() >= max_box:
 		return
 	
 	var box = Box.instance()

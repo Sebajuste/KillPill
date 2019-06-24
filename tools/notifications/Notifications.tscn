@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://tools/notifications/Notifications.gd" type="Script" id=1]
-[ext_resource path="res://tools/notifications/Notification.tscn" type="PackedScene" id=2]
 
 [node name="Notifications" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -19,25 +18,3 @@ margin_bottom = -20.0
 margin_right = 280.0
 margin_bottom = 560.0
 custom_constants/separation = 10
-
-[node name="Notification" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-title = "My Message"
-message = "Super information !"
-auto_hide = false
-
-[node name="Notification2" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_top = 210.0
-margin_bottom = 410.0
-
-[node name="Label" parent="MarginContainer/VBoxContainer/Notification2/MarginContainer/VBoxContainer" index="0"]
-text = "Take a box"
-
-[node name="RichTextLabel" parent="MarginContainer/VBoxContainer/Notification2/MarginContainer/VBoxContainer" index="1"]
-margin_bottom = 132.0
-text = "Press E to pick up a box"
-
-[node name="CloseButton" parent="MarginContainer/VBoxContainer/Notification2/MarginContainer/VBoxContainer" index="2"]
-margin_left = 184.0
-margin_top = 136.0
-
-[editable path="MarginContainer/VBoxContainer/Notification2"]

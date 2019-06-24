@@ -11,12 +11,14 @@ const GRAVITY := -9.8
 signal on_health_change
 signal on_drop_object
 signal on_take_object
+signal on_hold_object
 signal on_death
 
 export var team : String = "Team_0"
 
 export var move_speed = 5.0
 export var max_health = 100
+export var immortal := false
 
 export var ia = false
 
@@ -91,6 +93,9 @@ func hold_object(object) -> bool:
 			
 			$BodyRightHand/RightHand.visible = false
 			$AnimationTree.set("parameters/HoldObject/blend_amount", 1.0)
+			
+			emit_signal("on_hold_object", object)
+			
 			return true
 	
 	return false
@@ -220,6 +225,9 @@ func heal(value):
 
 func damage(position, normal, bullet):
 	
+	if immortal:
+		return
+	
 	health -= bullet.damage
 	emit_signal("on_health_change", health, max_health)
 	
@@ -256,6 +264,8 @@ func _control(delta) -> Vector3:
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	health = max_health
 	
 	set_color(color)
 	

@@ -8,14 +8,16 @@ func create_notification(title: String, message: String, options = {}) -> String
 	notification.title = title
 	notification.message = message
 	
-	add_child(notification)
-	
+	if options.has("hide_close_button"):
+		notification.hide_close_button = options["hide_close_button"]
 	if options.has("show_time"):
 		notification.show_time = options["show_time"]
 	if options.has("auto_hide"):
 		notification.auto_hide = options["auto_hide"]
 	
 	notification.connect("on_close", self, "_on_close_notification")
+	
+	$MarginContainer/VBoxContainer.add_child(notification)
 	
 	return notification.get_name()
 
@@ -27,6 +29,13 @@ func remove_notification(name: String) -> bool:
 		notification.queue_free()
 		return true
 	return false
+
+func clear():
+	
+	for notification in $MarginContainer/VBoxContainer.get_children():
+		print("clear not")
+		notification.queue_free()
+	
 
 func _on_close_notification(notification):
 	
