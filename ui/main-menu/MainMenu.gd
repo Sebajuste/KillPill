@@ -11,6 +11,10 @@ func _ready():
 	
 	VisualServer.set_default_clear_color(Color(0.0,0.0,0.0,1.0))
 	
+	var screen_size = OS.get_screen_size()
+	var window_size = OS.get_window_size()
+	OS.set_window_position(screen_size*0.5 - window_size*0.5)
+	
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
