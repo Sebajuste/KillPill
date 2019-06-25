@@ -10,17 +10,17 @@ enum {LOAD_ERROR_COULDNT_OPEN, LOAD_SUCCESS}
 var Settings = {
 	"Display": 
 	{
-		"HEIGHT" : 900,
 		"WIDTH" :1600,
+		"HEIGHT" : 900,
 		"FullScreen":false,
 		"Vsync":true,
 		"Antialiasing":true
 	},
 	"Audio":
 	{
-		"MASTER":100,
-		"MUSIC": 100,
-		"SOUND_EFFECTS":100,
+		"MASTER": 0,
+		"MUSIC": 0,
+		"SOUND_EFFECTS": 0,
 		"MUTE" : false
 	}
 }
