@@ -231,6 +231,8 @@ func damage(position, normal, bullet):
 	health -= bullet.damage
 	emit_signal("on_health_change", health, max_health)
 	
+	$AnimationTree.set("parameters/Hit/active", true)
+	
 	if health < 0:
 		dead = true
 		
