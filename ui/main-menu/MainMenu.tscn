@@ -7,6 +7,7 @@
 [ext_resource path="res://music/main_theme.ogg" type="AudioStream" id=5]
 
 [node name="MainMenu" type="Control"]
+pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
