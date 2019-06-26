@@ -1,3 +1,4 @@
 **/*.import
 **/*/.TMP
+*.import
 Settings.cfg
