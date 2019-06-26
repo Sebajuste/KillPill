@@ -39,3 +39,9 @@ func _on_Player_on_death():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
 	pass # Replace with function body.
+
+
+func _on_InGameMenu_on_close():
+	
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	

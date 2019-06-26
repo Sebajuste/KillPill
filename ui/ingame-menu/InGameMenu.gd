@@ -9,6 +9,8 @@ func set_visible(value):
 	visible = value
 	get_tree().paused = visible
 	
+	$MarginContainer.visible = visible
+	
 	if visible:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
@@ -22,7 +24,9 @@ func toggle():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	
+	set_visible( visible )
+	
 
 func _on_ResumeButton_pressed():
 	
@@ -39,6 +43,7 @@ func _on_OptionsButton_pressed():
 
 func _on_ReturnMenuButton_pressed():
 	
+	get_tree().paused = false
 	get_tree().change_scene("res://ui/main-menu/MainMenu.tscn")
 	
 

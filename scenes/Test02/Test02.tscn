@@ -464,16 +464,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35.2793, 0, -36.3691 )
 team = "Team_2"
 
 [node name="WallW" parent="Environment" instance=ExtResource( 10 )]
-transform = Transform( -2.3167e-06, 0, 6.487, 0, 1, 0, -53, 0, -2.83556e-07, -51.9618, 1, 5.00188e-07 )
+transform = Transform( -2.3167e-006, 0, 6.487, 0, 1, 0, -53, 0, -2.83556e-007, -51.9618, 1, 5.00188e-007 )
 
 [node name="WallE" parent="Environment" instance=ExtResource( 10 )]
-transform = Transform( -2.3167e-06, 0, 6.487, 0, 1, 0, -53, 0, -2.83556e-07, 51.8784, 1, -5.19219e-07 )
+transform = Transform( -2.3167e-006, 0, 6.487, 0, 1, 0, -53, 0, -2.83556e-007, 51.8784, 1, -5.19219e-007 )
 
 [node name="WallN" parent="Environment" instance=ExtResource( 10 )]
-transform = Transform( -53, 0, -9.7951e-07, 0, 1, 0, 8.00278e-06, 0, -6.487, -1.0127e-06, 1, -51.584 )
+transform = Transform( -53, 0, -9.7951e-007, 0, 1, 0, 8.00278e-006, 0, -6.487, -1.0127e-006, 1, -51.584 )
 
 [node name="WallS" parent="Environment" instance=ExtResource( 10 )]
-transform = Transform( -53, 0, -9.7951e-07, 0, 1, 0, 8.00278e-06, 0, -6.487, 1.02729e-06, 1, 51.7509 )
+transform = Transform( -53, 0, -9.7951e-007, 0, 1, 0, 8.00278e-006, 0, -6.487, 1.02729e-006, 1, 51.7509 )
 
 [node name="Characters" type="Node" parent="."]
 editor/display_folded = true
@@ -521,6 +521,7 @@ visible = false
 [node name="InGameMenu" parent="." instance=ExtResource( 16 )]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
 stream = ExtResource( 17 )
 volume_db = -10.0
 autoplay = true
@@ -528,3 +529,4 @@ autoplay = true
 [connection signal="on_drop_object" from="Characters/Player" to="PlayerUI" method="_on_Player_on_drop_object"]
 [connection signal="on_health_change" from="Characters/Player" to="PlayerUI" method="_on_Player_on_health_change"]
 [connection signal="on_take_object" from="Characters/Player" to="PlayerUI" method="_on_Player_on_take_object"]
+[connection signal="on_close" from="InGameMenu" to="." method="_on_InGameMenu_on_close"]
