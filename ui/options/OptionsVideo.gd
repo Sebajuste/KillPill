@@ -47,7 +47,7 @@ func apply():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	resolution_select.add_item("640x480")
+	#resolution_select.add_item("640x480")
 	resolution_select.add_item("800x600")
 	resolution_select.add_item("1280x720")
 	resolution_select.add_item("1600x900")

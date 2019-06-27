@@ -170,6 +170,11 @@ menu={
 3d_physics/layer_5="catch-area"
 3d_physics/layer_6="constructor"
 
+[locale]
+
+locale_filter=[ 0, [ "en", "fr" ] ]
+translations=PoolStringArray( "res://i18n/button.en.translation", "res://i18n/button.fr.translation", "res://i18n/label.en.translation", "res://i18n/label.fr.translation", "res://i18n/title.en.translation", "res://i18n/title.fr.translation", "res://i18n/tutorial.en.translation", "res://i18n/tutorial.fr.translation" )
+
 [rendering]
 
 quality/filters/use_nearest_mipmap_filter=true

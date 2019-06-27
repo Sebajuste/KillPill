@@ -2,15 +2,15 @@ extends Node
 
 
 const STEPS = [
-	{"title": "Déplacement", "message": "Allez au marqueur vert au délà du pont. Utilisez les touches Z Q S D et la souris, ou le joystick gauche de la manette Xbox"},
-	{"title": "Construction", "message": "Pour construire, il faut empiler des caisses. Approchez vous d'une caisse et appuyer sur la touche E, ou le bouton Xbox A"},
-	{"title": "Construction", "message": "Placez maintenant la caisse sur la zone de construction. Placer la caisse au dessus puis appuyez sur la touche E, ou le bouton Xbox A"},
-	{"title": "S'armer", "message": "Avec une caisse de posée, vous pouvez créer une arme ! Approchez vous de la zone de construction et appuyer toujours sur la touche E, ou le bouton Xbox A..."},
-	{"title": "S'armer", "message": "Prenez l'arme ! Encore une fois... touche E, ou bouton Xbox A..."},
-	{"title": "Combattre", "message": "Utilisons cette nouvelle arme sur l'ennemi qui vient d'apparaitre ! Appuyez sur le bouton de la souris gauche, ou la gachette Xbox droite"},
-	{"title": "Combattre", "message": "Le deuxième ennemi semble hors de portée... Utilisez les rebonds à bon escient pour l'atteindre"},
-	{"title": "S'accompagner", "message": "Se battre avec des coéquipier, c'est mieux ! Pour créer un bot de votre équipe, construisez en alignant deux caisses cote à coté sur la plateforme de construction"},
-	{"title": "S'accompagner", "message": "Suivez votre nouvel ami, et allez EXPLOSER l'équipe adverse !"},
+	{"title": "tuto_step_move", "message": "tuto_step1_message"},
+	{"title": "tuto_step_build", "message": "tuto_step2_message"},
+	{"title": "tuto_step_build", "message": "tuto_step3_message"},
+	{"title": "tuto_step_armed", "message": "tuto_step4_message"},
+	{"title": "tuto_step_armed", "message": "tuto_step5_message"},
+	{"title": "tuto_step_fight", "message": "tuto_step6_message"},
+	{"title": "tuto_step_fight", "message": "tuto_step7_message"},
+	{"title": "tuto_step_brotherhood", "message": "tuto_step8_message"},
+	{"title": "tuto_step_brotherhood", "message": "tuto_step9_message"},
 ]
 
 var next_step_index = 0
@@ -22,7 +22,7 @@ func show_next_step(clear_previous := true):
 	
 	if clear_previous:
 		$Notifications.clear()
-	$Notifications.create_notification(step.title, step.message, {"hide_close_button": true})
+	$Notifications.create_notification(tr(step.title), tr(step.message), {"hide_close_button": true})
 	
 	if next_step_index < STEPS.size():
 		next_step_index += 1
@@ -52,8 +52,11 @@ func _ready():
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	
+	if Input.is_action_just_pressed("menu"):
+		$InGameMenu.toggle()
+	
 
 """
 First Step
@@ -76,7 +79,7 @@ func _on_Player_on_hold_object(object):
 		disable_lights()
 		$Environment/Lights/SpotStep3.visible = true
 		show_next_step()
-		$Notifications.create_notification("Astuce", "Vous pouvez à tout moment lacher la caisse en appuyant sur la touche A, ou le bouton Xbox Y")
+		$Notifications.create_notification(tr("tuto_tips"), tr("tuto_tips_drop"))
 
 """
 Third Step
@@ -105,7 +108,7 @@ func _on_Constructor_on_build(name, object):
 			if _first_gun:
 				_first_gun = false
 				show_next_step()
-				$Notifications.create_notification("Astuce", "Si vous n'avez plus de munition, détruisez une caisse ! Approchez vous, et donner un coup de poing avec le bouton droit de la souris")
+				$Notifications.create_notification(tr("tuto_tips"), tr("tuto_tips_ammo"))
 				$Characters/BuddyIA.visible = true
 		"pill":
 			if _first_pill:
@@ -147,7 +150,7 @@ Step
 func _on_BuddyTarget_on_death():
 	
 	show_next_step()
-	$Notifications.create_notification("Astuce", "Si vous n'avez plus de munition, détruisez une caisse ! Approchez vous, et donner un coup de poing avec le bouton droit de la souris")
+	$Notifications.create_notification(tr("tuto_tips"), tr("tuto_tips_ammo") )
 	
 	disable_lights()
 	$Environment/Lights/SpotStep5.visible = true
@@ -188,3 +191,9 @@ func _on_FightTrigger_area_entered(area):
 			pass
 	
 	pass # Replace with function body.
+
+
+func _on_InGameMenu_on_close():
+	
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	

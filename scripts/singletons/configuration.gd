@@ -22,6 +22,10 @@ var Settings = {
 		"MUSIC": 0,
 		"SOUND_EFFECTS": 0,
 		"MUTE" : false
+	},
+	"Game":
+	{
+		"Language": ""
 	}
 }
 
@@ -70,6 +74,8 @@ func apply_settings():
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("Music"), true)
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundEffects"), true)
 	
+	TranslationServer.set_locale( Settings.Game.Language )
+	
 
 func load_settings():
 	# Check for error if true exist the function else parse the file and load the config settings into Settings
@@ -90,6 +96,8 @@ func _ready():
 	print("Master: ", AudioServer.get_bus_index("Master") )
 	print("Music: ", AudioServer.get_bus_index("Music") )
 	print("SoundEffects: ", AudioServer.get_bus_index("SoundEffects") )
+	
+	Settings.Game.Language = TranslationServer.get_locale()
 	
 	#Check if settings.ini exist if not create a new one with the default Settings
 	if load_settings() == LOAD_ERROR_COULDNT_OPEN :
