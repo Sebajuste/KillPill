@@ -50,7 +50,7 @@ rect_min_size = Vector2( 200, 0 )
 margin_right = 200.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
-text = "Options"
+text = "title_options"
 align = 1
 valign = 1
 
@@ -63,13 +63,13 @@ margin_bottom = 38.0
 margin_top = 42.0
 margin_right = 200.0
 margin_bottom = 62.0
-text = "Video"
+text = "title_video"
 
 [node name="AudioOptions" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 66.0
 margin_right = 200.0
 margin_bottom = 86.0
-text = "Audio"
+text = "title_sound"
 
 [node name="VSeparator" type="VSeparator" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 204.0
@@ -98,36 +98,36 @@ margin_bottom = 545.0
 rect_min_size = Vector2( 0, 30 )
 
 [node name="ReturnButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 54.0
+margin_right = 68.0
 margin_bottom = 30.0
-text = "Return"
+text = "btn_back"
 
 [node name="CancelButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 58.0
-margin_right = 112.0
+margin_left = 72.0
+margin_right = 152.0
 margin_bottom = 30.0
-text = "Cancel"
+text = "btn_cancel"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 116.0
+margin_left = 156.0
 margin_right = 799.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 alignment = 2
 
 [node name="ApplyButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
-margin_left = 479.0
-margin_right = 579.0
+margin_left = 431.0
+margin_right = 531.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 100, 0 )
-text = "Apply"
+text = "btn_apply"
 
 [node name="ApplySaveButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
-margin_left = 583.0
-margin_right = 683.0
+margin_left = 535.0
+margin_right = 643.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 100, 0 )
-text = "Apply & Save"
+text = "btn_save_apply"
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VideoOptions" to="." method="_on_VideoOptions_pressed"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOptions" to="." method="_on_AudioOptions_pressed"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer2/ReturnButton" to="." method="_on_ReturnButton_pressed"]
