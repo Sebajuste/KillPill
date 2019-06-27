@@ -1,3 +1,18 @@
 ,en,fr
-tuto_step1_title,Move,Déplacement
+tuto_step_move,Move,Déplacement
+tuto_step_build,Build,Construction
+tuto_step_armed,Armed,S'armer
+tuto_step_fight,Fight,Combattre
+tutp_step_brotherhood,Brotherhood,S'accompagner
+tuto_tips,Tips,Astuce
 tuto_step1_message,"Go to the arrow, across the bridge using ZQSD keys, or left joy of Xbox controller","Allez au marqueur vert au délà du pont. Utilisez les touches Z Q S D et la souris, ou le joystick gauche de la manette Xbox"
+tuto_step2_message,"To build, stack boxes. Approach a box and press E (or Xbox A) to hold one.","Pour construire, il faut empiler des caisses. Approchez vous d'une caisse et appuyer sur la touche E, ou le bouton Xbox A"
+tuto_step3_message,Then bring the box on the constructor area. Put the box on the top of the aera then press E key (or A Xbox controller),"Placez maintenant la caisse sur la zone de construction. Placer la caisse au dessus puis appuyez sur la touche E, ou le bouton Xbox A"
+tuto_step4_message,"With one box, you can build a gun. Go nearest the constructor, then press E key again (or A Xbox controller).","Avec une caisse de posée, vous pouvez créer une arme ! Approchez vous de la zone de construction et appuyer toujours sur la touche E, ou le bouton Xbox A..."
+tuto_step5_message,"Take the gun ! Again, E key or A Xbox controller…","Prenez l'arme ! Encore une fois... touche E, ou bouton Xbox A..."
+tuto_step6_message,"Now, using the gun against the ennemy. Use the mouse (or right Xbox joy) to target the ennemy, the press left mouse button, or right Xbox trigger.","Utilisons cette nouvelle arme sur l'ennemi qui vient d'apparaitre ! Visez avec la souris ou le joystick droit, puis appuyez sur le bouton de la souris gauche, ou la gachette Xbox droite"
+tuto_step7_message,The next ennemy is not directly reachable… Use bounds to hit it.,Le deuxième ennemi semble hors de portée... Utilisez les rebonds à bon escient pour l'atteindre
+tuto_step8_message,"Fight with a team is better ! To build a team member, put 2 aligned boxes on the constructor area.","Se battre avec des coéquipier, c'est mieux ! Pour créer un bot de votre équipe, construisez en alignant deux caisses cote à coté sur la plateforme de construction"
+tuto_step9_message,"Follow your new friend, and go blowing the ennemy team !","Suivez votre nouvel ami, et allez EXPLOSER l'équipe adverse !"
+tuto_tips_drop,You can drop anytime a box. Press A key or Y Xbox controller.,"Vous pouvez à tout moment lacher la caisse en appuyant sur la touche A, ou le bouton Xbox Y"
+tuto_tips_ammo,"If you are ammo low, destroy a box ! Near one, press right mouse button (or reft Xbox trigger).","Si vous n'avez plus de munition, détruisez une caisse ! Approchez vous, et donner un coup de poing avec le bouton droit de la souris"
