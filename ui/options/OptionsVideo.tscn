@@ -38,7 +38,6 @@ margin_left = 106.0
 margin_right = 394.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
-align = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 margin_top = 75.0

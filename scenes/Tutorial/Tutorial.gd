@@ -52,8 +52,11 @@ func _ready():
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	
+	if Input.is_action_just_pressed("menu"):
+		$InGameMenu.toggle()
+	
 
 """
 First Step
@@ -188,3 +191,9 @@ func _on_FightTrigger_area_entered(area):
 			pass
 	
 	pass # Replace with function body.
+
+
+func _on_InGameMenu_on_close():
+	
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	

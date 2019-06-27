@@ -45,6 +45,12 @@ func _on_AudioOptions_pressed():
 	$Panel/MarginContainer/VBoxContainer/HBoxContainer/OptionsContainer/OptionsAudio.reload()
 	
 
+func _on_GameOptions_pressed():
+	
+	_hide_all()
+	$Panel/MarginContainer/VBoxContainer/HBoxContainer/OptionsContainer/OptionsGame.visible = true
+	$Panel/MarginContainer/VBoxContainer/HBoxContainer/OptionsContainer/OptionsGame.reload()
+	
 
 
 
@@ -79,3 +85,5 @@ func _on_ReturnButton_pressed():
 	
 	emit_signal("on_close")
 	
+
+
