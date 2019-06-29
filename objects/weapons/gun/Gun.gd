@@ -5,12 +5,13 @@ var Bullet = preload("res://objects/bullets/Bullet.tscn")
 
 signal on_ammo_change
 
-export var damage = 5
-export var rate_of_fire = 60
+export var damage := 5
+export var rate_of_fire := 60.0
 
-export var max_ammo = 100
-export var ammo = 50
+export var max_ammo := 100
+export var ammo := 50
 
+export var bullet_speed := 20
 
 var owned = false
 
@@ -34,6 +35,7 @@ func shoot() -> bool:
 	
 	var bullet = Bullet.instance()
 	bullet.damage = self.damage
+	bullet.speed = self.bullet_speed
 	
 	var rotTransform = bullet.global_transform.looking_at(direction, Vector3.UP)
 	var thisRotation = Quat(global_transform.basis).slerp(rotTransform.basis, 1)

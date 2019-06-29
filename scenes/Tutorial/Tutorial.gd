@@ -140,8 +140,11 @@ func _on_Player_on_take_object(object):
 	if _first_weapon_take:
 		_first_weapon_take = false
 		show_next_step()
+		$Notifications.create_notification(tr("tuto_tips"), tr("tuto_tips_aiming") )
 		disable_lights()
 		$Environment/Lights/SpotStep4.visible = true
+	
+	$PlayerUI._on_Player_on_take_object(object)
 	
 
 """
@@ -155,6 +158,8 @@ func _on_BuddyTarget_on_death():
 	disable_lights()
 	$Environment/Lights/SpotStep5.visible = true
 	$Environment/Lights/SpotStep5Bis.visible = true
+	
+	$Characters/BuddyBounce.visible = true
 	
 
 """
@@ -178,6 +183,7 @@ func _on_BuddyIA_on_death():
 	
 	if target_destroyed >= 2:
 		$GameOver.visible = true
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
 
 
@@ -190,7 +196,6 @@ func _on_FightTrigger_area_entered(area):
 			character.cancel_move()
 			pass
 	
-	pass # Replace with function body.
 
 
 func _on_InGameMenu_on_close():
