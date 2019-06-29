@@ -52,7 +52,7 @@ margin_right = 368.0
 margin_bottom = 360.0
 rect_min_size = Vector2( 0, 30 )
 custom_fonts/font = ExtResource( 3 )
-text = "Tutorial"
+text = "btn_tuto"
 
 [node name="PlayButton2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/Options"]
 margin_top = 390.0
@@ -60,7 +60,7 @@ margin_right = 368.0
 margin_bottom = 420.0
 rect_min_size = Vector2( 0, 30 )
 custom_fonts/font = ExtResource( 3 )
-text = "Play"
+text = "btn_play"
 
 [node name="OptionsButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/Options"]
 margin_top = 450.0
@@ -68,7 +68,7 @@ margin_right = 368.0
 margin_bottom = 480.0
 rect_min_size = Vector2( 0, 30 )
 custom_fonts/font = ExtResource( 3 )
-text = "Options"
+text = "btn_options"
 
 [node name="QuitButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/Options"]
 margin_top = 510.0
@@ -76,7 +76,7 @@ margin_right = 368.0
 margin_bottom = 540.0
 rect_min_size = Vector2( 0, 30 )
 custom_fonts/font = ExtResource( 3 )
-text = "Quit"
+text = "btn_quit"
 
 [node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 372.0

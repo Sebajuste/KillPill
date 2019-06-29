@@ -1,5 +1,7 @@
 extends KinematicBody
 
+class_name Pill
+
 var PillExplosion = preload("res://effects/explosions/PillExplosion.tscn")
 
 var CatchableObject = preload("res://tools/CatchableObject.tscn")
@@ -33,6 +35,8 @@ var velocity = Vector3()
 var look_dir = Vector3()
 
 var ennemies := []
+
+var target_pos = null
 
 func has_object() -> bool:
 	return $BodyRightHand/RightHand.get_child_count() > 0
@@ -134,6 +138,9 @@ func shoot() -> bool:
 	if not is_holding():
 		var right_hand = $BodyRightHand/RightHand
 		if right_hand.get_child_count() > 0:
+			
+			_aiming_target()
+			
 			var weapon = right_hand.get_child(0)
 			return weapon.shoot()
 	else:
@@ -231,6 +238,8 @@ func damage(position, normal, bullet):
 	health -= bullet.damage
 	emit_signal("on_health_change", health, max_health)
 	
+	$AnimationTree.set("parameters/Hit/active", true)
+	
 	if health < 0:
 		dead = true
 		
@@ -262,6 +271,47 @@ func set_color(value):
 func _control(delta) -> Vector3:
 	return Vector3()
 
+func _aiming_target():
+	var right_hand = $BodyRightHand/RightHand
+	
+	if not is_holding() and right_hand.get_child_count() > 0 and target_pos != null:
+		
+		var target_transform = Transform(Basis(), target_pos)
+		target_transform.origin.y = right_hand.global_transform.origin.y
+		
+		right_hand.global_transform.basis = target_transform.looking_at($BodyRightHand.global_transform.origin, Vector3.UP).basis
+	elif target_pos == null:
+		right_hand.transform.basis = Basis()
+
+func _next_target_pos(target: Pill, t=1.0):
+	return target.global_transform.origin + (target.velocity * 2.0) * t 
+
+func _next_shoot_rayon(t):
+	var gun = $BodyRightHand/RightHand.get_child(0)
+	return gun.bullet_speed * t
+
+func _next_shoot_pos(target: Pill):
+	
+	var min_delta = null
+	var shoot_pos = null
+	
+	for i in range(20):
+		var t: float = i * 0.2
+		
+		var next_target_pos = _next_target_pos(target, t)
+		var length = (global_transform.origin - next_target_pos).length()
+		var shoot_length = _next_shoot_rayon(t)
+		var delta = abs(length - shoot_length)
+		
+		#print("[t=%f, length=%f, shoot_length=%f, delta=%f] " % [t, length, shoot_length, abs(length - shoot_length)])
+		
+		if min_delta == null or delta < min_delta:
+			min_delta = delta
+			shoot_pos = next_target_pos
+	
+	#print("shoot_pos: ", shoot_pos, ", target: ", target.global_transform.origin)
+	return shoot_pos
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -272,9 +322,21 @@ func _ready():
 	emit_signal("on_health_change", health, max_health)
 	
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
+	
+	#
+	# Gun direction update to target_pos
+	#
+	
+	_aiming_target()
+	
+	
+	#
+	# Move
+	#
 	var dir = Vector3()
 	if not dead:
 		dir = _control(delta)

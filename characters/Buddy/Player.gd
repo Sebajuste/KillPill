@@ -4,6 +4,9 @@ var _last_mouse_pos
 
 var use_mouse = true
 
+var look_target_pos = null
+var target_ref = null
+
 func _mouse_look(mouse_pos) -> Vector3:
 	
 	# Get the 3D cursor position
@@ -14,8 +17,7 @@ func _mouse_look(mouse_pos) -> Vector3:
 	
 	get_tree()
 	
-	#var camera = $Camera
-	var camera = get_tree().get_root().get_node("Game/Environment/Camera")
+	var camera = get_tree().get_root().get_camera()
 	
 	var from = camera.project_ray_origin(mouse_pos)
 	var to = from + camera.project_ray_normal(mouse_pos) * ray_length
@@ -26,14 +28,14 @@ func _mouse_look(mouse_pos) -> Vector3:
 	var dir = Vector3()
 	
 	if result:
+		
 		dir = (result.position - global_transform.origin)
 		dir.y = 0
 		dir = dir.normalized()
 		
 		$Target.global_transform.origin = result.position
-	
-	
-	
+		
+		target_pos = result.position
 	
 	return dir
 
@@ -94,6 +96,7 @@ func _control(delta):
 		$Target.visible = true
 		look_dir = _mouse_look( get_viewport().get_mouse_position() )
 	
+	
 	var temp_dir = look_dir
 	
 	#if Input.get_action_strength("look_up"):
@@ -108,9 +111,56 @@ func _control(delta):
 	#if Input.get_action_strength("look_left"):
 	look_dir += Vector3.LEFT * Input.get_action_strength("look_left")
 	
+	
+	if Input.is_action_just_released("lock_target"):
+		$Target.visible = false
+		target_ref = null
+	
 	if temp_dir != look_dir:
 		use_mouse = false
+		
 		$Target.visible = false
+		
+		var near_dot = null
+		
+		
+		if not Input.is_action_pressed("lock_target"):
+			
+			look_target_pos = null
+			target_ref = null
+			
+			for ennemy in ennemies:
+				
+				var ennemy_dir = (ennemy.global_transform.origin - global_transform.origin).normalized()
+				
+				var r = ennemy_dir.dot(look_dir.normalized())
+				
+				if r > 0.98:
+					if near_dot == null or r > near_dot:
+						near_dot = r
+						look_target_pos = ennemy.global_transform.origin
+						target_ref = weakref(ennemy)
+	
+	if target_ref != null and target_ref.get_ref() != null:
+		
+		var target = target_ref.get_ref()
+		
+		look_target_pos = target.global_transform.origin
+		
+		$Target.visible = true
+		$Target.global_transform.origin = look_target_pos
+		
+		if Input.is_action_pressed("lock_target"):
+			look_dir = (target.global_transform.origin - global_transform.origin).normalized()
+		
+		if has_object():
+			target_pos = _next_shoot_pos(target)
+		else:
+			target_pos = null
+		
+	elif not use_mouse:
+		$Target.visible = false
+		target_pos = null
 	
 	look_dir = look_dir.normalized()
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scenes/Tutorial/Tutorial.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Environment.tres" type="Environment" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://ui/PlayerUI.tscn" type="PackedScene" id=13]
 [ext_resource path="res://tools/notifications/Notifications.tscn" type="PackedScene" id=14]
 [ext_resource path="res://ui/game-over/GameOver.tscn" type="PackedScene" id=15]
+[ext_resource path="res://ui/ingame-menu/InGameMenu.tscn" type="PackedScene" id=16]
 
 [sub_resource type="GIProbeData" id=1]
 bounds = AABB( -43.0586, -10, -42.1016, 86.1173, 20, 84.2031 )
@@ -64,14 +65,12 @@ interior = true
 data = SubResource( 1 )
 
 [node name="Navigation" type="Navigation" parent="Environment"]
-editor/display_folded = true
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Environment/Navigation"]
 editor/display_folded = true
 navmesh = SubResource( 2 )
 
 [node name="Invisible Wall" type="Spatial" parent="Environment/Navigation/NavigationMeshInstance"]
-editor/display_folded = true
 
 [node name="StaticBody" type="StaticBody" parent="Environment/Navigation/NavigationMeshInstance/Invisible Wall"]
 editor/display_folded = true
@@ -80,9 +79,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.4609, -0.476397, -15.0635 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Navigation/NavigationMeshInstance/Invisible Wall/StaticBody"]
 shape = SubResource( 3 )
 
+[node name="StaticBody15" type="StaticBody" parent="Environment/Navigation/NavigationMeshInstance/Invisible Wall"]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.4609, -0.476397, -15.0635 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Environment/Navigation/NavigationMeshInstance/Invisible Wall/StaticBody15"]
+shape = SubResource( 3 )
+
 [node name="StaticBody2" type="StaticBody" parent="Environment/Navigation/NavigationMeshInstance/Invisible Wall"]
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.98014, 0.908269, 7.51667 )
+transform = Transform( 78.9362, 0, 0, 0, 1, 0, 0, 0, -8.80253, 18.8057, -1.33795, -36.0422 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Navigation/NavigationMeshInstance/Invisible Wall/StaticBody2"]
 shape = SubResource( 4 )
@@ -373,6 +379,7 @@ color = "Red"
 
 [node name="BuddyBounce" parent="Characters" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20.2184, 0.973, -20.6778 )
+visible = false
 team = "Team_1"
 max_health = 10
 color = "Red"
@@ -404,11 +411,13 @@ editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.8785, 1.98937, -47.4532 )
 
 [node name="Helper" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="MarkArray" parent="Helper" instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0835315, -8.1624 )
 
 [node name="Triggers" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="FightTrigger" type="Area" parent="Triggers"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24.4393, 0, -32.595 )
@@ -425,8 +434,11 @@ shape = SubResource( 8 )
 
 [node name="GameOver" parent="." instance=ExtResource( 15 )]
 visible = false
+
+[node name="InGameMenu" parent="." instance=ExtResource( 16 )]
 [connection signal="on_add_box" from="Environment/Constructor" to="." method="_on_Constructor_on_add_box"]
 [connection signal="on_build" from="Environment/Constructor" to="." method="_on_Constructor_on_build"]
+[connection signal="on_health_change" from="Characters/Player" to="PlayerUI" method="_on_Player_on_health_change"]
 [connection signal="on_hold_object" from="Characters/Player" to="." method="_on_Player_on_hold_object"]
 [connection signal="on_take_object" from="Characters/Player" to="." method="_on_Player_on_take_object"]
 [connection signal="on_death" from="Characters/BuddyIA" to="." method="_on_BuddyTarget_on_death"]
@@ -435,5 +447,6 @@ visible = false
 [connection signal="on_death" from="Characters/BuddyIA3" to="." method="_on_BuddyIA_on_death"]
 [connection signal="body_entered" from="Helper/MarkArray" to="." method="_on_MarkArray_body_entered"]
 [connection signal="area_entered" from="Triggers/FightTrigger" to="." method="_on_FightTrigger_area_entered"]
+[connection signal="on_close" from="InGameMenu" to="." method="_on_InGameMenu_on_close"]
 
 [editable path="Objects/CatchableObject"]

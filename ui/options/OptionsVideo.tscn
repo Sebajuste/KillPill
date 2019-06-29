@@ -11,7 +11,7 @@ script = ExtResource( 1 )
 margin_right = 394.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
-text = "Video"
+text = "title_video"
 align = 1
 valign = 1
 
@@ -26,15 +26,15 @@ margin_right = 394.0
 margin_bottom = 71.0
 
 [node name="Label" type="Label" parent="HBoxContainer"]
-margin_right = 100.0
+margin_right = 102.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 100, 30 )
-text = "Resolution : "
+text = "label_resolution"
 align = 2
 valign = 1
 
 [node name="ResolutionList" type="OptionButton" parent="HBoxContainer"]
-margin_left = 104.0
+margin_left = 106.0
 margin_right = 394.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
@@ -53,9 +53,9 @@ valign = 1
 
 [node name="Fullscreen" type="CheckBox" parent="HBoxContainer2"]
 margin_left = 104.0
-margin_right = 198.0
+margin_right = 232.0
 margin_bottom = 30.0
-text = "Fullscreen"
+text = "label_fullscreen"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="."]
 margin_top = 109.0
@@ -71,9 +71,9 @@ valign = 1
 
 [node name="Vsync" type="CheckBox" parent="HBoxContainer3"]
 margin_left = 104.0
-margin_right = 173.0
+margin_right = 205.0
 margin_bottom = 30.0
-text = "V Sync"
+text = "label_vsync"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="."]
 margin_top = 143.0
@@ -89,9 +89,9 @@ valign = 1
 
 [node name="Antialiasing" type="CheckBox" parent="HBoxContainer4"]
 margin_left = 104.0
-margin_right = 206.0
+margin_right = 241.0
 margin_bottom = 30.0
-text = "Antialiasing"
+text = "label_antialiasing"
 [connection signal="item_selected" from="HBoxContainer/ResolutionList" to="." method="_on_ResolutionList_item_selected"]
 [connection signal="toggled" from="HBoxContainer2/Fullscreen" to="." method="_on_Fullscreen_toggled"]
 [connection signal="toggled" from="HBoxContainer3/Vsync" to="." method="_on_Vsync_toggled"]

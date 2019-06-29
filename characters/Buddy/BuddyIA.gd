@@ -82,30 +82,6 @@ var _ennemy_target
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	"""
-	var nearest_ennemy = null
-	var nearest_distance := 0.0
-	
-	for ennemy in ennemies:
-		var distance = (ennemy.global_transform.origin - self.global_transform.origin).length()
-		if nearest_ennemy == null or distance < nearest_distance:
-			nearest_distance = distance
-			nearest_ennemy = ennemy
-	
-	if nearest_ennemy != null:
-		
-		if _ennemy_target != nearest_ennemy:
-			print("new target")
-			_ennemy_target = nearest_ennemy
-			$GoapPlanner.goal_state.clear()
-			$GoapPlanner.goal_state["attack"] = true
-		pass
-	else:
-		_ennemy_target = null
-		$GoapPlanner.goal_state.clear()
-		$GoapPlanner.goal_state["build_done"] = true
-	"""
-	
 	match _state:
 		
 		State.IDLE:

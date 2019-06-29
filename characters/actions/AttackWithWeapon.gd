@@ -29,7 +29,10 @@ func execute(actor):
 	
 	if target == null:
 		print("No target !")
+		actor.target_pos = null
 		return false
+	
+	actor.target_pos = target.global_transform.origin
 	
 	var distance = (actor.global_transform.origin - target.global_transform.origin).length()
 	
@@ -42,6 +45,7 @@ func execute(actor):
 	
 	
 	if not target_ref.get_ref():
+		actor.target_pos = null
 		emit_signal("on_action_end", false)
 		return false
 	
@@ -51,9 +55,13 @@ func execute(actor):
 	var rotTransform = target_transform.looking_at(actor.global_transform.origin, Vector3.UP)
 	actor.global_transform = Transform(rotTransform.basis, actor.global_transform.origin)
 	
+	actor.target_pos = actor._next_shoot_pos(target)
+	
 	var result = actor.shoot()
 	emit_signal("on_action_end", result)
 	
 	print("shoot result: ", result)
+	
+	actor.target_pos = null
 	
 	return result

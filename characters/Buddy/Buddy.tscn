@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://characters/Buddy/Buddy.gd" type="Script" id=1]
 [ext_resource path="res://characters/Buddy/BodyBlue.material" type="Material" id=2]
@@ -9,9 +9,10 @@
 [ext_resource path="res://characters/Buddy/catch-cycle.anim" type="Animation" id=7]
 [ext_resource path="res://characters/Buddy/default.anim" type="Animation" id=8]
 [ext_resource path="res://characters/Buddy/gun_aim.anim" type="Animation" id=9]
-[ext_resource path="res://characters/Buddy/idle.anim" type="Animation" id=10]
-[ext_resource path="res://characters/Buddy/punch.anim" type="Animation" id=11]
-[ext_resource path="res://characters/Buddy/walk.anim" type="Animation" id=12]
+[ext_resource path="res://characters/Buddy/hit.anim" type="Animation" id=10]
+[ext_resource path="res://characters/Buddy/idle.anim" type="Animation" id=11]
+[ext_resource path="res://characters/Buddy/punch.anim" type="Animation" id=12]
+[ext_resource path="res://characters/Buddy/walk.anim" type="Animation" id=13]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.486064
@@ -28,53 +29,62 @@ radius = 22.0463
 [sub_resource type="AnimationNodeAnimation" id=5]
 animation = "catch-cycle"
 
-[sub_resource type="AnimationNodeBlend2" id=6]
+[sub_resource type="AnimationNodeOneShot" id=6]
+
+[sub_resource type="AnimationNodeAnimation" id=7]
+animation = "hit"
+
+[sub_resource type="AnimationNodeBlend2" id=8]
 filter_enabled = true
 filters = [ "Body", "BodyLeftHand", "BodyRightHand" ]
 
-[sub_resource type="AnimationNodeAnimation" id=7]
+[sub_resource type="AnimationNodeAnimation" id=9]
 animation = "idle"
 
-[sub_resource type="AnimationNodeAnimation" id=8]
+[sub_resource type="AnimationNodeAnimation" id=10]
 animation = "walk-cycle"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=9]
+[sub_resource type="AnimationNodeStateMachineTransition" id=11]
 xfade_time = 0.5
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=10]
+[sub_resource type="AnimationNodeStateMachineTransition" id=12]
 xfade_time = 0.5
 
-[sub_resource type="AnimationNodeStateMachine" id=11]
-states/idle/node = SubResource( 7 )
+[sub_resource type="AnimationNodeStateMachine" id=13]
+states/idle/node = SubResource( 9 )
 states/idle/position = Vector2( 164, -12 )
-states/walk-cycle/node = SubResource( 8 )
+states/walk-cycle/node = SubResource( 10 )
 states/walk-cycle/position = Vector2( 488, -12 )
-transitions = [ "idle", "walk-cycle", SubResource( 9 ), "walk-cycle", "idle", SubResource( 10 ) ]
+transitions = [ "idle", "walk-cycle", SubResource( 11 ), "walk-cycle", "idle", SubResource( 12 ) ]
 graph_offset = Vector2( -137, -115 )
 
-[sub_resource type="AnimationNodeOneShot" id=12]
+[sub_resource type="AnimationNodeOneShot" id=14]
 filter_enabled = true
 filters = [ "BodyLeftHand" ]
 
-[sub_resource type="AnimationNodeAnimation" id=13]
+[sub_resource type="AnimationNodeAnimation" id=15]
 animation = "punch"
 
-[sub_resource type="AnimationNodeBlendTree" id=14]
-graph_offset = Vector2( 0, 63.5 )
+[sub_resource type="AnimationNodeBlendTree" id=16]
+graph_offset = Vector2( 916.588, 4.75619 )
 nodes/Animation/node = SubResource( 5 )
 nodes/Animation/position = Vector2( 400, 260 )
-nodes/HoldObject/node = SubResource( 6 )
+nodes/Hit/node = SubResource( 6 )
+nodes/Hit/position = Vector2( 1040, 60 )
+nodes/HitAnim/node = SubResource( 7 )
+nodes/HitAnim/position = Vector2( 800, 300 )
+nodes/HoldObject/node = SubResource( 8 )
 nodes/HoldObject/position = Vector2( 720, 60 )
-nodes/Move/node = SubResource( 11 )
+nodes/Move/node = SubResource( 13 )
 nodes/Move/position = Vector2( 0, 0 )
-nodes/Punch/node = SubResource( 12 )
+nodes/Punch/node = SubResource( 14 )
 nodes/Punch/position = Vector2( 360, 60 )
-nodes/PunchAnim/node = SubResource( 13 )
+nodes/PunchAnim/node = SubResource( 15 )
 nodes/PunchAnim/position = Vector2( 40, 260 )
-nodes/output/position = Vector2( 1020, 60 )
-node_connections = [ "output", 0, "HoldObject", "HoldObject", 0, "Punch", "HoldObject", 1, "Animation", "Punch", 0, "Move", "Punch", 1, "PunchAnim" ]
+nodes/output/position = Vector2( 1340, 60 )
+node_connections = [ "output", 0, "Hit", "Hit", 0, "HoldObject", "Hit", 1, "HitAnim", "Punch", 0, "Move", "Punch", 1, "PunchAnim", "HoldObject", 0, "Punch", "HoldObject", 1, "Animation" ]
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=15]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=17]
 
 [node name="Buddy" type="KinematicBody" groups=[
 "character",
@@ -89,6 +99,7 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0,
 shape = SubResource( 1 )
 
 [node name="Body" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00430261, 0 )
 
 [node name="Body" type="MeshInstance" parent="Body"]
 transform = Transform( 0.4, 0, 0, 0, -1.94131e-008, -0.44, 0, 0.44412, -1.9233e-008, 0, 0, 0 )
@@ -97,7 +108,7 @@ material/0 = ExtResource( 2 )
 
 [node name="BodyLeftHand" type="Spatial" parent="."]
 editor/display_folded = true
-transform = Transform( 0.555212, -0.742179, 0.37538, 2.98023e-008, 0.451336, 0.892354, -0.831709, -0.495446, 0.250587, 0.519608, 0.223872, 0.154406 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.518391, -0.0696238, 0 )
 
 [node name="CSGCombiner" type="CSGCombiner" parent="BodyLeftHand"]
 editor/display_folded = true
@@ -117,7 +128,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0450835, 0.0211042, 0.07839
 
 [node name="BodyRightHand" type="Spatial" parent="."]
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.520949, 0, -0.0194278 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.52351, 0, 0 )
 
 [node name="CSGCombiner2" type="CSGCombiner" parent="BodyRightHand"]
 editor/display_folded = true
@@ -194,16 +205,18 @@ autoplay = "idle"
 anims/catch-cycle = ExtResource( 7 )
 anims/default = ExtResource( 8 )
 anims/gun_aim = ExtResource( 9 )
-anims/idle = ExtResource( 10 )
-anims/punch = ExtResource( 11 )
-anims/walk-cycle = ExtResource( 12 )
+anims/hit = ExtResource( 10 )
+anims/idle = ExtResource( 11 )
+anims/punch = ExtResource( 12 )
+anims/walk-cycle = ExtResource( 13 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 14 )
+tree_root = SubResource( 16 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
+parameters/Hit/active = false
 parameters/HoldObject/blend_amount = 0.0
-parameters/Move/playback = SubResource( 15 )
+parameters/Move/playback = SubResource( 17 )
 parameters/Punch/active = false
 [connection signal="body_entered" from="EnnemyDetection" to="." method="_on_EnnemyDetection_body_entered"]
 [connection signal="body_exited" from="EnnemyDetection" to="." method="_on_EnnemyDetection_body_exited"]
