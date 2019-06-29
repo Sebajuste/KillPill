@@ -41,6 +41,7 @@ tracks/1/keys = {
 "weapon",
 ]]
 script = ExtResource( 1 )
+damage = 10
 ammo = 25
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

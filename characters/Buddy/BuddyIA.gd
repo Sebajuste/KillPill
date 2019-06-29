@@ -209,11 +209,11 @@ func _animation(delta):
 			pass
 		elif (typeof(result) == TYPE_BOOL and not result) or not result or not yield(action, "on_action_end"):
 			
-			var plan = ""
-			for a in _action_list:
-				plan += "> " + a.get_name() + " "
-			plan += "> %s" % action.get_name()
-			print("[%s] GOAP cannot reach =" % get_name(), plan )
+			#var plan = ""
+			#for a in _action_list:
+			#	plan += "> " + a.get_name() + " "
+			#plan += "> %s" % action.get_name()
+			#print("[%s] GOAP cannot reach =" % get_name(), plan )
 			_action_list = null
 			_state = State.IDLE
 			

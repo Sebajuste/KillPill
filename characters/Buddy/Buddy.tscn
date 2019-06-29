@@ -1,18 +1,23 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://characters/Buddy/Buddy.gd" type="Script" id=1]
 [ext_resource path="res://characters/Buddy/BodyBlue.material" type="Material" id=2]
 [ext_resource path="res://characters/Buddy/Hand.material" type="Material" id=3]
 [ext_resource path="res://characters/Buddy/Foot.material" type="Material" id=4]
-[ext_resource path="res://sounds/punch.wav" type="AudioStream" id=5]
-[ext_resource path="res://sounds/PickWeapon.wav" type="AudioStream" id=6]
-[ext_resource path="res://characters/Buddy/catch-cycle.anim" type="Animation" id=7]
-[ext_resource path="res://characters/Buddy/default.anim" type="Animation" id=8]
-[ext_resource path="res://characters/Buddy/gun_aim.anim" type="Animation" id=9]
-[ext_resource path="res://characters/Buddy/hit.anim" type="Animation" id=10]
-[ext_resource path="res://characters/Buddy/idle.anim" type="Animation" id=11]
-[ext_resource path="res://characters/Buddy/punch.anim" type="Animation" id=12]
-[ext_resource path="res://characters/Buddy/walk.anim" type="Animation" id=13]
+[ext_resource path="res://characters/Buddy/Overlay.gd" type="Script" id=5]
+[ext_resource path="res://textures/gauge_under.png" type="Texture" id=6]
+[ext_resource path="res://textures/gauge_over.png" type="Texture" id=7]
+[ext_resource path="res://textures/gauge_progress_red.png" type="Texture" id=8]
+[ext_resource path="res://characters/Buddy/HealthProgressBar.gd" type="Script" id=9]
+[ext_resource path="res://sounds/punch.wav" type="AudioStream" id=10]
+[ext_resource path="res://sounds/PickWeapon.wav" type="AudioStream" id=11]
+[ext_resource path="res://characters/Buddy/catch-cycle.anim" type="Animation" id=12]
+[ext_resource path="res://characters/Buddy/default.anim" type="Animation" id=13]
+[ext_resource path="res://characters/Buddy/gun_aim.anim" type="Animation" id=14]
+[ext_resource path="res://characters/Buddy/hit.anim" type="Animation" id=15]
+[ext_resource path="res://characters/Buddy/idle.anim" type="Animation" id=16]
+[ext_resource path="res://characters/Buddy/punch.anim" type="Animation" id=17]
+[ext_resource path="res://characters/Buddy/walk.anim" type="Animation" id=18]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.486064
@@ -99,6 +104,7 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0,
 shape = SubResource( 1 )
 
 [node name="Body" type="Spatial" parent="."]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00430261, 0 )
 
 [node name="Body" type="MeshInstance" parent="Body"]
@@ -182,6 +188,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.293249, 0.800265 )
 shape = SubResource( 3 )
 
 [node name="EnnemyDetection" type="Area" parent="."]
+editor/display_folded = true
 collision_layer = 0
 collision_mask = 2
 
@@ -191,24 +198,39 @@ shape = SubResource( 4 )
 [node name="HoldPosition" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44492, 0.843572 )
 
+[node name="Overlay" type="Spatial" parent="."]
+script = ExtResource( 5 )
+
+[node name="HealthProgressBar" type="TextureProgress" parent="Overlay"]
+visible = false
+margin_right = 100.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 100, 15 )
+texture_under = ExtResource( 6 )
+texture_over = ExtResource( 7 )
+texture_progress = ExtResource( 8 )
+script = ExtResource( 9 )
+
+[node name="Tween" type="Tween" parent="Overlay/HealthProgressBar"]
+
 [node name="PunchSound" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource( 5 )
+stream = ExtResource( 10 )
 unit_db = 20.0
 max_distance = 20.0
 
 [node name="PickUpSound" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource( 6 )
+stream = ExtResource( 11 )
 unit_db = 20.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/catch-cycle = ExtResource( 7 )
-anims/default = ExtResource( 8 )
-anims/gun_aim = ExtResource( 9 )
-anims/hit = ExtResource( 10 )
-anims/idle = ExtResource( 11 )
-anims/punch = ExtResource( 12 )
-anims/walk-cycle = ExtResource( 13 )
+anims/catch-cycle = ExtResource( 12 )
+anims/default = ExtResource( 13 )
+anims/gun_aim = ExtResource( 14 )
+anims/hit = ExtResource( 15 )
+anims/idle = ExtResource( 16 )
+anims/punch = ExtResource( 17 )
+anims/walk-cycle = ExtResource( 18 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 16 )
@@ -218,5 +240,6 @@ parameters/Hit/active = false
 parameters/HoldObject/blend_amount = 0.0
 parameters/Move/playback = SubResource( 17 )
 parameters/Punch/active = false
+[connection signal="on_health_change" from="." to="Overlay/HealthProgressBar" method="_on_Buddy_on_health_change"]
 [connection signal="body_entered" from="EnnemyDetection" to="." method="_on_EnnemyDetection_body_entered"]
 [connection signal="body_exited" from="EnnemyDetection" to="." method="_on_EnnemyDetection_body_exited"]

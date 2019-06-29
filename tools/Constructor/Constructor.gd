@@ -100,11 +100,6 @@ func ready_to_build() -> bool:
 		return true
 	return false
 	
-	#match target_pattern_name:
-	#	"gun":
-	#		return can_build_gun()
-	#	"pill":
-	#		return can_build_pill()
 
 func target_ready_to_build() -> bool:
 	

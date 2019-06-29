@@ -225,10 +225,10 @@ func heal(value):
 	
 	health += value
 	
-	emit_signal("on_health_change", health, max_health)
-	
 	if health > max_health:
 		health = max_health
+	
+	emit_signal("on_health_change", health, max_health)
 
 func damage(position, normal, bullet):
 	
@@ -240,7 +240,7 @@ func damage(position, normal, bullet):
 	
 	$AnimationTree.set("parameters/Hit/active", true)
 	
-	if health < 0:
+	if health <= 0:
 		dead = true
 		
 		var explosion = PillExplosion.instance()
