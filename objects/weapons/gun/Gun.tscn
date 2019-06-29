@@ -41,7 +41,6 @@ tracks/1/keys = {
 "weapon",
 ]]
 script = ExtResource( 1 )
-rate_of_fire = 120
 ammo = 25
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

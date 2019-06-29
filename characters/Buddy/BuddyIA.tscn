@@ -18,6 +18,7 @@
 
 [node name="BuddyIA" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+move_speed = 3.0
 ia = true
 
 [node name="CatchArea" parent="." index="6"]

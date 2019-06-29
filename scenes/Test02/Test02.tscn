@@ -476,7 +476,6 @@ transform = Transform( -53, 0, -9.7951e-007, 0, 1, 0, 8.00278e-006, 0, -6.487, -
 transform = Transform( -53, 0, -9.7951e-007, 0, 1, 0, 8.00278e-006, 0, -6.487, 1.02729e-006, 1, 51.7509 )
 
 [node name="Characters" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="Player" parent="Characters" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -31.0272, 2, 40.0006 )
