@@ -1,20 +1,27 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://objects/health/Health.gd" type="Script" id=1]
+[ext_resource path="res://objects/health/hearth.png" type="Texture" id=2]
 
-[sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.1, 0.1, 0.1 )
+[sub_resource type="SphereShape" id=1]
+radius = 0.263805
 
-[sub_resource type="CubeMesh" id=2]
+[sub_resource type="QuadMesh" id=2]
 
 [sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 0.937255, 0.145098, 0.145098, 1 )
+flags_transparent = true
+flags_unshaded = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 2 )
 
 [sub_resource type="SphereShape" id=4]
 radius = 1.00392
 
-[node name="Health" type="RigidBody" groups=[
-"ammo",
+[node name="Heal" type="RigidBody" groups=[
+"heal",
 ]]
 collision_layer = 4
 collision_mask = 7
@@ -27,7 +34,7 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
@@ -37,4 +44,10 @@ collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 shape = SubResource( 4 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true
+autostart = true
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

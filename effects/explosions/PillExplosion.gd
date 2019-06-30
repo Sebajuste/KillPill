@@ -9,13 +9,13 @@ func set_color(value):
 	
 	match color:
 		"Blue":
-			var material = load("res://characters/Buddy/BodyBlue.material")
+			var material = load("res://effects/explosions/pill_explode_blue.material")
 			$Particles.draw_pass_1.material = material
 		"Red":
-			var material = load("res://characters/Buddy/BodyRed.material")
+			var material = load("res://effects/explosions/pill_explode_red.material")
 			$Particles.draw_pass_1.material = material
 		"Yellow":
-			var material = load("res://characters/Buddy/BodyYellow.material")
+			var material = load("res://effects/explosions/pill_explode_yellow.material")
 			$Particles.draw_pass_1.material = material
 
 # Called when the node enters the scene tree for the first time.

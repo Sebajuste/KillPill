@@ -60,8 +60,6 @@ func execute(actor):
 	var result = actor.shoot()
 	emit_signal("on_action_end", result)
 	
-	print("shoot result: ", result)
-	
 	actor.target_pos = null
 	
 	return result

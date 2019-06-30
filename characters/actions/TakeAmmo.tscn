@@ -5,6 +5,7 @@
 [node name="TakeAmmo" type="Node"]
 script = ExtResource( 1 )
 preconditions = {
+"have_weapon": true,
 "see_ammo": true
 }
 effects = {

@@ -15,7 +15,16 @@ func _ready():
 
 func _on_Gun_on_ammo_change(value, max_value):
 	
-	$AmmoContainer/VBoxContainer/ProgressBar.value = (value * 100) / max_value
+	var percent = (value * 100) / max_value
+	
+	$AmmoContainer/VBoxContainer/TextureProgress/Tween.interpolate_property(
+		$AmmoContainer/VBoxContainer/TextureProgress, "value",
+		$AmmoContainer/VBoxContainer/TextureProgress.value, percent, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
+	)
+	
+	$AmmoContainer/VBoxContainer/TextureProgress/Tween.start()
+	
+	#$AmmoContainer/VBoxContainer/ProgressBar.value = (value * 100) / max_value
 	
 	pass # Replace with function body.
 
@@ -41,6 +50,15 @@ func _on_Player_on_take_object(object):
 
 func _on_Player_on_health_change(value, max_value):
 	
-	$HealthContainer/VBoxContainer/ProgressBar.value = (value * 100) / max_value
+	var percent = (value * 100) / max_value
+	
+	$HealthContainer/VBoxContainer/TextureProgress/Tween.interpolate_property(
+		$HealthContainer/VBoxContainer/TextureProgress, "value",
+		$HealthContainer/VBoxContainer/TextureProgress.value, percent, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
+	)
+	
+	$HealthContainer/VBoxContainer/TextureProgress/Tween.start()
+	
+	#$HealthContainer/VBoxContainer/ProgressBar.value = percent
 	
 	pass # Replace with function body.

@@ -23,12 +23,12 @@ func _ready():
 
 func _on_TutorialButton_pressed():
 	
-	get_tree().change_scene("res://scenes/Tutorial/Tutorial.tscn")
+	get_tree().change_scene("res://scenes/tutorial/Tutorial.tscn")
 	
 
 func _on_PlayButton_pressed():
 	
-	get_tree().change_scene("res://scenes/Test02/Test02.tscn")
+	get_tree().change_scene("res://scenes/level01/Level01.tscn")
 	
 
 func _on_OptionsButton_pressed():
