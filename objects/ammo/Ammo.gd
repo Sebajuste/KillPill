@@ -17,7 +17,11 @@ func _ready():
 func _on_Area_body_entered(body):
 	
 	if body.has_object():
-		body.get_object().reload(5)
-		queue_free()
+		if body.get_object().reload(5):
+			queue_free()
 	
-	pass # Replace with function body.
+
+func _on_Timer_timeout():
+	
+	queue_free()
+	

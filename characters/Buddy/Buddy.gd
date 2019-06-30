@@ -10,10 +10,10 @@ const ACCEL= 4
 const DEACCEL= 8
 const GRAVITY := -9.8
 
-signal on_health_change
-signal on_drop_object
-signal on_take_object
-signal on_hold_object
+signal on_health_change(value, max_value)
+signal on_drop_object(object)
+signal on_take_object(object)
+signal on_hold_object(object)
 signal on_death
 
 export var team : String = "Team_0"
@@ -155,11 +155,23 @@ func punch() -> bool:
 		
 		var result = $CatchArea.get_overlapping_bodies()
 		
-		if not result.empty():
-			var object = result[0]
-			if object.has_method("damage"):
-				object.damage($BodyLeftHand.global_transform.origin, null, {"damage": 1})
-				return true
+		var nearest_object = null
+		var nearest_distance = null
+		
+		for object in result:
+			if object.has_method("damage") and object != self:
+				
+				var distance = (object.global_transform.origin - self.global_transform.origin).length()
+				
+				if nearest_distance == null or distance < nearest_distance:
+					nearest_distance = distance
+					nearest_object = object
+		
+		if nearest_object != null:
+			nearest_object.damage($BodyLeftHand.global_transform.origin, null, {"damage": 1})
+			return true
+		
+
 	return false
 
 
@@ -221,7 +233,10 @@ func constructor_put_box(constructor, box) -> bool:
 	return false
 
 
-func heal(value):
+func heal(value) -> bool:
+	
+	if health >= max_health:
+		return false
 	
 	health += value
 	
@@ -229,6 +244,8 @@ func heal(value):
 		health = max_health
 	
 	emit_signal("on_health_change", health, max_health)
+	
+	return true
 
 func damage(position, normal, bullet):
 	
@@ -242,6 +259,9 @@ func damage(position, normal, bullet):
 	
 	if health <= 0:
 		dead = true
+		
+		release_hold()
+		drop_object()
 		
 		var explosion = PillExplosion.instance()
 		get_parent().add_child(explosion)

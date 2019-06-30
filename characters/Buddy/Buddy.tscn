@@ -26,7 +26,7 @@ height = 0.431546
 [sub_resource type="CapsuleMesh" id=2]
 
 [sub_resource type="SphereShape" id=3]
-radius = 0.673517
+radius = 0.657668
 
 [sub_resource type="SphereShape" id=4]
 radius = 22.0463
@@ -179,12 +179,12 @@ operation = 2
 material = ExtResource( 4 )
 
 [node name="CatchArea" type="Area" parent="."]
-editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.360354, 1.12432 )
 collision_layer = 16
-collision_mask = 36
+collision_mask = 38
 
 [node name="CollisionShape" type="CollisionShape" parent="CatchArea"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.293249, 0.800265 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0875394 )
 shape = SubResource( 3 )
 
 [node name="EnnemyDetection" type="Area" parent="."]
@@ -199,6 +199,7 @@ shape = SubResource( 4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44492, 0.843572 )
 
 [node name="Overlay" type="Spatial" parent="."]
+editor/display_folded = true
 script = ExtResource( 5 )
 
 [node name="HealthProgressBar" type="TextureProgress" parent="Overlay"]

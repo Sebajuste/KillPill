@@ -15,13 +15,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0245099, 0 )
 [node name="BodyRightHand" parent="." index="3"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.530717, -0.0725174, -0.00196791 )
 
-[node name="CatchArea" parent="." index="6"]
-editor/display_folded = false
-
 [node name="Target" parent="." index="9" instance=ExtResource( 3 )]
-
-[node name="HealthProgressBar" parent="Overlay" index="0"]
-percent_visible = false
 
 [node name="AnimationTree" parent="." index="14"]
 parameters/Move/playback = SubResource( 1 )

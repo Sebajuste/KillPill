@@ -14,7 +14,12 @@ func _ready():
 
 func _on_Area_body_entered(body):
 	
-	body.heal( heal )
+	if body.heal( heal ):
+		queue_free()
+	
+
+
+func _on_Timer_timeout():
 	
 	queue_free()
 	

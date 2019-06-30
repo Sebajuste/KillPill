@@ -5,6 +5,7 @@
 [node name="AttachWithFists" type="Node"]
 script = ExtResource( 1 )
 preconditions = {
+"health_low": false,
 "hold_box": false
 }
 effects = {

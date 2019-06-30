@@ -1,7 +1,7 @@
 extends Spatial
 
 
-signal on_build
+signal on_build(name, object)
 signal on_add_box
 
 var CatchableObject = preload("res://tools/CatchableObject.tscn")

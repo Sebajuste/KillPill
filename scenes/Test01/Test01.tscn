@@ -2,7 +2,7 @@
 
 [ext_resource path="res://textures/ground_grass.material" type="Material" id=1]
 [ext_resource path="res://prefabs/wall/Wall.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/Test02/Camera.gd" type="Script" id=3]
+[ext_resource path="res://scenes/level01/Camera.gd" type="Script" id=3]
 [ext_resource path="res://tools/Constructor/Constructor.tscn" type="PackedScene" id=4]
 [ext_resource path="res://tools/BoxEmitter.tscn" type="PackedScene" id=5]
 [ext_resource path="res://characters/Buddy/Player.tscn" type="PackedScene" id=6]
@@ -23,7 +23,6 @@ polygons = [ PoolIntArray( 2, 0, 1 ), PoolIntArray( 5, 3, 4 ), PoolIntArray( 8, 
 [node name="Environment" type="Node" parent="."]
 
 [node name="Navigation" type="Navigation" parent="Environment"]
-editor/display_folded = true
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Environment/Navigation"]
 navmesh = SubResource( 1 )

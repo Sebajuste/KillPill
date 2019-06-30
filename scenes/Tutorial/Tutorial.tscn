@@ -1,11 +1,11 @@
 [gd_scene load_steps=25 format=2]
 
-[ext_resource path="res://scenes/Tutorial/Tutorial.gd" type="Script" id=1]
+[ext_resource path="res://scenes/tutorial/Tutorial.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Environment.tres" type="Environment" id=2]
-[ext_resource path="res://scenes/Tutorial/ground.material" type="Material" id=3]
+[ext_resource path="res://scenes/tutorial/ground.material" type="Material" id=3]
 [ext_resource path="res://prefabs/fences/Fence01.tscn" type="PackedScene" id=4]
 [ext_resource path="res://prefabs/bridges/Bridge01.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/Test02/Camera.gd" type="Script" id=6]
+[ext_resource path="res://scenes/level01/Camera.gd" type="Script" id=6]
 [ext_resource path="res://tools/Constructor/Constructor.tscn" type="PackedScene" id=7]
 [ext_resource path="res://tools/BoxEmitter.tscn" type="PackedScene" id=8]
 [ext_resource path="res://characters/Buddy/Player.tscn" type="PackedScene" id=9]
@@ -17,6 +17,10 @@
 [ext_resource path="res://tools/notifications/Notifications.tscn" type="PackedScene" id=15]
 [ext_resource path="res://ui/game-over/GameOver.tscn" type="PackedScene" id=16]
 [ext_resource path="res://ui/ingame-menu/InGameMenu.tscn" type="PackedScene" id=17]
+
+
+
+
 
 [sub_resource type="GIProbeData" id=1]
 bounds = AABB( -43.0586, -10, -42.1016, 86.1172, 20, 84.2032 )
