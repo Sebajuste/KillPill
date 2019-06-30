@@ -2,6 +2,8 @@ extends Node
 
 class_name AStarGrid
 
+var max_deep_search := 75
+
 class PathSorter:
 	
 	static func cost_sort(a: AStarPathNode, b: AStarPathNode) -> bool:
@@ -56,9 +58,8 @@ func find_path(from: AStarGridNode, goal: AStarGridNode, context := {}) -> Array
 	while not open_list.empty():
 		
 		count += 1
-		if count > 50:
+		if count > max_deep_search:
 			print("Max loop reached")
-			
 			break
 		
 		var path_node: AStarPathNode = open_list.pop_front()

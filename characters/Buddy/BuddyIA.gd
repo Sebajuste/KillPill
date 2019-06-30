@@ -2,7 +2,7 @@ extends "res://characters/Buddy/Buddy.gd"
 
 enum State {IDLE, GO_TO, ANIMATION}
 
-signal on_move_reached
+signal on_move_reached(result)
 
 var _state = State.IDLE
 
@@ -119,10 +119,14 @@ func _idle(delta):
 	$GoapPlanner.world_state["builder_full"] = constructor.target_ready_to_build()
 	$GoapPlanner.world_state["hold_box"] = is_holding()
 	$GoapPlanner.world_state["have_weapon"] = has_object()
-	$GoapPlanner.world_state["have_ammo"] = not has_object() or $BodyRightHand/RightHand.get_child(0).ammo > 0
+	$GoapPlanner.world_state["have_ammo"] = has_object() and get_object().ammo > 0
 	$GoapPlanner.world_state["see_ammo"] = not get_tree().get_nodes_in_group("ammo").empty()
+	$GoapPlanner.world_state["see_heal"] = not get_tree().get_nodes_in_group("heal").empty()
 	$GoapPlanner.world_state["see_ennemy"] = not self.ennemies.empty()
 	$GoapPlanner.world_state["near_constructor"] = constructor_distance < 10
+	$GoapPlanner.world_state["health_low"] = health < ( (20 * max_health) / 100  )
+	
+	$GoapPlanner.goal_state["health_low"] = false
 	
 	var context = {
 		"team": team,
@@ -131,17 +135,15 @@ func _idle(delta):
 		"ennemies": self.ennemies
 	}
 	
-	#print("world_state : ", $GoapPlanner.world_state )
-	
 	var action_list = $GoapPlanner.create_plan(context)
 	
 	if not action_list.empty():
 		_action_list = action_list
 		_state = State.ANIMATION
 		
-		var action_plan = ""
-		for a in action_list:
-			action_plan += "> %s " % a.get_name()
+		#var action_plan = ""
+		#for a in action_list:
+		#	action_plan += "> %s " % a.get_name()
 		#print("[%s] Action Plan : " % get_name(), action_plan, $GoapPlanner.world_state, $GoapPlanner.goal_state)
 		
 	else:
@@ -209,11 +211,11 @@ func _animation(delta):
 			pass
 		elif (typeof(result) == TYPE_BOOL and not result) or not result or not yield(action, "on_action_end"):
 			
-			var plan = ""
-			for a in _action_list:
-				plan += "> " + a.get_name() + " "
-			plan += "> %s" % action.get_name()
-			print("[%s] GOAP cannot reach =" % get_name(), plan )
+			#var plan = ""
+			#for a in _action_list:
+			#	plan += "> " + a.get_name() + " "
+			#plan += "> %s" % action.get_name()
+			#print("[%s] GOAP cannot reach =" % get_name(), plan )
 			_action_list = null
 			_state = State.IDLE
 			

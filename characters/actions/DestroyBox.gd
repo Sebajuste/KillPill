@@ -1,5 +1,18 @@
 extends "res://addons/goap/goap_action.gd"
 
+func is_reachable(context: Dictionary) -> bool:
+	
+	var boxes = get_tree().get_nodes_in_group("box")
+	
+	if boxes.empty():
+		false
+	
+	for box in boxes:
+		if not box.catched:
+			return true
+	
+	return false
+
 func execute(actor):
 	
 	var boxes = get_tree().get_nodes_in_group("box")
@@ -20,7 +33,7 @@ func execute(actor):
 	var box_ref = weakref(nearest_box)
 	actor._move_target_ref = box_ref
 	
-	actor.go_to(nearest_box.global_transform.origin)
+	actor.go_to(nearest_box.global_transform.origin, 0.5)
 	
 	
 	if not yield(actor, "on_move_reached"):

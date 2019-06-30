@@ -3,9 +3,9 @@ extends Spatial
 var Bullet = preload("res://objects/bullets/Bullet.tscn")
 
 
-signal on_ammo_change
+signal on_ammo_change(value, max_value)
 
-export var damage := 5
+export var damage := 5.0
 export var rate_of_fire := 60.0
 
 export var max_ammo := 100
@@ -17,11 +17,16 @@ var owned = false
 
 var ready_to_shoot := true
 
-func reload(value):
+func reload(value) -> bool:
+	
+	if ammo >= max_ammo:
+		return false
+	
 	ammo += value
 	if ammo > max_ammo:
 		ammo = max_ammo
 	emit_signal("on_ammo_change", ammo, max_ammo)
+	return true
 
 func shoot() -> bool:
 	

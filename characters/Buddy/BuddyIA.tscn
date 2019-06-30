@@ -1,18 +1,19 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://characters/Buddy/Buddy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://characters/Buddy/BuddyIA.gd" type="Script" id=2]
 [ext_resource path="res://addons/goap/goap_planner.gd" type="Script" id=3]
-[ext_resource path="res://characters/actions/TakeWeapon.tscn" type="PackedScene" id=4]
-[ext_resource path="res://characters/actions/TakeBox.tscn" type="PackedScene" id=5]
-[ext_resource path="res://characters/actions/TakeAmmo.tscn" type="PackedScene" id=6]
-[ext_resource path="res://characters/actions/DropBox.tscn" type="PackedScene" id=7]
-[ext_resource path="res://characters/actions/DestroyBox.tscn" type="PackedScene" id=8]
-[ext_resource path="res://characters/actions/BringBoxNearConstruct.tscn" type="PackedScene" id=9]
-[ext_resource path="res://characters/actions/BringBoxToConstruct.tscn" type="PackedScene" id=10]
-[ext_resource path="res://characters/actions/Build.tscn" type="PackedScene" id=11]
-[ext_resource path="res://characters/actions/AttackWithWeapon.tscn" type="PackedScene" id=12]
-[ext_resource path="res://characters/actions/AttachWithFists.tscn" type="PackedScene" id=13]
+[ext_resource path="res://characters/actions/TakeHeal.tscn" type="PackedScene" id=4]
+[ext_resource path="res://characters/actions/TakeWeapon.tscn" type="PackedScene" id=5]
+[ext_resource path="res://characters/actions/TakeBox.tscn" type="PackedScene" id=6]
+[ext_resource path="res://characters/actions/TakeAmmo.tscn" type="PackedScene" id=7]
+[ext_resource path="res://characters/actions/DropBox.tscn" type="PackedScene" id=8]
+[ext_resource path="res://characters/actions/DestroyBox.tscn" type="PackedScene" id=9]
+[ext_resource path="res://characters/actions/BringBoxNearConstruct.tscn" type="PackedScene" id=10]
+[ext_resource path="res://characters/actions/BringBoxToConstruct.tscn" type="PackedScene" id=11]
+[ext_resource path="res://characters/actions/Build.tscn" type="PackedScene" id=12]
+[ext_resource path="res://characters/actions/AttackWithWeapon.tscn" type="PackedScene" id=13]
+[ext_resource path="res://characters/actions/AttachWithFists.tscn" type="PackedScene" id=14]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
@@ -21,31 +22,35 @@ script = ExtResource( 2 )
 move_speed = 3.0
 ia = true
 
-[node name="CatchArea" parent="." index="6"]
-collision_mask = 38
-
-[node name="EnnemyDetection" parent="." index="7"]
-editor/display_folded = true
-
 [node name="PathDebug" type="ImmediateGeometry" parent="." index="9"]
 visible = false
 
 [node name="GoapPlanner" type="Node" parent="." index="10"]
-editor/display_folded = true
 script = ExtResource( 3 )
 world_state = {
 "builder_full": false,
 "builder_ready": false,
 "have_ammo": false,
 "have_weapon": false,
+"healh_low": false,
+"health_low": false,
 "hold_box": false,
-"see_ammo": false
+"see_ammo": false,
+"see_heal": false
 }
 goal_state = {
 
 }
 
-[node name="TakeWeapon" parent="GoapPlanner" index="0" instance=ExtResource( 4 )]
+[node name="TakeHeal" parent="GoapPlanner" index="0" instance=ExtResource( 4 )]
+preconditions = {
+"see_heal": true
+}
+effects = {
+"health_low": false
+}
+
+[node name="TakeWeapon" parent="GoapPlanner" index="1" instance=ExtResource( 5 )]
 preconditions = {
 "have_weapon": false
 }
@@ -53,7 +58,7 @@ effects = {
 "have_weapon": true
 }
 
-[node name="TakeBox" parent="GoapPlanner" index="1" instance=ExtResource( 5 )]
+[node name="TakeBox" parent="GoapPlanner" index="2" instance=ExtResource( 6 )]
 preconditions = {
 "hold_box": false
 }
@@ -61,15 +66,16 @@ effects = {
 "hold_box": true
 }
 
-[node name="TakeAmmo" parent="GoapPlanner" index="2" instance=ExtResource( 6 )]
+[node name="TakeAmmo" parent="GoapPlanner" index="3" instance=ExtResource( 7 )]
 preconditions = {
+"have_weapon": true,
 "see_ammo": true
 }
 effects = {
 "have_ammo": true
 }
 
-[node name="DropBox" parent="GoapPlanner" index="3" instance=ExtResource( 7 )]
+[node name="DropBox" parent="GoapPlanner" index="4" instance=ExtResource( 8 )]
 preconditions = {
 "hold_box": true
 }
@@ -78,15 +84,16 @@ effects = {
 "hold_box": false
 }
 
-[node name="DestroyBox" parent="GoapPlanner" index="4" instance=ExtResource( 8 )]
+[node name="DestroyBox" parent="GoapPlanner" index="5" instance=ExtResource( 9 )]
 preconditions = {
 "hold_box": false
 }
 effects = {
-"see_ammo": true
+"see_ammo": true,
+"see_heal": true
 }
 
-[node name="BringBoxNearConstruct" parent="GoapPlanner" index="5" instance=ExtResource( 9 )]
+[node name="BringBoxNearConstruct" parent="GoapPlanner" index="6" instance=ExtResource( 10 )]
 preconditions = {
 "hold_box": true
 }
@@ -94,7 +101,7 @@ effects = {
 "near_constructor": true
 }
 
-[node name="BringBoxToConstruct" parent="GoapPlanner" index="6" instance=ExtResource( 10 )]
+[node name="BringBoxToConstruct" parent="GoapPlanner" index="7" instance=ExtResource( 11 )]
 preconditions = {
 "builder_full": false,
 "builder_ready": false,
@@ -105,7 +112,7 @@ effects = {
 "hold_box": false
 }
 
-[node name="Build" parent="GoapPlanner" index="7" instance=ExtResource( 11 )]
+[node name="Build" parent="GoapPlanner" index="8" instance=ExtResource( 12 )]
 preconditions = {
 "builder_ready": true,
 "hold_box": false
@@ -115,8 +122,9 @@ effects = {
 "builder_full": false,
 "builder_ready": false
 }
+cost = 2.0
 
-[node name="AttackWithWeapon" parent="GoapPlanner" index="8" instance=ExtResource( 12 )]
+[node name="AttackWithWeapon" parent="GoapPlanner" index="9" instance=ExtResource( 13 )]
 preconditions = {
 "have_ammo": true,
 "have_weapon": true,
@@ -125,14 +133,16 @@ preconditions = {
 effects = {
 "attack": true
 }
+cost = 4.0
 
-[node name="AttachWithFists" parent="GoapPlanner" index="9" instance=ExtResource( 13 )]
+[node name="AttachWithFists" parent="GoapPlanner" index="10" instance=ExtResource( 14 )]
 preconditions = {
+"health_low": false,
 "hold_box": false
 }
 effects = {
 "attack": true
 }
 
-[node name="AnimationTree" parent="." index="14"]
+[node name="AnimationTree" parent="." index="15"]
 parameters/Move/playback = SubResource( 1 )

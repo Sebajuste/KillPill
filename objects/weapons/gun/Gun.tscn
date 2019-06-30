@@ -6,42 +6,19 @@
 [ext_resource path="res://effects/flames/flame.tres" type="PlaneMesh" id=4]
 [ext_resource path="res://effects/flames/flame1.material" type="Material" id=5]
 [ext_resource path="res://sounds/shoot.wav" type="AudioStream" id=6]
+[ext_resource path="res://objects/weapons/gun/shoot.anim" type="Animation" id=7]
 
 [sub_resource type="CubeMesh" id=1]
 
 [sub_resource type="CylinderMesh" id=2]
 
-[sub_resource type="Animation" id=3]
-resource_name = "shoot"
-length = 0.1
-step = 0.01
-tracks/0/type = "transform"
-tracks/0/path = NodePath("Muzzle/Flames")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0.02, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.1, 1, 0, 0, 0.25, 0, 0, 0, 1, 0, 0, 0 )
-tracks/1/type = "method"
-tracks/1/path = NodePath("AudioStreamPlayer3D")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0.02 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [ 0.0 ],
-"method": "play"
-} ]
-}
-
 [node name="Gun" type="Spatial" groups=[
 "weapon",
 ]]
 script = ExtResource( 1 )
-ammo = 25
+damage = 6.0
+max_ammo = 50
+ammo = 20
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 0.041866, 0, 0, 0, 0.0682711, 0, 0, 0, 0.143856, 0, 0.073712, 0.146081 )
@@ -59,7 +36,6 @@ mesh = SubResource( 1 )
 material/0 = ExtResource( 3 )
 
 [node name="Muzzle" type="Position3D" parent="."]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0994926, 0.383218 )
 
 [node name="Flames" type="Spatial" parent="Muzzle"]
@@ -75,6 +51,11 @@ transform = Transform( -4.12464e-009, 1, 0, -0.0943608, -4.37114e-008, 0, 0, 0, 
 mesh = ExtResource( 4 )
 material/0 = ExtResource( 5 )
 
+[node name="OmniLight" type="OmniLight" parent="Muzzle"]
+visible = false
+light_color = Color( 0.968627, 0.909804, 0.65098, 1 )
+omni_range = 5.04917
+
 [node name="RateOfFireTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -86,5 +67,5 @@ max_distance = 30.0
 bus = "SoundEffects"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/shoot = SubResource( 3 )
+anims/shoot = ExtResource( 7 )
 [connection signal="timeout" from="RateOfFireTimer" to="." method="_on_RateOfFireTimer_timeout"]

@@ -24,7 +24,7 @@ func _ready():
 
 func _on_RestartButton_pressed():
 	
-	get_tree().change_scene("res://scenes/Test02/Test02.tscn")
+	get_tree().change_scene("res://scenes/level01/Level01.tscn")
 	
 
 
