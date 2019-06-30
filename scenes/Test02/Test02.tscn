@@ -1,26 +1,27 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scenes/Test02/Test02.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Environment.tres" type="Environment" id=2]
 [ext_resource path="res://scenes/Test02/Camera.gd" type="Script" id=3]
-[ext_resource path="res://scenes/Test02/ground_grass.material" type="Material" id=4]
+[ext_resource path="res://textures/ground_grass.material" type="Material" id=4]
 [ext_resource path="res://prefabs/trees/Tree01.tscn" type="PackedScene" id=5]
-[ext_resource path="res://prefabs/montains/maintain2.material" type="Material" id=6]
-[ext_resource path="res://prefabs/montains/maintain.material" type="Material" id=7]
-[ext_resource path="res://prefabs/montains/maintain3.material" type="Material" id=8]
+[ext_resource path="res://prefabs/montains/mountain2.material" type="Material" id=6]
+[ext_resource path="res://prefabs/montains/mountain.material" type="Material" id=7]
+[ext_resource path="res://prefabs/montains/mountain3.material" type="Material" id=8]
 [ext_resource path="res://prefabs/bridges/Bridge01.tscn" type="PackedScene" id=9]
 [ext_resource path="res://prefabs/fences/Fence01.tscn" type="PackedScene" id=10]
 [ext_resource path="res://textures/grass.png" type="Texture" id=11]
 [ext_resource path="res://tools/BoxEmitter.tscn" type="PackedScene" id=12]
 [ext_resource path="res://tools/Constructor/Constructor.tscn" type="PackedScene" id=13]
 [ext_resource path="res://prefabs/wall/Wall.tscn" type="PackedScene" id=14]
-[ext_resource path="res://characters/Buddy/Player.tscn" type="PackedScene" id=15]
-[ext_resource path="res://characters/Buddy/BuddyIA.tscn" type="PackedScene" id=16]
-[ext_resource path="res://tools/Team.tscn" type="PackedScene" id=17]
-[ext_resource path="res://ui/PlayerUI.tscn" type="PackedScene" id=18]
-[ext_resource path="res://ui/game-over/GameOver.tscn" type="PackedScene" id=19]
-[ext_resource path="res://ui/ingame-menu/InGameMenu.tscn" type="PackedScene" id=20]
-[ext_resource path="res://music/main_theme.ogg" type="AudioStream" id=21]
+[ext_resource path="res://tools/cleaner/Cleaner.tscn" type="PackedScene" id=15]
+[ext_resource path="res://characters/Buddy/Player.tscn" type="PackedScene" id=16]
+[ext_resource path="res://characters/Buddy/BuddyIA.tscn" type="PackedScene" id=17]
+[ext_resource path="res://tools/Team.tscn" type="PackedScene" id=18]
+[ext_resource path="res://ui/PlayerUI.tscn" type="PackedScene" id=19]
+[ext_resource path="res://ui/game-over/GameOver.tscn" type="PackedScene" id=20]
+[ext_resource path="res://ui/ingame-menu/InGameMenu.tscn" type="PackedScene" id=21]
+[ext_resource path="res://music/main_theme.ogg" type="AudioStream" id=22]
 
 [sub_resource type="GIProbeData" id=1]
 bounds = AABB( -55.3476, -10, -53.2666, 110.695, 20, 106.533 )
@@ -87,6 +88,7 @@ transform = Transform( 1, 0, 0, 0, 0.716527, 0.697559, 0, -0.697559, 0.716527, -
 script = ExtResource( 3 )
 
 [node name="Navigation" type="Navigation" parent="Environment"]
+editor/display_folded = true
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Environment/Navigation"]
 navmesh = SubResource( 2 )
@@ -227,7 +229,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.3705, 0, 24.5005 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17.2335, 0, 27.0924 )
 
 [node name="Montains" type="Spatial" parent="Environment/Navigation/NavigationMeshInstance"]
-editor/display_folded = true
 
 [node name="StaticBody" type="StaticBody" parent="Environment/Navigation/NavigationMeshInstance/Montains"]
 transform = Transform( 13.7468, 0, -1.00714, 0, 1.57192, 0, 5.06585, 0, 2.73301, -21.5916, 1.05663, 9.98602 )
@@ -487,22 +488,26 @@ transform = Transform( -53, 0, -9.7951e-007, 0, 1, 0, 8.00278e-006, 0, -6.487, -
 [node name="WallS" parent="Environment" instance=ExtResource( 14 )]
 transform = Transform( -53, 0, -9.7951e-007, 0, 1, 0, 8.00278e-006, 0, -6.487, 1.02729e-006, 1, 51.7509 )
 
-[node name="Characters" type="Node" parent="."]
+[node name="Cleaner" parent="Environment" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0 )
 
-[node name="Player" parent="Characters" instance=ExtResource( 15 )]
+[node name="Characters" type="Node" parent="."]
+editor/display_folded = true
+
+[node name="Player" parent="Characters" instance=ExtResource( 16 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -31.0272, 2, 40.0006 )
 color = "Blue"
 
-[node name="BuddyIA2" parent="Characters" instance=ExtResource( 16 )]
+[node name="BuddyIA2" parent="Characters" instance=ExtResource( 17 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33.3173, 0.973, 36.1547 )
 color = "Blue"
 
-[node name="BuddyIA" parent="Characters" instance=ExtResource( 16 )]
+[node name="BuddyIA" parent="Characters" instance=ExtResource( 17 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.4208, 0.973, -34.527 )
 team = "Team_1"
 color = "Red"
 
-[node name="BuddyIA3" parent="Characters" instance=ExtResource( 16 )]
+[node name="BuddyIA3" parent="Characters" instance=ExtResource( 17 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29.728, 1.06791, -34.6934 )
 team = "Team_2"
 color = "Yellow"
@@ -510,30 +515,30 @@ color = "Yellow"
 [node name="Teams" type="Node" parent="."]
 editor/display_folded = true
 
-[node name="TeamBlue" parent="Teams" instance=ExtResource( 17 )]
+[node name="TeamBlue" parent="Teams" instance=ExtResource( 18 )]
 team = "Team_0"
 color = "Blue"
 
-[node name="TeamRed" parent="Teams" instance=ExtResource( 17 )]
+[node name="TeamRed" parent="Teams" instance=ExtResource( 18 )]
 team = "Team_1"
 color = "Red"
 
-[node name="TeamYellow" parent="Teams" instance=ExtResource( 17 )]
+[node name="TeamYellow" parent="Teams" instance=ExtResource( 18 )]
 team = "Team_2"
 color = "Yellow"
 
 [node name="Objects" type="Node" parent="."]
 
-[node name="PlayerUI" parent="." instance=ExtResource( 18 )]
+[node name="PlayerUI" parent="." instance=ExtResource( 19 )]
 
-[node name="GameOver" parent="." instance=ExtResource( 19 )]
+[node name="GameOver" parent="." instance=ExtResource( 20 )]
 visible = false
 
-[node name="InGameMenu" parent="." instance=ExtResource( 20 )]
+[node name="InGameMenu" parent="." instance=ExtResource( 21 )]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 21 )
+stream = ExtResource( 22 )
 volume_db = -10.0
 autoplay = true
 bus = "Music"

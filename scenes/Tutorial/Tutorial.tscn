@@ -2,20 +2,21 @@
 
 [ext_resource path="res://scenes/Tutorial/Tutorial.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Environment.tres" type="Environment" id=2]
-[ext_resource path="res://prefabs/fences/Fence01.tscn" type="PackedScene" id=3]
-[ext_resource path="res://prefabs/bridges/Bridge01.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/Test02/Camera.gd" type="Script" id=5]
-[ext_resource path="res://tools/Constructor/Constructor.tscn" type="PackedScene" id=6]
-[ext_resource path="res://tools/BoxEmitter.tscn" type="PackedScene" id=7]
-[ext_resource path="res://characters/Buddy/Player.tscn" type="PackedScene" id=8]
-[ext_resource path="res://characters/Buddy/BuddyIA.tscn" type="PackedScene" id=9]
-[ext_resource path="res://tools/CatchableObject.tscn" type="PackedScene" id=10]
-[ext_resource path="res://objects/weapons/gun/Gun.tscn" type="PackedScene" id=11]
-[ext_resource path="res://tools/MarkArray/MarkArray.tscn" type="PackedScene" id=12]
-[ext_resource path="res://ui/PlayerUI.tscn" type="PackedScene" id=13]
-[ext_resource path="res://tools/notifications/Notifications.tscn" type="PackedScene" id=14]
-[ext_resource path="res://ui/game-over/GameOver.tscn" type="PackedScene" id=15]
-[ext_resource path="res://ui/ingame-menu/InGameMenu.tscn" type="PackedScene" id=16]
+[ext_resource path="res://scenes/Tutorial/ground.material" type="Material" id=3]
+[ext_resource path="res://prefabs/fences/Fence01.tscn" type="PackedScene" id=4]
+[ext_resource path="res://prefabs/bridges/Bridge01.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/Test02/Camera.gd" type="Script" id=6]
+[ext_resource path="res://tools/Constructor/Constructor.tscn" type="PackedScene" id=7]
+[ext_resource path="res://tools/BoxEmitter.tscn" type="PackedScene" id=8]
+[ext_resource path="res://characters/Buddy/Player.tscn" type="PackedScene" id=9]
+[ext_resource path="res://characters/Buddy/BuddyIA.tscn" type="PackedScene" id=10]
+[ext_resource path="res://tools/CatchableObject.tscn" type="PackedScene" id=11]
+[ext_resource path="res://objects/weapons/gun/Gun.tscn" type="PackedScene" id=12]
+[ext_resource path="res://tools/MarkArray/MarkArray.tscn" type="PackedScene" id=13]
+[ext_resource path="res://ui/PlayerUI.tscn" type="PackedScene" id=14]
+[ext_resource path="res://tools/notifications/Notifications.tscn" type="PackedScene" id=15]
+[ext_resource path="res://ui/game-over/GameOver.tscn" type="PackedScene" id=16]
+[ext_resource path="res://ui/ingame-menu/InGameMenu.tscn" type="PackedScene" id=17]
 
 [sub_resource type="GIProbeData" id=1]
 bounds = AABB( -43.0586, -10, -42.1016, 86.1172, 20, 84.2032 )
@@ -41,12 +42,9 @@ extents = Vector3( 1, 1, 7.55033 )
 
 [sub_resource type="CubeMesh" id=5]
 
-[sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 0.14902, 0.34902, 0.364706, 1 )
+[sub_resource type="BoxShape" id=6]
 
-[sub_resource type="BoxShape" id=7]
-
-[sub_resource type="SphereShape" id=8]
+[sub_resource type="SphereShape" id=7]
 radius = 3.94254
 
 [node name="Game" type="Node"]
@@ -67,10 +65,10 @@ data = SubResource( 1 )
 [node name="Navigation" type="Navigation" parent="Environment"]
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Environment/Navigation"]
-editor/display_folded = true
 navmesh = SubResource( 2 )
 
 [node name="Invisible Wall" type="Spatial" parent="Environment/Navigation/NavigationMeshInstance"]
+editor/display_folded = true
 
 [node name="StaticBody" type="StaticBody" parent="Environment/Navigation/NavigationMeshInstance/Invisible Wall"]
 editor/display_folded = true
@@ -178,7 +176,6 @@ transform = Transform( 0.0169, 0, -1.84328, 0, 1, 0, 0.999958, 0, 0.00916809, 34
 shape = SubResource( 4 )
 
 [node name="Ground" type="Spatial" parent="Environment/Navigation/NavigationMeshInstance"]
-editor/display_folded = true
 transform = Transform( 0.295942, 0, 0, 0, 1, 0, 0, 0, 0.308977, 0, -0.0803041, 7.12423 )
 
 [node name="MeshInstance" type="StaticBody" parent="Environment/Navigation/NavigationMeshInstance/Ground"]
@@ -186,10 +183,10 @@ transform = Transform( 16.5939, 0, 0, 0, 1, 0, 0, 0, 24.9486, 0, -0.989396, 0 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Environment/Navigation/NavigationMeshInstance/Ground/MeshInstance"]
 mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
+material/0 = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Navigation/NavigationMeshInstance/Ground/MeshInstance"]
-shape = SubResource( 7 )
+shape = SubResource( 6 )
 
 [node name="Ground4" type="Spatial" parent="Environment/Navigation/NavigationMeshInstance"]
 editor/display_folded = true
@@ -200,10 +197,10 @@ transform = Transform( 16.5939, 0, 0, 0, 1, 0, 0, 0, 24.9486, 0, -0.989396, 0 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Environment/Navigation/NavigationMeshInstance/Ground4/MeshInstance"]
 mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
+material/0 = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Navigation/NavigationMeshInstance/Ground4/MeshInstance"]
-shape = SubResource( 7 )
+shape = SubResource( 6 )
 
 [node name="Ground2" type="Spatial" parent="Environment/Navigation/NavigationMeshInstance"]
 editor/display_folded = true
@@ -214,10 +211,10 @@ transform = Transform( 16.5939, 0, 0, 0, 1, 0, 0, 0, 24.9486, 0, -0.989396, 0 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Environment/Navigation/NavigationMeshInstance/Ground2/MeshInstance"]
 mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
+material/0 = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Navigation/NavigationMeshInstance/Ground2/MeshInstance"]
-shape = SubResource( 7 )
+shape = SubResource( 6 )
 
 [node name="Ground3" type="Spatial" parent="Environment/Navigation/NavigationMeshInstance"]
 editor/display_folded = true
@@ -228,77 +225,77 @@ transform = Transform( 16.5939, 0, 0, 0, 1, 0, 0, 0, 24.9486, 0, -0.989396, 0 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Environment/Navigation/NavigationMeshInstance/Ground3/MeshInstance"]
 mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
+material/0 = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Navigation/NavigationMeshInstance/Ground3/MeshInstance"]
-shape = SubResource( 7 )
+shape = SubResource( 6 )
 
 [node name="Fences" type="Spatial" parent="Environment/Navigation/NavigationMeshInstance"]
 editor/display_folded = true
 
-[node name="Fence" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 0.900806, 0, 0.434221, 0, 1, 0, -0.434221, 0, 0.900806, 35.2255, 0, -35.3027 )
 
-[node name="Fence2" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence2" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 0.348087, 0, 0.937462, 0, 1, 0, -0.937462, 0, 0.348087, 29.592, 0, -40.0755 )
 
-[node name="Fence3" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence3" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 0.623488, 0, -0.781833, 0, 1, 0, 0.781833, 0, 0.623488, 44.3352, 0, -42.2146 )
 
-[node name="Fence4" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence4" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 0.787318, 0, 0.616547, 0, 1, 0, -0.616547, 0, 0.787318, 45.3625, 0, -52.8139 )
 
-[node name="Fence5" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence5" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 0.235785, 0, -0.971805, 0, 1, 0, 0.971805, 0, 0.235785, 24.477, 0, -54.3783 )
 
-[node name="Fence6" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence6" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.6159, 0, -20.5021 )
 
-[node name="Fence7" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence7" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.6159, 0, -18.1774 )
 
-[node name="Fence12" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence12" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6902, 0, -12.6646 )
 
-[node name="Fence14" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence14" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6902, 0, -17.0809 )
 
-[node name="Fence13" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence13" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6902, 0, -10.2716 )
 
-[node name="Fence15" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence15" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6902, 0, -8.30791 )
 
-[node name="Fence16" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence16" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.408, 0, -35.1863 )
 
-[node name="Fence17" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence17" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.408, 0, -37.6007 )
 
-[node name="Fence10" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence10" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6835, 0, -19.3146 )
 
-[node name="Fence8" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 3 )]
+[node name="Fence8" parent="Environment/Navigation/NavigationMeshInstance/Fences" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.6159, 0, -22.847 )
 
-[node name="Bridge" parent="Environment/Navigation/NavigationMeshInstance" instance=ExtResource( 4 )]
+[node name="Bridge" parent="Environment/Navigation/NavigationMeshInstance" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.43788, -3.79095 )
 
-[node name="Bridge2" parent="Environment/Navigation/NavigationMeshInstance" instance=ExtResource( 4 )]
+[node name="Bridge2" parent="Environment/Navigation/NavigationMeshInstance" instance=ExtResource( 5 )]
 transform = Transform( -0.00376228, 0, 0.999993, 0, 1, 0, -0.999993, 0, -0.00376228, 17.7226, -0.43788, -31.6046 )
 
 [node name="Camera" type="Camera" parent="Environment"]
 transform = Transform( 1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 8.6383, 16.6481 )
-script = ExtResource( 5 )
+script = ExtResource( 6 )
 
-[node name="Constructor" parent="Environment" instance=ExtResource( 6 )]
+[node name="Constructor" parent="Environment" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.0336, 0, -19.388 )
 
-[node name="BoxEmitter" parent="Environment" instance=ExtResource( 7 )]
+[node name="BoxEmitter" parent="Environment" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.44859, 5.69417, -18.9131 )
 max_box = 0
 
-[node name="BoxEmitterFight" parent="Environment" instance=ExtResource( 7 )]
+[node name="BoxEmitterFight" parent="Environment" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.8241, 5.69417, -40.1622 )
 max_box = 0
 
@@ -365,54 +362,55 @@ shape = SubResource( 4 )
 
 [node name="Characters" type="Node" parent="."]
 
-[node name="Player" parent="Characters" instance=ExtResource( 8 )]
+[node name="Player" parent="Characters" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.973, 9.99201 )
 immortal = true
 
-[node name="BuddyIA" parent="Characters" instance=ExtResource( 9 )]
+[node name="BuddyIA" parent="Characters" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.973, -31.8787 )
 visible = false
 team = "Team_1"
 max_health = 10
 color = "Red"
 
-[node name="BuddyBounce" parent="Characters" instance=ExtResource( 9 )]
+[node name="BuddyBounce" parent="Characters" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20.2184, 0.973, -20.6778 )
 visible = false
 team = "Team_1"
 max_health = 10
 color = "Red"
 
-[node name="BuddyIA2" parent="Characters" instance=ExtResource( 9 )]
+[node name="BuddyIA2" parent="Characters" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4862, 0.973, -48.9366 )
 team = "Team_1"
 color = "Red"
 
-[node name="BuddyIA3" parent="Characters" instance=ExtResource( 9 )]
+[node name="BuddyIA3" parent="Characters" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40.83, 0.973, -49.5215 )
 team = "Team_1"
 color = "Red"
 
 [node name="Objects" type="Node" parent="."]
 
-[node name="CatchableObject" parent="Objects" instance=ExtResource( 10 )]
+[node name="CatchableObject" parent="Objects" instance=ExtResource( 11 )]
 editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.1875, 1.32881, -31.8945 )
 
-[node name="Gun" parent="Objects/CatchableObject/ObjectContainer" index="0" instance=ExtResource( 11 )]
+[node name="Gun" parent="Objects/CatchableObject/ObjectContainer" index="0" instance=ExtResource( 12 )]
+damage = 5.0
 
-[node name="CatchableObject2" parent="Objects" instance=ExtResource( 10 )]
+[node name="CatchableObject2" parent="Objects" instance=ExtResource( 11 )]
 editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 29.3361, 2.5984, -46.9067 )
 
-[node name="CatchableObject3" parent="Objects" instance=ExtResource( 10 )]
+[node name="CatchableObject3" parent="Objects" instance=ExtResource( 11 )]
 editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.8785, 1.98937, -47.4532 )
 
 [node name="Helper" type="Node" parent="."]
 editor/display_folded = true
 
-[node name="MarkArray" parent="Helper" instance=ExtResource( 12 )]
+[node name="MarkArray" parent="Helper" instance=ExtResource( 13 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0835315, -8.1624 )
 
 [node name="Triggers" type="Node" parent="."]
@@ -425,16 +423,16 @@ collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="Triggers/FightTrigger"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.69637, 0, 0 )
-shape = SubResource( 8 )
+shape = SubResource( 7 )
 
-[node name="PlayerUI" parent="." instance=ExtResource( 13 )]
+[node name="PlayerUI" parent="." instance=ExtResource( 14 )]
 
-[node name="Notifications" parent="." instance=ExtResource( 14 )]
+[node name="Notifications" parent="." instance=ExtResource( 15 )]
 
-[node name="GameOver" parent="." instance=ExtResource( 15 )]
+[node name="GameOver" parent="." instance=ExtResource( 16 )]
 visible = false
 
-[node name="InGameMenu" parent="." instance=ExtResource( 16 )]
+[node name="InGameMenu" parent="." instance=ExtResource( 17 )]
 [connection signal="on_add_box" from="Environment/Constructor" to="." method="_on_Constructor_on_add_box"]
 [connection signal="on_build" from="Environment/Constructor" to="." method="_on_Constructor_on_build"]
 [connection signal="on_health_change" from="Characters/Player" to="PlayerUI" method="_on_Player_on_health_change"]

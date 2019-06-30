@@ -5,7 +5,7 @@ var Bullet = preload("res://objects/bullets/Bullet.tscn")
 
 signal on_ammo_change
 
-export var damage := 5
+export var damage := 5.0
 export var rate_of_fire := 60.0
 
 export var max_ammo := 100
