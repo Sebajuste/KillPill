@@ -8,7 +8,7 @@ var CatchableObject = preload("res://tools/CatchableObject.tscn")
 
 var Gun = preload("res://objects/weapons/gun/Gun.tscn")
 
-var Pill = preload("res://characters/Buddy/BuddyIA.tscn")
+var Pill = preload("res://characters/Buddy/Buddy.tscn")
 
 
 const GUN1_PATTERN = [[1, 0], [0, 0]]
@@ -201,6 +201,7 @@ func build() -> bool:
 				var pill = Pill.instance()
 				pill.team = self.team
 				pill.color = color
+				pill.handler = "AI"
 				root.find_node("Characters").add_child(pill)
 				pill.global_transform.origin = self.global_transform.origin
 				emit_signal("on_build", pattern_found, pill)

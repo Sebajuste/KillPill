@@ -55,16 +55,15 @@ func execute(actor):
 	
 	var box_ref = weakref(nearest_box)
 	
-	actor._move_target_ref = box_ref
+	actor.move_to_object(nearest_box)
 	
-	actor.go_to(nearest_box.global_transform.origin)
 	
 	if not yield(actor, "on_move_reached"):
 		print("Cannot end TakeBox action")
 		emit_signal("on_action_end", false)
 		return
 	
-	if (!box_ref.get_ref()):
+	if (!box_ref.get_ref() and not box_ref.get_ref().catched ):
 		emit_signal("on_action_end", false)
 	else:
 		emit_signal("on_action_end", actor.hold_object( box_ref.get_ref() ) )

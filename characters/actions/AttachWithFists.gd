@@ -19,7 +19,7 @@ func execute(actor):
 	
 	var target_ref := weakref(nearest_character)
 	
-	actor.go_to(nearest_character.global_transform.origin)
+	actor.move_to_object(nearest_character)
 	
 	if not yield(actor, "on_move_reached"):
 		print("Cannot end TakeBox action")

@@ -1,8 +1,5 @@
 extends KinematicBody
 
-
-export var speed = 20.0
-
 var damage = 0
 
 var velocity = Vector3()

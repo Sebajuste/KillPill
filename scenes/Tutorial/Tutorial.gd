@@ -193,7 +193,7 @@ func _on_FightTrigger_area_entered(area):
 	
 	for character in get_node("Characters").get_children():
 		if character.has_method("character"):
-			character.cancel_move()
+			character.move_cancel()
 			pass
 	
 

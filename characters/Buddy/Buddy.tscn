@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://characters/Buddy/Buddy.gd" type="Script" id=1]
 [ext_resource path="res://characters/Buddy/BodyBlue.material" type="Material" id=2]
@@ -9,15 +9,30 @@
 [ext_resource path="res://textures/gauge_over.png" type="Texture" id=7]
 [ext_resource path="res://textures/gauge_progress_red.png" type="Texture" id=8]
 [ext_resource path="res://characters/Buddy/HealthProgressBar.gd" type="Script" id=9]
-[ext_resource path="res://sounds/punch.wav" type="AudioStream" id=10]
-[ext_resource path="res://sounds/PickWeapon.wav" type="AudioStream" id=11]
-[ext_resource path="res://characters/Buddy/catch-cycle.anim" type="Animation" id=12]
-[ext_resource path="res://characters/Buddy/default.anim" type="Animation" id=13]
-[ext_resource path="res://characters/Buddy/gun_aim.anim" type="Animation" id=14]
-[ext_resource path="res://characters/Buddy/hit.anim" type="Animation" id=15]
-[ext_resource path="res://characters/Buddy/idle.anim" type="Animation" id=16]
-[ext_resource path="res://characters/Buddy/punch.anim" type="Animation" id=17]
-[ext_resource path="res://characters/Buddy/walk.anim" type="Animation" id=18]
+[ext_resource path="res://characters/Buddy/AIHandler.gd" type="Script" id=10]
+[ext_resource path="res://addons/goap/GoapPlanner.tscn" type="PackedScene" id=11]
+[ext_resource path="res://characters/actions/TakeHeal.tscn" type="PackedScene" id=12]
+[ext_resource path="res://characters/actions/TakeAmmo.tscn" type="PackedScene" id=13]
+[ext_resource path="res://characters/actions/TakeWeapon.tscn" type="PackedScene" id=14]
+[ext_resource path="res://characters/actions/TakeBox.tscn" type="PackedScene" id=15]
+[ext_resource path="res://characters/actions/DropBox.tscn" type="PackedScene" id=16]
+[ext_resource path="res://characters/actions/DestroyBox.tscn" type="PackedScene" id=17]
+[ext_resource path="res://characters/actions/BringBoxNearConstruct.tscn" type="PackedScene" id=18]
+[ext_resource path="res://characters/actions/BringBoxToConstruct.tscn" type="PackedScene" id=19]
+[ext_resource path="res://characters/actions/Build.tscn" type="PackedScene" id=20]
+[ext_resource path="res://characters/actions/AttackWithWeapon.tscn" type="PackedScene" id=21]
+[ext_resource path="res://characters/actions/AttachWithFists.tscn" type="PackedScene" id=22]
+[ext_resource path="res://characters/Buddy/PlayerHandler.gd" type="Script" id=23]
+[ext_resource path="res://tools/target/Target.tscn" type="PackedScene" id=24]
+[ext_resource path="res://sounds/punch.wav" type="AudioStream" id=25]
+[ext_resource path="res://sounds/PickWeapon.wav" type="AudioStream" id=26]
+[ext_resource path="res://characters/Buddy/catch-cycle.anim" type="Animation" id=27]
+[ext_resource path="res://characters/Buddy/default.anim" type="Animation" id=28]
+[ext_resource path="res://characters/Buddy/gun_aim.anim" type="Animation" id=29]
+[ext_resource path="res://characters/Buddy/hit.anim" type="Animation" id=30]
+[ext_resource path="res://characters/Buddy/idle.anim" type="Animation" id=31]
+[ext_resource path="res://characters/Buddy/punch.anim" type="Animation" id=32]
+[ext_resource path="res://characters/Buddy/walk.anim" type="Animation" id=33]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.486064
@@ -87,7 +102,7 @@ nodes/Punch/position = Vector2( 360, 60 )
 nodes/PunchAnim/node = SubResource( 15 )
 nodes/PunchAnim/position = Vector2( 40, 260 )
 nodes/output/position = Vector2( 1340, 60 )
-node_connections = [ "output", 0, "Hit", "Hit", 0, "HoldObject", "Hit", 1, "HitAnim", "Punch", 0, "Move", "Punch", 1, "PunchAnim", "HoldObject", 0, "Punch", "HoldObject", 1, "Animation" ]
+node_connections = [ "output", 0, "Hit", "HoldObject", 0, "Punch", "HoldObject", 1, "Animation", "Punch", 0, "Move", "Punch", 1, "PunchAnim", "Hit", 0, "HoldObject", "Hit", 1, "HitAnim" ]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=17]
 
@@ -179,6 +194,7 @@ operation = 2
 material = ExtResource( 4 )
 
 [node name="CatchArea" type="Area" parent="."]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.360354, 1.12432 )
 collision_layer = 16
 collision_mask = 38
@@ -214,24 +230,151 @@ script = ExtResource( 9 )
 
 [node name="Tween" type="Tween" parent="Overlay/HealthProgressBar"]
 
+[node name="AIHandler" type="Node" parent="."]
+script = ExtResource( 10 )
+
+[node name="GoapPlanner" parent="AIHandler" instance=ExtResource( 11 )]
+world_state = {
+"builder_full": false,
+"builder_ready": false,
+"have_ammo": false,
+"have_weapon": false,
+"health_low": false,
+"hold_box": false,
+"see_ammo": false,
+"see_heal": false
+}
+goal_state = {
+
+}
+
+[node name="TakeHeal" parent="AIHandler/GoapPlanner" instance=ExtResource( 12 )]
+preconditions = {
+"see_heal": true
+}
+effects = {
+"health_low": false
+}
+
+[node name="TakeAmmo" parent="AIHandler/GoapPlanner" instance=ExtResource( 13 )]
+preconditions = {
+"have_weapon": true,
+"see_ammo": true
+}
+effects = {
+"have_ammo": true
+}
+
+[node name="TakeWeapon" parent="AIHandler/GoapPlanner" instance=ExtResource( 14 )]
+preconditions = {
+"have_weapon": false
+}
+effects = {
+"have_weapon": true
+}
+
+[node name="TakeBox" parent="AIHandler/GoapPlanner" instance=ExtResource( 15 )]
+preconditions = {
+"hold_box": false
+}
+effects = {
+"hold_box": true
+}
+
+[node name="DropBox" parent="AIHandler/GoapPlanner" instance=ExtResource( 16 )]
+preconditions = {
+"hold_box": true
+}
+effects = {
+"box_dropped": true,
+"hold_box": false
+}
+
+[node name="DestroyBox" parent="AIHandler/GoapPlanner" instance=ExtResource( 17 )]
+preconditions = {
+"hold_box": false
+}
+effects = {
+"see_ammo": true,
+"see_heal": true
+}
+
+[node name="BringBoxNearConstruct" parent="AIHandler/GoapPlanner" instance=ExtResource( 18 )]
+preconditions = {
+"hold_box": true
+}
+effects = {
+"near_constructor": true
+}
+
+[node name="BringBoxToConstruct" parent="AIHandler/GoapPlanner" instance=ExtResource( 19 )]
+preconditions = {
+"builder_full": false,
+"builder_ready": false,
+"hold_box": true
+}
+effects = {
+"builder_ready": true,
+"hold_box": false
+}
+
+[node name="Build" parent="AIHandler/GoapPlanner" instance=ExtResource( 20 )]
+preconditions = {
+"builder_ready": true,
+"hold_box": false
+}
+effects = {
+"build_done": true,
+"builder_full": false,
+"builder_ready": false
+}
+
+[node name="AttackWithWeapon" parent="AIHandler/GoapPlanner" instance=ExtResource( 21 )]
+preconditions = {
+"have_ammo": true,
+"have_weapon": true,
+"hold_box": false
+}
+effects = {
+"attack": true
+}
+
+[node name="AttachWithFists" parent="AIHandler/GoapPlanner" instance=ExtResource( 22 )]
+preconditions = {
+"health_low": false,
+"hold_box": false
+}
+effects = {
+"attack": true
+}
+
+[node name="PathDebug" type="ImmediateGeometry" parent="AIHandler"]
+visible = false
+
+[node name="PlayerHandler" type="Node" parent="."]
+script = ExtResource( 23 )
+
+[node name="Target" parent="PlayerHandler" instance=ExtResource( 24 )]
+visible = false
+
 [node name="PunchSound" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource( 10 )
+stream = ExtResource( 25 )
 unit_db = 20.0
 max_distance = 20.0
 
 [node name="PickUpSound" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource( 11 )
+stream = ExtResource( 26 )
 unit_db = 20.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/catch-cycle = ExtResource( 12 )
-anims/default = ExtResource( 13 )
-anims/gun_aim = ExtResource( 14 )
-anims/hit = ExtResource( 15 )
-anims/idle = ExtResource( 16 )
-anims/punch = ExtResource( 17 )
-anims/walk-cycle = ExtResource( 18 )
+anims/catch-cycle = ExtResource( 27 )
+anims/default = ExtResource( 28 )
+anims/gun_aim = ExtResource( 29 )
+anims/hit = ExtResource( 30 )
+anims/idle = ExtResource( 31 )
+anims/punch = ExtResource( 32 )
+anims/walk-cycle = ExtResource( 33 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 16 )

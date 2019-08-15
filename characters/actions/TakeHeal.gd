@@ -17,8 +17,7 @@ func execute(actor):
 	if nearest_heal == null:
 		return false
 	
-	actor._move_target_ref = weakref(nearest_heal)
-	actor.go_to(nearest_heal.global_transform.origin)
+	actor.move_to_object(nearest_heal)
 	
 	if not yield(actor, "on_move_reached"):
 		print("Cannot end TakeHeal action")

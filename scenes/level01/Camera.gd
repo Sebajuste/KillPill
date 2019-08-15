@@ -15,22 +15,24 @@ func _ready():
 	
 	set_as_toplevel(true)
 	
-	var player = get_tree().get_root().get_node("Game/Characters/Player")
+	#var player = get_tree().get_root().get_node("Game/Characters/Player")
+	var player = get_tree().get_root().get_node("Game").get_player_team_member()
 	
 	print( get_tree().get_root().get_child(0).get_name() )
 	print("player: ", player)
 	
-	_player_ref = weakref( player )
+	#_player_ref = weakref( player )
 	
-	_pos_delta = self.global_transform.origin - _player_ref.get_ref().global_transform.origin
+	#_pos_delta = self.global_transform.origin - _player_ref.get_ref().global_transform.origin
 	
-	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	var player = _player_ref.get_ref()
-	if player:
-		self.global_transform.origin = player.global_transform.origin + _pos_delta
+	#var player = _player_ref.get_ref()
 	
-	pass
+	var player = get_tree().get_root().get_node("Game").get_player_team_member()
+	
+	if player:
+		self.global_transform.origin = player.global_transform.origin + Vector3(0, 8.7, 10)
+	

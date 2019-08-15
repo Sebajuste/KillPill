@@ -6,7 +6,7 @@ var Health = preload("res://objects/health/Health.tscn")
 
 var catched = false
 
-#var _collision_mask 
+var _collision_mask 
 var _collision_layer
 
 func is_catched() -> bool:
@@ -17,9 +17,9 @@ func hold(owner) -> bool:
 	if not catched:
 		mode = RigidBody.MODE_STATIC
 		catched = true
-		#_collision_mask = get_collision_mask()
+		_collision_mask = get_collision_mask()
 		_collision_layer = get_collision_layer()
-		#set_collision_mask(0x00)
+		set_collision_mask(0x00)
 		set_collision_layer(0x00)
 		$PickSound.play()
 		return true
@@ -30,7 +30,7 @@ func release():
 	if catched:
 		catched = false
 		mode = RigidBody.MODE_RIGID
-		#set_collision_mask(_collision_mask)
+		set_collision_mask(_collision_mask)
 		set_collision_layer(_collision_layer)
 		$PickSound.play()
 

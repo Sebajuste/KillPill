@@ -34,9 +34,10 @@ func execute(actor):
 	
 	var weapon_ref = weakref(nearest_weapon)
 	
-	actor._move_target_ref = weapon_ref
+	#actor._move_target_ref = weapon_ref
 	
-	actor.go_to(nearest_weapon.global_transform.origin)
+	#actor.go_to(nearest_weapon.global_transform.origin)
+	actor.move_to_object(nearest_weapon)
 	
 	if not yield(actor, "on_move_reached"):
 		print("Cannot end TakeBox action")

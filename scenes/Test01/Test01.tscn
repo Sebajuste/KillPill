@@ -1,14 +1,13 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://textures/ground_grass.material" type="Material" id=1]
 [ext_resource path="res://prefabs/wall/Wall.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/level01/Camera.gd" type="Script" id=3]
 [ext_resource path="res://tools/Constructor/Constructor.tscn" type="PackedScene" id=4]
 [ext_resource path="res://tools/BoxEmitter.tscn" type="PackedScene" id=5]
-[ext_resource path="res://characters/Buddy/Player.tscn" type="PackedScene" id=6]
-[ext_resource path="res://characters/Buddy/BuddyIA.tscn" type="PackedScene" id=7]
-[ext_resource path="res://effects/explosions/PillExplosion.tscn" type="PackedScene" id=8]
-[ext_resource path="res://ui/PlayerUI.tscn" type="PackedScene" id=9]
+[ext_resource path="res://characters/Buddy/Buddy.tscn" type="PackedScene" id=6]
+[ext_resource path="res://effects/explosions/PillExplosion.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ui/PlayerUI.tscn" type="PackedScene" id=8]
 
 [sub_resource type="NavigationMesh" id=1]
 vertices = PoolVector3Array( -15.9939, 0.410604, 17.9514, -15.9939, 0.410604, 24.2514, -8.1939, 0.410604, 24.2514, 8.0061, 0.410604, 24.2514, 16.1061, 0.410604, 24.2514, 16.1061, 0.410604, 17.9514, -8.1939, 0.410604, -24.3486, -15.9939, 0.410604, -24.3486, -15.9939, 0.410604, -12.3486, 16.1061, 0.410604, -12.3486, 16.1061, 0.410604, -24.3486, 8.0061, 0.410604, -24.3486, -15.9939, 0.410604, 11.9514, -15.9939, 0.410604, 17.9514, -8.1939, 0.410604, 24.2514, -0.0939007, 0.410604, 24.2514, 8.0061, 0.410604, 24.2514, 16.1061, 0.410604, 17.9514, 16.1061, 0.410604, 11.9514, -0.0939007, 0.410604, 24.2514, -8.1939, 0.410604, -24.3486, -15.9939, 0.410604, -12.3486, -15.9939, 0.410604, -6.34858, 16.1061, 0.410604, -6.34858, 16.1061, 0.410604, -12.3486, 8.0061, 0.410604, -24.3486, 16.1061, 0.410604, -6.34858, 8.0061, 0.410604, -24.3486, -0.0939007, 0.410604, -24.3486, 16.1061, 0.410604, -0.0485783, -15.9939, 0.410604, -0.0485783, -15.9939, 0.410604, 11.9514, -0.0939007, 0.410604, 24.2514, 16.1061, 0.410604, 11.9514, 16.1061, 0.410604, -0.0485783, -0.0939007, 0.410604, -24.3486, -0.0939007, 0.410604, -24.3486, -8.1939, 0.410604, -24.3486, -15.9939, 0.410604, -6.34858, -15.9939, 0.410604, -0.0485783 )
@@ -68,15 +67,17 @@ shadow_enabled = true
 [node name="Characters" type="Node" parent="."]
 
 [node name="Player" parent="Characters" instance=ExtResource( 6 )]
+handler = "Player"
 
-[node name="BuddyIA" parent="Characters" instance=ExtResource( 7 )]
+[node name="BuddyIA" parent="Characters" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.64452, 0.973, -6.67876 )
 team = "Team_1"
 color = "Red"
+handler = "AI"
 
 [node name="Objects" type="Node" parent="."]
 
-[node name="PillExplosion" parent="Objects" instance=ExtResource( 8 )]
+[node name="PillExplosion" parent="Objects" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.35438, 1.20489, 0 )
 
-[node name="PlayerUI" parent="." instance=ExtResource( 9 )]
+[node name="PlayerUI" parent="." instance=ExtResource( 8 )]

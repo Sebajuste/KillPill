@@ -14,7 +14,9 @@ signal on_health_change(value, max_value)
 signal on_drop_object(object)
 signal on_take_object(object)
 signal on_hold_object(object)
-signal on_death
+signal on_death(object)
+
+signal on_move_reached(result)
 
 export var team : String = "Team_0"
 
@@ -22,9 +24,16 @@ export var move_speed = 5.0
 export var max_health = 100
 export var immortal := false
 
-export var ia = false
-
 export(String, "Blue", "Red", "Yellow") var color setget set_color
+
+export(String, "None", "AI", "Player") var handler := "None" setget set_handler
+
+class HandlerNone:
+	
+	func control(delta) -> Vector3:
+		return Vector3()
+	
+
 
 var health = max_health
 
@@ -38,6 +47,51 @@ var ennemies := []
 
 var target_pos = null
 
+
+func set_handler(value):
+	handler = value
+	
+	match handler:
+		"None":
+			$AIHandler.enable = false
+			$PlayerHandler.enable = false
+		
+		"AI":
+			$AIHandler.enable = true
+			$PlayerHandler.enable = false
+		
+		"Player":
+			$AIHandler.enable = false
+			$PlayerHandler.enable = true
+	
+
+func get_current_handler():
+	match handler:
+		"None":
+			return HandlerNone.new()
+		
+		"AI":
+			return $AIHandler
+		
+		"Player":
+			return $PlayerHandler
+	return HandlerNone.new()
+
+"""
+Function to move character. Only work when the character is an AI
+"""
+func move_to_object(object, min_distance := 1.5) -> bool:
+	return get_current_handler().move_to_object(object, min_distance)
+
+func move_to_position(target: Vector3, min_distance := 1.5) -> bool:
+	return get_current_handler().move_to_position(target, min_distance)
+
+func move_cancel() -> bool:
+	return get_current_handler().move_cancel()
+
+"""
+Functions for objects manipulation
+"""
 func has_object() -> bool:
 	return $BodyRightHand/RightHand.get_child_count() > 0
 
@@ -132,7 +186,9 @@ func release_hold() -> bool:
 	
 	return false
 
-
+"""
+Action functions
+"""
 func shoot() -> bool:
 	
 	if not is_holding():
@@ -223,7 +279,9 @@ func constructor_put_box(constructor, box) -> bool:
 	
 	if constructor.is_in_group("constructor") and constructor.team == team:
 		$HoldPosition.remove_child(box)
-		var added = constructor.add_object($CatchArea, box)
+		
+		var added = get_current_handler().add_object_to_constructor(box, constructor)
+		
 		if added:
 			$BodyRightHand/RightHand.visible = true
 			$AnimationTree.set("parameters/HoldObject/blend_amount", 0.0)
@@ -267,8 +325,9 @@ func damage(position, normal, bullet):
 		get_parent().add_child(explosion)
 		explosion.global_transform.origin = self.global_transform.origin
 		explosion.color = color
+		emit_signal("on_death", self)
+		visible = false
 		queue_free()
-		emit_signal("on_death")
 	
 
 func set_color(value):
@@ -286,10 +345,6 @@ func set_color(value):
 		"Yellow":
 			var material = load("res://characters/Buddy/BodyYellow.material")
 			$Body/Body.set_surface_material(0, material)
-
-
-func _control(delta) -> Vector3:
-	return Vector3()
 
 func _aiming_target():
 	var right_hand = $BodyRightHand/RightHand
@@ -323,14 +378,15 @@ func _next_shoot_pos(target: Pill):
 		var shoot_length = _next_shoot_rayon(t)
 		var delta = abs(length - shoot_length)
 		
-		#print("[t=%f, length=%f, shoot_length=%f, delta=%f] " % [t, length, shoot_length, abs(length - shoot_length)])
-		
 		if min_delta == null or delta < min_delta:
 			min_delta = delta
 			shoot_pos = next_target_pos
 	
-	#print("shoot_pos: ", shoot_pos, ", target: ", target.global_transform.origin)
 	return shoot_pos
+
+
+func emit_status():
+	emit_signal("on_health_change", health, max_health)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -338,8 +394,9 @@ func _ready():
 	health = max_health
 	
 	set_color(color)
+	set_handler(handler)
 	
-	emit_signal("on_health_change", health, max_health)
+	emit_status()
 	
 
 
@@ -359,7 +416,7 @@ func _process(delta):
 	#
 	var dir = Vector3()
 	if not dead:
-		dir = _control(delta)
+		dir = get_current_handler().control(delta)
 	
 	velocity.y += delta * GRAVITY
 	
