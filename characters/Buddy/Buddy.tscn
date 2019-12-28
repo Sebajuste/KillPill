@@ -102,7 +102,7 @@ nodes/Punch/position = Vector2( 360, 60 )
 nodes/PunchAnim/node = SubResource( 15 )
 nodes/PunchAnim/position = Vector2( 40, 260 )
 nodes/output/position = Vector2( 1340, 60 )
-node_connections = [ "output", 0, "Hit", "HoldObject", 0, "Punch", "HoldObject", 1, "Animation", "Punch", 0, "Move", "Punch", 1, "PunchAnim", "Hit", 0, "HoldObject", "Hit", 1, "HitAnim" ]
+node_connections = [ "output", 0, "Hit", "Hit", 0, "HoldObject", "Hit", 1, "HitAnim", "HoldObject", 0, "Punch", "HoldObject", 1, "Animation", "Punch", 0, "Move", "Punch", 1, "PunchAnim" ]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=17]
 
@@ -231,6 +231,7 @@ script = ExtResource( 9 )
 [node name="Tween" type="Tween" parent="Overlay/HealthProgressBar"]
 
 [node name="AIHandler" type="Node" parent="."]
+editor/display_folded = true
 script = ExtResource( 10 )
 
 [node name="GoapPlanner" parent="AIHandler" instance=ExtResource( 11 )]
@@ -352,6 +353,7 @@ effects = {
 visible = false
 
 [node name="PlayerHandler" type="Node" parent="."]
+editor/display_folded = true
 script = ExtResource( 23 )
 
 [node name="Target" parent="PlayerHandler" instance=ExtResource( 24 )]

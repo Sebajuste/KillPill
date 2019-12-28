@@ -1,5 +1,7 @@
 extends Node
 
+export(String, "Keyboard", "GamePad1", "Both") var controller := "Both" setget set_controller
+
 var enable := false setget set_enable
 
 var _last_mouse_pos
@@ -9,15 +11,28 @@ var use_mouse = true
 var look_target_pos = null
 var target_ref = null
 
+
+func _ready():
+	
+	$Target.set_as_toplevel(true)
+	
+
+
+func set_controller(value: String):
+	controller = value
+
+
 func set_enable(value: bool):
 	enable = value
 	$Target.visible = enable
+
 
 func add_object_to_constructor(object, constructor):
 	
 	var catch_area = get_node("../CatchArea")
 	
 	return constructor.add_object(catch_area, object)
+
 
 func _mouse_look(mouse_pos) -> Vector3:
 	
@@ -51,8 +66,8 @@ func _mouse_look(mouse_pos) -> Vector3:
 	
 	return dir
 
+
 func control(delta) -> Vector3:
-	
 	
 	if not enable:
 		print("oups")
@@ -182,8 +197,3 @@ func control(delta) -> Vector3:
 	get_parent().look_dir = get_parent().look_dir.normalized()
 	
 	return dir.normalized()
-
-func _ready():
-	
-	$Target.set_as_toplevel(true)
-	

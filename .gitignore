@@ -3,5 +3,5 @@
 **/*.translation
 *.import
 
-
+*.TMP
 Settings.cfg

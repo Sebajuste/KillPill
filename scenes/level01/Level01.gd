@@ -4,38 +4,6 @@ onready var player_team = get_node("Teams/TeamBlue")
 
 var player_team_member
 
-func get_player_team_member():
-	return player_team_member
-
-
-func find_team(character):
-	for team in $Teams.get_children():
-		if team.team == character.team:
-			return team
-	return null
-
-func switch_player(old_char, new_char):
-	
-	if old_char:
-		old_char.handler = "AI"
-		old_char.disconnect("on_death", self, "_on_Player_on_death")
-		old_char.disconnect("on_take_object", $PlayerUI, "_on_Player_on_take_object")
-		old_char.disconnect("on_drop_object", $PlayerUI, "_on_Player_on_drop_object")
-		old_char.disconnect("on_health_change", $PlayerUI, "_on_Player_on_health_change")
-	
-	new_char.handler = "Player"
-	
-	new_char.connect("on_death", self, "_on_Player_on_death")
-	new_char.connect("on_take_object", $PlayerUI, "_on_Player_on_take_object")
-	new_char.connect("on_drop_object", $PlayerUI, "_on_Player_on_drop_object")
-	new_char.connect("on_health_change", $PlayerUI, "_on_Player_on_health_change")
-	
-	player_team_member = new_char
-	
-	new_char.emit_status()
-	
-	pass
-
 
 
 # Called when the node enters the scene tree for the first time.
@@ -56,6 +24,7 @@ func _ready():
 	switch_player(null, $Characters/Player )
 	
 	pass # Replace with function body.
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -94,6 +63,39 @@ func _process(delta):
 		$GameOver.visible = true
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
+
+func get_player_team_member():
+	return player_team_member
+
+
+func find_team(character):
+	for team in $Teams.get_children():
+		if team.team == character.team:
+			return team
+	return null
+
+
+func switch_player(old_char, new_char):
+	
+	if old_char:
+		old_char.handler = "AI"
+		old_char.disconnect("on_death", self, "_on_Player_on_death")
+		old_char.disconnect("on_take_object", $PlayerUI, "_on_Player_on_take_object")
+		old_char.disconnect("on_drop_object", $PlayerUI, "_on_Player_on_drop_object")
+		old_char.disconnect("on_health_change", $PlayerUI, "_on_Player_on_health_change")
+	
+	new_char.handler = "Player"
+	
+	new_char.connect("on_death", self, "_on_Player_on_death")
+	new_char.connect("on_take_object", $PlayerUI, "_on_Player_on_take_object")
+	new_char.connect("on_drop_object", $PlayerUI, "_on_Player_on_drop_object")
+	new_char.connect("on_health_change", $PlayerUI, "_on_Player_on_health_change")
+	
+	player_team_member = new_char
+	
+	new_char.emit_status()
+	
+	pass
 
 
 func _on_Player_on_death(player):

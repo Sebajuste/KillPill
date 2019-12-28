@@ -6,82 +6,6 @@ export var max_team = 5
 
 var _team_member_refs := Array()
 
-func get_constructor():
-	
-	var constructors = get_tree().get_nodes_in_group("constructor")
-	for constructor in constructors:
-		if constructor.team == self.team:
-			return constructor
-	return null
-
-func get_team() -> Array:
-	var team_list := []
-	#for character in get_tree().get_nodes_in_group("character"):
-	for character in _team_member_refs:
-		if character.get_ref() and character.get_ref().team == self.team:
-			team_list.append( character.get_ref() )
-	return team_list
-
-func get_next_member(member):
-	
-	var index = _find_character( member )
-	if index != -1:
-		
-		if _team_member_refs.size() == 1:
-			return null
-		
-		if index == _team_member_refs.size() - 1:
-			return _team_member_refs[0].get_ref()
-		
-		return _team_member_refs[index+1].get_ref()
-	return null
-
-func get_previous_member(member):
-	var index = _find_character( member )
-	if index != -1:
-		if _team_member_refs.size() == 1:
-			return null
-		if index == 0:
-			return _team_member_refs[ _team_member_refs.size() - 1].get_ref()
-		return _team_member_refs[index-1].get_ref()
-	return null
-
-func get_team_ai(only_ai := true) -> Array:
-	var team_list := []
-	#for character in get_tree().get_nodes_in_group("character"):
-	for character_ref in _team_member_refs:
-		var character = character_ref.get_ref()
-		if character and character.team == self.team and ( not only_ai or character.handler == "AI"):
-			team_list.append( character )
-	return team_list
-
-func get_ennemies() -> Array:
-	var ennemies := []
-	var characters = get_tree().get_nodes_in_group("character")
-	for character in characters:
-		if character.team != self.team:
-			ennemies.append( character )
-	return ennemies
-
-func get_weapons():
-	
-	return get_tree().get_nodes_in_group("object_container")
-	
-
-func compare_goals(expect: Dictionary, state: Dictionary) -> bool:
-	for key in expect:
-		if not state.has(key) or state[key] != expect[key]:
-			return false
-	return true
-
-
-
-func _find_character(character) -> int:
-	for index in range( _team_member_refs.size() ):
-		if _team_member_refs[index].get_ref() == character:
-			return index
-	return -1
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -101,6 +25,89 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+
+func get_constructor():
+	
+	var constructors = get_tree().get_nodes_in_group("constructor")
+	for constructor in constructors:
+		if constructor.team == self.team:
+			return constructor
+	return null
+
+
+func get_team() -> Array:
+	_update_team_array()
+	var team_list := []
+	for character in _team_member_refs:
+		if character.get_ref() and character.get_ref().team == self.team:
+			team_list.append( character.get_ref() )
+	return team_list
+
+
+func get_next_member(member):
+	var team_list = get_team()
+	var index = _find_character( member )
+	if index != -1:
+		if team_list.size() == 1:
+			return null
+		
+		if index == team_list.size() - 1:
+			return team_list[0]
+		
+		return team_list[index+1]
+	return null
+
+
+func get_previous_member(member):
+	var team_list = get_team()
+	var index = _find_character( member )
+	if index != -1:
+		if team_list.size() == 1:
+			return null
+		if index == 0:
+			return team_list[ team_list.size() - 1]
+		return team_list[index-1]
+	return null
+
+
+func get_team_ai(only_ai := true) -> Array:
+	var team_list = get_team()
+	var result := []
+	for character in team_list:
+		if character and character.team == self.team and ( not only_ai or character.handler == "AI"):
+			result.append( character )
+	return result
+
+
+func get_ennemies() -> Array:
+	var ennemies := []
+	var characters = get_tree().get_nodes_in_group("character")
+	for character in characters:
+		if character.team != self.team:
+			ennemies.append( character )
+	return ennemies
+
+
+func get_weapons():
+	
+	return get_tree().get_nodes_in_group("object_container")
+	
+
+func compare_goals(expect: Dictionary, state: Dictionary) -> bool:
+	for key in expect:
+		if not state.has(key) or state[key] != expect[key]:
+			return false
+	return true
+
+
+func _find_character(character) -> int:
+	var team_list = get_team()
+	for index in range( team_list.size() ):
+		if team_list[index] == character:
+			return index
+	return -1
 
 
 func set_goal(team_member, goal_state):
@@ -126,9 +133,16 @@ func _get_nearest_weapon(actor, weapons: Array, min_distance := 0.0):
 	return nearest_weapon
 
 
+func _update_team_array():
+	_team_member_refs.clear()
+	for character in get_tree().get_nodes_in_group("character"):
+		if character.team == self.team:
+			_team_member_refs.append( weakref(character) )
+
+
 func _update_ai():
 	
-	if _team_member_refs.empty():
+	if get_team().empty():
 		return
 	
 	# Analyse situation for team
@@ -265,7 +279,7 @@ func _update_ai():
 	#
 	# Agressive
 	#
-	if _team_member_refs.size() >= max_team - 2 and not ennemies.empty():
+	if get_team().size() >= max_team - 2 and not ennemies.empty():
 		for team_member in team:
 			if team_member.has_object():
 				set_goal(team_member, { "attack": true })
@@ -297,14 +311,15 @@ func _on_actions_done(team_member):
 func _on_constructor_build(name, object):
 	
 	if name == "pill":
-		object.connect("on_death", self, "_on_death")
+		object.connect("on_death", self, "_on_pill_death")
 		object.get_node("AIHandler").connect("on_actions_done", self, "_on_actions_done")
 		_team_member_refs.push_back( weakref(object) )
 	
 	_update_ai()
 	
 
-func _on_death(object):
+
+func _on_pill_death(object):
 	
 	var index = _find_character(object)
 	if index != -1:
@@ -317,4 +332,3 @@ func _on_constructor_add_box():
 	
 	_update_ai()
 	
-	pass # Replace with function body.
