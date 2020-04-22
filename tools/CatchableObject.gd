@@ -37,11 +37,6 @@ func _ready():
 		$AnimationPlayer.play("rotation")
 
 
-func _process(delta):
-	
-	pass
-	
-
 
 func _on_LifeTimer_timeout():
 	

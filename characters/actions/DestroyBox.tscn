@@ -8,6 +8,7 @@ preconditions = {
 "hold_box": false
 }
 effects = {
-"see_ammo": true
+"see_ammo": true,
+"see_heal": true
 }
 cost = 2.0

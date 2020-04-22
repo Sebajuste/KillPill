@@ -17,8 +17,7 @@ func execute(actor):
 	if nearest_ammo == null:
 		return false
 	
-	actor._move_target_ref = weakref(nearest_ammo)
-	actor.go_to(nearest_ammo.global_transform.origin)
+	actor.move_to_object(nearest_ammo)
 	
 	if not yield(actor, "on_move_reached"):
 		print("Cannot end TakeAmmo action")

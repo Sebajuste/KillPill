@@ -38,7 +38,7 @@ func execute(actor):
 	
 	if distance < 20:
 		
-		actor.go_to(target.global_transform.origin, 20)
+		actor.move_to_object(target, 20)
 		
 		if not yield(actor, "on_move_reached"):
 			emit_signal("on_action_end", false)

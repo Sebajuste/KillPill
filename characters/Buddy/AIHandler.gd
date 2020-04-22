@@ -1,8 +1,10 @@
-extends "res://characters/Buddy/Buddy.gd"
+extends Node
 
 enum State {IDLE, GO_TO, ANIMATION}
 
-signal on_move_reached(result)
+signal on_actions_done
+
+var enable := false setget set_enable
 
 var _state = State.IDLE
 
@@ -13,12 +15,25 @@ var _move_target_ref = null
 var _target_final = null
 var _target_min_distance = 1.5
 
-
 var _action_list
 
+func set_enable(value):
+	enable = value
+	move_cancel()
+	_action_list = null
+	get_parent().look_dir = Vector3()
 
+func add_object_to_constructor(object, constructor):
+	return constructor.add_object_target(object)
 
-func go_to(target: Vector3, min_distance := 1.5):
+func move_to_object(object, min_distance := 1.5) -> bool:
+	
+	if move_to_position(object.global_transform.origin, min_distance):
+		_move_target_ref = weakref(object)
+		return true
+	return false
+
+func move_to_position(target: Vector3, min_distance := 1.5) -> bool:
 	
 	_target_final = target
 	_target_min_distance = min_distance
@@ -27,60 +42,37 @@ func go_to(target: Vector3, min_distance := 1.5):
 	
 	var nav = root.get_node("Environment/Navigation")
 	
-	var path : PoolVector3Array = nav.get_simple_path(global_transform.origin, target)
+	var path : PoolVector3Array = nav.get_simple_path(get_parent().global_transform.origin, target)
 	
 	if path.size() > 0:
 		_move_path = path
 		_move_index = 0
 		_state = State.GO_TO
+		return true
 	else:
 		print("Cannot go to destination")
+		return false
 
-func cancel_move():
+func move_cancel():
 	if _move_index != -1:
 		_move_target_ref = null
+		_target_final = null
 		_move_index = -1
 		_state = State.IDLE
-		emit_signal("on_move_reached", false)
-	
+		get_parent().emit_signal("on_move_reached", false)
 
-
-
-func constructor_put_box(constructor, box) -> bool:
-	
-	if constructor.is_in_group("constructor") and constructor.team == team:
-		
-		$HoldPosition.remove_child(box)
-		var added = constructor.add_object_target(box)
-		if added:
-			$BodyRightHand/RightHand.visible = true
-			$AnimationTree.set("parameters/HoldObject/blend_amount", 0.0)
-			return true
-		else:
-			$HoldPosition.add_child(box)
-	
-	return false
-
-
-func _control(delta) -> Vector3:
+func control(delta) -> Vector3:
 	return _move_control
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	
 	$PathDebug.set_as_toplevel(true)
-	
 	$PathDebug.global_transform = Transform()
-	
-	ia = true
-	
-	pass # Replace with function body.
 
-
-var _ennemy_target
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	if not enable:
+		return
 	
 	match _state:
 		
@@ -96,10 +88,7 @@ func _process(delta):
 			_animation(delta)
 			pass
 	
-	._process(delta)
-	
 	_update_path_debug()
-	
 
 func _idle(delta):
 	
@@ -109,30 +98,30 @@ func _idle(delta):
 	var constructors = get_tree().get_nodes_in_group("constructor")
 	var constructor = null
 	for c in constructors:
-		if c.team == self.team:
+		if c.team == get_parent().team:
 			constructor = c
 			break
 	
-	var constructor_distance = (constructor.global_transform.origin - self.global_transform.origin).length()
+	var constructor_distance = (constructor.global_transform.origin - get_parent().global_transform.origin).length()
 	
 	$GoapPlanner.world_state["builder_ready"] = constructor.target_ready_to_build()
 	$GoapPlanner.world_state["builder_full"] = constructor.target_ready_to_build()
-	$GoapPlanner.world_state["hold_box"] = is_holding()
-	$GoapPlanner.world_state["have_weapon"] = has_object()
-	$GoapPlanner.world_state["have_ammo"] = has_object() and get_object().ammo > 0
+	$GoapPlanner.world_state["hold_box"] = get_parent().is_holding()
+	$GoapPlanner.world_state["have_weapon"] = get_parent().has_object()
+	$GoapPlanner.world_state["have_ammo"] = get_parent().has_object() and get_parent().get_object().ammo > 0
 	$GoapPlanner.world_state["see_ammo"] = not get_tree().get_nodes_in_group("ammo").empty()
 	$GoapPlanner.world_state["see_heal"] = not get_tree().get_nodes_in_group("heal").empty()
-	$GoapPlanner.world_state["see_ennemy"] = not self.ennemies.empty()
+	$GoapPlanner.world_state["see_ennemy"] = not get_parent().ennemies.empty()
 	$GoapPlanner.world_state["near_constructor"] = constructor_distance < 10
-	$GoapPlanner.world_state["health_low"] = health < ( (20 * max_health) / 100  )
+	$GoapPlanner.world_state["health_low"] = get_parent().health < ( (20 * get_parent().max_health) / 100  )
 	
 	$GoapPlanner.goal_state["health_low"] = false
 	
 	var context = {
-		"team": team,
-		"position": global_transform.origin,
+		"team": get_parent().team,
+		"position": get_parent().global_transform.origin,
 		"constructor": constructor,
-		"ennemies": self.ennemies
+		"ennemies": get_parent().ennemies
 	}
 	
 	var action_list = $GoapPlanner.create_plan(context)
@@ -140,14 +129,9 @@ func _idle(delta):
 	if not action_list.empty():
 		_action_list = action_list
 		_state = State.ANIMATION
-		
-		#var action_plan = ""
-		#for a in action_list:
-		#	action_plan += "> %s " % a.get_name()
-		#print("[%s] Action Plan : " % get_name(), action_plan, $GoapPlanner.world_state, $GoapPlanner.goal_state)
-		
+		#_show_plan(action_list)
 	else:
-		print("[%s] Cannot create plan state: " % get_name())
+		print("[%s] Cannot create plan state : " % get_parent().get_name())
 		print("> state: ", $GoapPlanner.world_state)
 		print("> goal : ", $GoapPlanner.goal_state)
 		$GoapPlanner.goal_state = {}
@@ -158,27 +142,27 @@ func _move(delta):
 	
 	if _move_index != -1:
 		
-		var target_distance = (global_transform.origin - _target_final).length()
+		var target_distance = (get_parent().global_transform.origin - _target_final).length()
 		
 		if _move_index >= _move_path.size() or target_distance < _target_min_distance:
 			_move_target_ref = null
 			_move_index = -1
 			_state = State.IDLE
-			emit_signal("on_move_reached", true)
+			get_parent().emit_signal("on_move_reached", true)
 			return
 		
 		if _move_target_ref != null and !_move_target_ref.get_ref():
 			_move_target_ref = null
 			_move_index = -1
 			_state = State.IDLE
-			emit_signal("on_move_reached", false)
+			get_parent().emit_signal("on_move_reached", false)
 		
 		var move_target = _move_path[_move_index]
 		
-		var distance = (global_transform.origin - move_target).length()
+		var distance = (get_parent().global_transform.origin - move_target).length()
 		
 		if distance > 1.5:
-			_move_control = (move_target - global_transform.origin).normalized()
+			_move_control = (move_target - get_parent().global_transform.origin).normalized()
 			
 			
 			# Todo : avoid obstacle
@@ -201,20 +185,13 @@ func _animation(delta):
 		
 		var action = _action_list.pop_front()
 		
-		#print("Execute ", action.get_name() )
-		
-		var result = action.execute(self)
-		
-		#print("result: ", result)
+		var result = action.execute( get_parent() )
 		
 		if typeof(result) == TYPE_BOOL and result:
 			pass
 		elif (typeof(result) == TYPE_BOOL and not result) or not result or not yield(action, "on_action_end"):
 			
-			#var plan = ""
-			#for a in _action_list:
-			#	plan += "> " + a.get_name() + " "
-			#plan += "> %s" % action.get_name()
+			#_show_plan(_action_list)
 			#print("[%s] GOAP cannot reach =" % get_name(), plan )
 			_action_list = null
 			_state = State.IDLE
@@ -224,9 +201,17 @@ func _animation(delta):
 		if _action_list.empty():
 			#print("[%s] GOAP done" % get_name() )
 			_action_list = null
+			emit_signal("on_actions_done", get_parent())
 		
 		_state = State.IDLE
 	
+
+func _show_plan(action_list):
+	var action_plan = ""
+	for a in action_list:
+		action_plan += "> %s " % a.get_name()
+	print("[%s] Action Plan : " % get_name(), action_plan, $GoapPlanner.world_state, $GoapPlanner.goal_state)
+
 
 func _update_path_debug():
 	
@@ -235,7 +220,7 @@ func _update_path_debug():
 	if _move_path.size() > 1:
 		$PathDebug.begin(Mesh.PRIMITIVE_LINE_STRIP)
 		
-		$PathDebug.add_vertex( global_transform.origin )
+		$PathDebug.add_vertex( get_parent().global_transform.origin )
 		
 		for index in range(_move_index, _move_path.size() ):
 			$PathDebug.add_vertex( _move_path[index] )
@@ -246,5 +231,3 @@ func _update_path_debug():
 				$PathDebug.add_vertex(target.global_transform.origin)
 		
 		$PathDebug.end()
-	
-	

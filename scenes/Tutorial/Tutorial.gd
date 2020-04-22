@@ -16,6 +16,9 @@ const STEPS = [
 var next_step_index = 0
 
 
+func get_player_team_member():
+	return $Characters/Player
+
 func show_next_step(clear_previous := true):
 	
 	var step = STEPS[next_step_index]
@@ -121,9 +124,9 @@ func _on_Constructor_on_build(name, object):
 			for character in get_node("Characters").get_children():
 				
 				if character.team == "Team_0":
-					var goap_planner = character.get_node("GoapPlanner")
+					var goap_planner = character.get_node("AIHandler/GoapPlanner")
 					if goap_planner != null:
-						goap_planner.goal_state = {"attack": true}
+						goap_planner.goal_state = {"have_weapon": true, "attack": true}
 					
 				
 			
@@ -150,7 +153,9 @@ func _on_Player_on_take_object(object):
 """
 Step
 """
-func _on_BuddyTarget_on_death():
+func _on_BuddyTarget_on_death(character):
+	
+	print("_on_BuddyTarget_on_death")
 	
 	show_next_step()
 	$Notifications.create_notification(tr("tuto_tips"), tr("tuto_tips_ammo") )
@@ -165,7 +170,7 @@ func _on_BuddyTarget_on_death():
 """
 Step
 """
-func _on_BuddyBounce_on_death():
+func _on_BuddyBounce_on_death(character):
 	
 	show_next_step()
 	$Environment/BoxEmitter.max_box = 5
@@ -177,7 +182,7 @@ func _on_BuddyBounce_on_death():
 
 var target_destroyed = 0
 
-func _on_BuddyIA_on_death():
+func _on_BuddyIA_on_death(character):
 	
 	target_destroyed += 1
 	
@@ -193,7 +198,7 @@ func _on_FightTrigger_area_entered(area):
 	
 	for character in get_node("Characters").get_children():
 		if character.has_method("character"):
-			character.cancel_move()
+			character.move_cancel()
 			pass
 	
 

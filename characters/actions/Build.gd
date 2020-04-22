@@ -12,7 +12,7 @@ func execute(actor):
 	if constructor == null:
 		return false
 	
-	actor.go_to(constructor.global_transform.origin)
+	actor.move_to_object(constructor)
 	
 	if not yield(actor, "on_move_reached"):
 		print("Cannot end Build action")

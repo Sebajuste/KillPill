@@ -38,20 +38,18 @@ func shoot() -> bool:
 	
 	var position = $Muzzle.global_transform.origin
 	
+	var root_node = get_tree().get_root().get_child(0)
+	
 	var bullet = Bullet.instance()
 	bullet.damage = self.damage
-	bullet.speed = self.bullet_speed
+	root_node.add_child(bullet)
 	
 	var rotTransform = bullet.global_transform.looking_at(direction, Vector3.UP)
 	var thisRotation = Quat(global_transform.basis).slerp(rotTransform.basis, 1)
 	bullet.global_transform = Transform(thisRotation, position)
 	
 	bullet.velocity = direction * 20
-	
-	var root_node = get_tree().get_root().get_child(0)
-	
-	root_node.add_child(bullet)
-	
+
 	$AnimationPlayer.play("shoot")
 	
 	ammo -= 1

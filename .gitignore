@@ -1,4 +1,7 @@
 **/*.import
 **/*/.TMP
+**/*.translation
 *.import
+
+*.TMP
 Settings.cfg
