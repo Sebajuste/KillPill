@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/DropBox.gd" type="Script" id=1]
+
+
+[node name="DropBox" type="Node"]
+script = ExtResource( 1 )
+preconditions = {
+"hold_box": true
+}
+effects = {
+"box_dropped": true,
+"hold_box": false
+}

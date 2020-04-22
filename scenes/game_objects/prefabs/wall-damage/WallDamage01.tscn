@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CubeMesh" id=1]
+
+[node name="WallDamage01" type="CSGPolygon"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 1 )
+operation = 2
+polygon = PoolVector2Array( -0.0872477, -0.176267, -0.134652, 0.11812, 0.00910023, 0.0473258, 0.237078, 0.0739359, 0.114488, -0.074313 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.241934, 0, 0, 0, 0.216655, 0, 0, 0, 0.524648, 0, 0, -0.509954 )
+mesh = SubResource( 1 )
+material/0 = null

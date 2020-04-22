@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/TakeWeapon.gd" type="Script" id=1]
+
+
+[node name="TakeWeapon" type="Node"]
+script = ExtResource( 1 )
+preconditions = {
+"have_weapon": false
+}
+effects = {
+"have_weapon": true
+}
+cost = 5.0

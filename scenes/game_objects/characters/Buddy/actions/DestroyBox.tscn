@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/DestroyBox.gd" type="Script" id=1]
+
+
+[node name="DestroyBox" type="Node"]
+script = ExtResource( 1 )
+preconditions = {
+"hold_box": false
+}
+effects = {
+"see_ammo": true,
+"see_heal": true
+}
+cost = 2.0

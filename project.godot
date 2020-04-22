@@ -47,7 +47,7 @@ _global_script_classes=[ {
 "base": "KinematicBody",
 "class": "Pill",
 "language": "GDScript",
-"path": "res://characters/Buddy/Buddy.gd"
+"path": "res://scenes/game_objects/characters/Buddy/Buddy.gd"
 } ]
 _global_script_class_icons={
 "AStarEdge": "",
@@ -63,12 +63,13 @@ _global_script_class_icons={
 [application]
 
 config/name="Kill Pill"
-run/main_scene="res://ui/main-menu/MainMenu.tscn"
+run/main_scene="res://scenes/levels/MainScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 configuration="*res://scripts/singletons/configuration.gd"
+Loading="*res://scripts/singletons/loading.gd"
 
 [display]
 
@@ -194,7 +195,7 @@ switch_previous_team_member={
 [locale]
 
 locale_filter=[ 0, [ "en", "fr" ] ]
-translations=PoolStringArray( "res://i18n/button.en.translation", "res://i18n/button.fr.translation", "res://i18n/label.en.translation", "res://i18n/label.fr.translation", "res://i18n/title.en.translation", "res://i18n/title.fr.translation", "res://i18n/tutorial.en.translation", "res://i18n/tutorial.fr.translation" )
+translations=PoolStringArray( "res://assets/i18n/button.en.translation", "res://assets/i18n/button.fr.translation", "res://assets/i18n/label.en.translation", "res://assets/i18n/label.fr.translation", "res://assets/i18n/title.en.translation", "res://assets/i18n/title.fr.translation", "res://assets/i18n/tutorial.en.translation", "res://assets/i18n/tutorial.fr.translation" )
 
 [rendering]
 
