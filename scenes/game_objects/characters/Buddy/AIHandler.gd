@@ -23,8 +23,10 @@ func set_enable(value):
 	_action_list = null
 	get_parent().look_dir = Vector3()
 
+
 func add_object_to_constructor(object, constructor):
 	return constructor.add_object_target(object)
+
 
 func move_to_object(object, min_distance := 1.5) -> bool:
 	
@@ -32,6 +34,7 @@ func move_to_object(object, min_distance := 1.5) -> bool:
 		_move_target_ref = weakref(object)
 		return true
 	return false
+
 
 func move_to_position(target: Vector3, min_distance := 1.5) -> bool:
 	
@@ -53,6 +56,7 @@ func move_to_position(target: Vector3, min_distance := 1.5) -> bool:
 		print("Cannot go to destination")
 		return false
 
+
 func move_cancel():
 	if _move_index != -1:
 		_move_target_ref = null
@@ -61,13 +65,19 @@ func move_cancel():
 		_state = State.IDLE
 		get_parent().emit_signal("on_move_reached", false)
 
-func control(delta) -> Vector3:
+
+func control(_delta) -> Vector3:
+	
 	return _move_control
+	
+
 
 func _ready():
 	
-	$PathDebug.set_as_toplevel(true)
-	$PathDebug.global_transform = Transform()
+	#$PathDebug.set_as_toplevel(true)
+	#$PathDebug.global_transform = Transform()
+	pass
+
 
 func _process(delta):
 	
@@ -90,7 +100,8 @@ func _process(delta):
 	
 	_update_path_debug()
 
-func _idle(delta):
+
+func _idle(_delta):
 	
 	if $GoapPlanner.goal_state.empty():
 		return
@@ -136,7 +147,8 @@ func _idle(delta):
 		print("> goal : ", $GoapPlanner.goal_state)
 		$GoapPlanner.goal_state = {}
 
-func _move(delta):
+
+func _move(_delta):
 	
 	_move_control = Vector3()
 	
@@ -177,9 +189,9 @@ func _move(delta):
 	else:
 		_state = State.IDLE
 	
-	
 
-func _animation(delta):
+
+func _animation(_delta):
 	
 	if _action_list != null and not _action_list.empty():
 		
@@ -204,7 +216,7 @@ func _animation(delta):
 			emit_signal("on_actions_done", get_parent())
 		
 		_state = State.IDLE
-	
+
 
 func _show_plan(action_list):
 	var action_plan = ""

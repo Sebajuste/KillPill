@@ -1,14 +1,17 @@
+class_name Constructor
 extends Spatial
 
+
+signal object_emitted(object)
 
 signal on_build(name, object)
 signal on_add_box
 
-var CatchableObject = preload("res://tools/CatchableObject.tscn")
+const CatchableObject = preload("res://scenes/game_objects/gameplay/catchable_object/CatchableObject.tscn")
 
-var Gun = preload("res://scenes/game_objects/objects/weapons/gun/Gun.tscn")
+const Gun = preload("res://scenes/game_objects/objects/weapons/gun/Gun.tscn")
 
-var Pill = preload("res://scenes/game_objects/characters/Buddy/Buddy.tscn")
+const Pill = preload("res://scenes/game_objects/characters/Buddy/Buddy.tscn")
 
 
 const GUN1_PATTERN = [[1, 0], [0, 0]]
@@ -81,9 +84,9 @@ func add_object_target(object) -> bool:
 	
 	return false
 
-func add_object(user, object) -> bool:
+func add_object(user, object : Node) -> bool:
 	var area = select_area(user)
-	if area != null:
+	if area != null and object != null:
 		var result = area.add_object(object)
 		if result:
 			emit_signal("on_add_box")
@@ -130,7 +133,7 @@ func get_current_pattern() -> Array:
 				pattern[x][y] = 1
 	
 	return pattern
-	
+	"""
 	if $Areas/AreaBottomN.has_object():
 		pattern[0][0] = 1
 	
@@ -144,6 +147,7 @@ func get_current_pattern() -> Array:
 		pattern[0][1] = 1
 	
 	return pattern
+	"""
 
 
 func can_build_gun() -> bool:
@@ -183,26 +187,25 @@ func build() -> bool:
 	
 	if pattern_found != null:
 		
-		var root = get_tree().get_root().get_node("Game")
+		#var root = get_tree().get_root().get_node("Game")
 		
 		match pattern_found:
 			"gun":
 				var gun = Gun.instance()
 				var catchable_object = CatchableObject.instance()
 				catchable_object.set_object(gun)
-				root.find_node("Objects").add_child(catchable_object)
+				Game.add_node_in_level(catchable_object)
 				catchable_object.global_transform.origin = self.global_transform.origin
 				emit_signal("on_build", pattern_found, catchable_object)
-			"pill":
 				
+			"pill":
 				if pattern_found == "pill" and _max_pill_reached():
 					return false
-				
 				var pill = Pill.instance()
 				pill.team = self.team
 				pill.color = color
 				pill.handler = "AI"
-				root.find_node("Characters").add_child(pill)
+				Game.add_node_in_level(pill)
 				pill.global_transform.origin = self.global_transform.origin
 				emit_signal("on_build", pattern_found, pill)
 		
@@ -211,6 +214,7 @@ func build() -> bool:
 	
 	return false
 
+
 func _check_pattern(current_pattern, build_pattern) -> bool:
 	for x in range(build_pattern.size()):
 		for y in range(build_pattern[x].size()):
@@ -218,8 +222,8 @@ func _check_pattern(current_pattern, build_pattern) -> bool:
 				return false
 	return true
 
-func _delete_pattern(pattern):
-	
+
+func _delete_pattern(_pattern):
 	for x in range(2):
 		for y in range(2):
 			_find_area( Vector2(x, y) ).delete_object()

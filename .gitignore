@@ -1,7 +1,14 @@
-**/*.import
+/build
+/.import
+
 **/*/.TMP
 **/*.translation
-*.import
+**/*.exe
+**/*~
 
+*.savegame
 *.TMP
+
 Settings.cfg
+game_config.json
+export_preset.cfg

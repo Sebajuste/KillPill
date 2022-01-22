@@ -1,6 +1,11 @@
-extends "res://addons/goap/goap_action.gd"
+extends PlayerGoapAction
 
-func execute(actor):
+
+func execute(actor) -> bool:
+	
+	
+	if not actor.is_holding():
+		return false
 	
 	var constructors = get_tree().get_nodes_in_group("constructor")
 	var constructor = null
@@ -12,9 +17,9 @@ func execute(actor):
 	if constructor == null:
 		return false
 	
-	actor.move_to_object(constructor)
+	move_to_object(constructor)
 	
-	if not yield(actor, "on_move_reached"):
+	if not yield(goap_planner.goap_state_machine, "on_move_reached"):
 		print("Cannot end BringBoxToConstruct action")
 		emit_signal("on_action_end", false)
 		return
@@ -25,4 +30,6 @@ func execute(actor):
 	var rotTransform = target_transform.looking_at(actor.global_transform.origin, Vector3.UP)
 	actor.global_transform = Transform(rotTransform.basis, actor.global_transform.origin)
 	
-	emit_signal("on_action_end", actor.constructor_put_box(constructor, actor.get_holded() ) )
+	var result : bool = actor.constructor_put_box(constructor, actor.get_holded() )
+	emit_signal("on_action_end", result )
+	return result

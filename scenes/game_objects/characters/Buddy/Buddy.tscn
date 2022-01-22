@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=84 format=2]
 
 [ext_resource path="res://scenes/game_objects/characters/Buddy/Buddy.gd" type="Script" id=1]
 [ext_resource path="res://scenes/game_objects/characters/Buddy/BodyBlue.material" type="Material" id=2]
@@ -21,7 +21,7 @@
 [ext_resource path="res://scenes/game_objects/characters/Buddy/actions/BringBoxToConstruct.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/game_objects/characters/Buddy/actions/Build.tscn" type="PackedScene" id=20]
 [ext_resource path="res://scenes/game_objects/characters/Buddy/actions/AttackWithWeapon.tscn" type="PackedScene" id=21]
-[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/AttachWithFists.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/AttackWithFists.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/game_objects/characters/Buddy/PlayerHandler.gd" type="Script" id=23]
 [ext_resource path="res://scenes/miscs/target/Target.tscn" type="PackedScene" id=24]
 [ext_resource path="res://assets/sounds/punch.wav" type="AudioStream" id=25]
@@ -33,11 +33,37 @@
 [ext_resource path="res://scenes/game_objects/characters/Buddy/idle.anim" type="Animation" id=31]
 [ext_resource path="res://scenes/game_objects/characters/Buddy/punch.anim" type="Animation" id=32]
 [ext_resource path="res://scenes/game_objects/characters/Buddy/walk.anim" type="Animation" id=33]
-
-
-
-
-
+[ext_resource path="res://scripts/miscs/state_machine/state_machine.gd" type="Script" id=34]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/Locomotion.gd" type="Script" id=35]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/control_state/Control.gd" type="Script" id=36]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/control_state/Player.gd" type="Script" id=37]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/control_state/None.gd" type="Script" id=38]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/locomotion_state/Idle.gd" type="Script" id=39]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/locomotion_state/Walk.gd" type="Script" id=40]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/Skin.gd" type="Script" id=41]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/control_state/AI.gd" type="Script" id=42]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/goap_state/Animation.gd" type="Script" id=43]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/goap_state/MoveTo.gd" type="Script" id=44]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/goap_state/Idle.gd" type="Script" id=45]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/goap_state/Goap.gd" type="Script" id=46]
+[ext_resource path="res://scenes/miscs/combat/combat_stats/CombatStats.tscn" type="PackedScene" id=47]
+[ext_resource path="res://scenes/miscs/combat/hitbox/HitBox.tscn" type="PackedScene" id=48]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/take_weapon.tres" type="Resource" id=49]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/take_box.tres" type="Resource" id=50]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/bring_box_near_construct.tres" type="Resource" id=51]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/drop_box.tres" type="Resource" id=52]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/attack_fist.tres" type="Resource" id=53]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/destroy_box.tres" type="Resource" id=54]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/take_heal.tres" type="Resource" id=55]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/take_ammo.tres" type="Resource" id=56]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/build.tres" type="Resource" id=57]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/attack_weapon.tres" type="Resource" id=58]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/bring_box_to_construct.tres" type="Resource" id=59]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/goap_state/goap_state_machine.gd" type="Script" id=60]
+[ext_resource path="res://scenes/miscs/combat/damage_source/DamageSource.tscn" type="PackedScene" id=61]
+[ext_resource path="res://scripts/miscs/boids/boid_config.gd" type="Script" id=62]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/AIDebug.gd" type="Script" id=63]
+[ext_resource path="res://scenes/game_objects/characters/Buddy/actions/SearchEnnemy.tscn" type="PackedScene" id=64]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.486064
@@ -45,201 +71,265 @@ height = 0.431546
 
 [sub_resource type="CapsuleMesh" id=2]
 
-[sub_resource type="SphereShape" id=3]
-radius = 0.657668
+[sub_resource type="CapsuleShape" id=3]
+radius = 0.416017
+height = 0.561594
 
 [sub_resource type="SphereShape" id=4]
-radius = 22.0463
+radius = 0.657668
 
-[sub_resource type="AnimationNodeAnimation" id=5]
-animation = "catch-cycle"
+[sub_resource type="SphereShape" id=5]
+radius = 20.0
 
-[sub_resource type="AnimationNodeOneShot" id=6]
+[sub_resource type="Resource" id=6]
+script = ExtResource( 62 )
+separate_distance = 5.0
+separate_weight = 1.0
+align_distance = 10.0
+align_weight = 0.0
+cohesion_distance = 15.0
+cohesion_weight = 0.0
+max_speed = 0.0
+field_of_view = 270.0
 
 [sub_resource type="AnimationNodeAnimation" id=7]
-animation = "hit"
+animation = "catch-cycle"
 
-[sub_resource type="AnimationNodeBlend2" id=8]
-filter_enabled = true
-filters = [ "Body", "BodyLeftHand", "BodyRightHand" ]
+[sub_resource type="AnimationNodeOneShot" id=8]
 
 [sub_resource type="AnimationNodeAnimation" id=9]
+animation = "hit"
+
+[sub_resource type="AnimationNodeBlend2" id=10]
+filter_enabled = true
+filters = [ "Body", "BodyLeftHand", "BodyRightHand", "Skin/Body", "Skin/BodyLeftHand", "Skin/BodyRightHand" ]
+
+[sub_resource type="AnimationNodeAnimation" id=11]
 animation = "idle"
 
-[sub_resource type="AnimationNodeAnimation" id=10]
+[sub_resource type="AnimationNodeAnimation" id=12]
 animation = "walk-cycle"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=11]
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
 xfade_time = 0.5
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=12]
+[sub_resource type="AnimationNodeStateMachineTransition" id=14]
 xfade_time = 0.5
 
-[sub_resource type="AnimationNodeStateMachine" id=13]
-states/idle/node = SubResource( 9 )
+[sub_resource type="AnimationNodeStateMachine" id=15]
+states/idle/node = SubResource( 11 )
 states/idle/position = Vector2( 164, -12 )
-states/walk-cycle/node = SubResource( 10 )
+states/walk-cycle/node = SubResource( 12 )
 states/walk-cycle/position = Vector2( 488, -12 )
-transitions = [ "idle", "walk-cycle", SubResource( 11 ), "walk-cycle", "idle", SubResource( 12 ) ]
+transitions = [ "idle", "walk-cycle", SubResource( 13 ), "walk-cycle", "idle", SubResource( 14 ) ]
+start_node = "idle"
 graph_offset = Vector2( -137, -115 )
 
-[sub_resource type="AnimationNodeOneShot" id=14]
+[sub_resource type="AnimationNodeOneShot" id=16]
 filter_enabled = true
-filters = [ "BodyLeftHand" ]
+filters = [ "BodyLeftHand", "Skin/BodyLeftHand" ]
 
-[sub_resource type="AnimationNodeAnimation" id=15]
+[sub_resource type="AnimationNodeAnimation" id=17]
 animation = "punch"
 
-[sub_resource type="AnimationNodeBlendTree" id=16]
-graph_offset = Vector2( 916.588, 4.75619 )
-nodes/Animation/node = SubResource( 5 )
+[sub_resource type="AnimationNodeBlendTree" id=18]
+graph_offset = Vector2( -49, -126.5 )
+nodes/Animation/node = SubResource( 7 )
 nodes/Animation/position = Vector2( 400, 260 )
-nodes/Hit/node = SubResource( 6 )
+nodes/Hit/node = SubResource( 8 )
 nodes/Hit/position = Vector2( 1040, 60 )
-nodes/HitAnim/node = SubResource( 7 )
+nodes/HitAnim/node = SubResource( 9 )
 nodes/HitAnim/position = Vector2( 800, 300 )
-nodes/HoldObject/node = SubResource( 8 )
+nodes/HoldObject/node = SubResource( 10 )
 nodes/HoldObject/position = Vector2( 720, 60 )
-nodes/Move/node = SubResource( 13 )
+nodes/Move/node = SubResource( 15 )
 nodes/Move/position = Vector2( 0, 0 )
-nodes/Punch/node = SubResource( 14 )
+nodes/Punch/node = SubResource( 16 )
 nodes/Punch/position = Vector2( 360, 60 )
-nodes/PunchAnim/node = SubResource( 15 )
+nodes/PunchAnim/node = SubResource( 17 )
 nodes/PunchAnim/position = Vector2( 40, 260 )
 nodes/output/position = Vector2( 1340, 60 )
 node_connections = [ "output", 0, "Hit", "Hit", 0, "HoldObject", "Hit", 1, "HitAnim", "HoldObject", 0, "Punch", "HoldObject", 1, "Animation", "Punch", 0, "Move", "Punch", 1, "PunchAnim" ]
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=17]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=19]
 
 [node name="Buddy" type="KinematicBody" groups=[
 "character",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.973, 0 )
 collision_layer = 2
 collision_mask = 3
 script = ExtResource( 1 )
+color = "Blue"
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.702389, 0 )
 shape = SubResource( 1 )
 
-[node name="Body" type="Spatial" parent="."]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00430261, 0 )
+[node name="Skin" type="Spatial" parent="."]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0.710834, 0 )
+script = ExtResource( 41 )
 
-[node name="Body" type="MeshInstance" parent="Body"]
-transform = Transform( 0.4, 0, 0, 0, -1.94131e-008, -0.44, 0, 0.44412, -1.9233e-008, 0, 0, 0 )
+[node name="Body" type="Spatial" parent="Skin"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00636771, 0 )
+
+[node name="Body" type="MeshInstance" parent="Skin/Body"]
+transform = Transform( 0.4, 0, 0, 0, -1.94131e-08, -0.44, 0, 0.44412, -1.9233e-08, 0, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = ExtResource( 2 )
 
-[node name="BodyLeftHand" type="Spatial" parent="."]
-editor/display_folded = true
+[node name="BodyLeftHand" type="Spatial" parent="Skin"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.518391, -0.0696238, 0 )
 
-[node name="CSGCombiner" type="CSGCombiner" parent="BodyLeftHand"]
-editor/display_folded = true
+[node name="CSGCombiner" type="CSGCombiner" parent="Skin/BodyLeftHand"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
 
-[node name="CSGBox" type="CSGBox" parent="BodyLeftHand/CSGCombiner"]
+[node name="CSGBox" type="CSGBox" parent="Skin/BodyLeftHand/CSGCombiner"]
 transform = Transform( 1.12872, 0, 0, 0, 1.14768, 0, 0, 0, 1.23187, 0.304599, 0, 0 )
 material = ExtResource( 3 )
 
-[node name="CSGBox2" type="CSGBox" parent="BodyLeftHand/CSGCombiner"]
+[node name="CSGBox2" type="CSGBox" parent="Skin/BodyLeftHand/CSGCombiner"]
 transform = Transform( 0.72221, 0, 0, 0, 1.27913, 0, 0, 0, 1, -0.222855, 0, 0.722494 )
 operation = 2
 material = ExtResource( 3 )
 
-[node name="LeftHand" type="Position3D" parent="BodyLeftHand"]
+[node name="LeftHand" type="Position3D" parent="Skin/BodyLeftHand"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0450835, 0.0211042, 0.078396 )
 
-[node name="BodyRightHand" type="Spatial" parent="."]
-editor/display_folded = true
+[node name="DamageSource" parent="Skin/BodyLeftHand/LeftHand" instance=ExtResource( 61 )]
+
+[node name="CollisionShape" parent="Skin/BodyLeftHand/LeftHand/DamageSource" index="0"]
+disabled = true
+
+[node name="BodyRightHand" type="Spatial" parent="Skin"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.52351, 0, 0 )
 
-[node name="CSGCombiner2" type="CSGCombiner" parent="BodyRightHand"]
-editor/display_folded = true
+[node name="CSGCombiner2" type="CSGCombiner" parent="Skin/BodyRightHand"]
 transform = Transform( -0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.0119659, -0.0725174, -0.00196791 )
 
-[node name="CSGBox" type="CSGBox" parent="BodyRightHand/CSGCombiner2"]
+[node name="CSGBox" type="CSGBox" parent="Skin/BodyRightHand/CSGCombiner2"]
 transform = Transform( 1.12872, 0, 0, 0, 1.14768, 0, 0, 0, 1.23187, 0.304599, 0, 0 )
 material = ExtResource( 3 )
 
-[node name="CSGBox2" type="CSGBox" parent="BodyRightHand/CSGCombiner2"]
+[node name="CSGBox2" type="CSGBox" parent="Skin/BodyRightHand/CSGCombiner2"]
 transform = Transform( 0.72221, 0, 0, 0, 1.27913, 0, 0, 0, 1, -0.222855, 0, 0.722494 )
 operation = 2
 material = ExtResource( 3 )
 
-[node name="RightHand" type="Position3D" parent="BodyRightHand"]
+[node name="RightHand" type="Position3D" parent="Skin/BodyRightHand"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0588321, -0.0119864, 0.0783317 )
 
-[node name="BodyRightFoot" type="CSGCombiner" parent="."]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.529, -0.707, 0.0927713 )
+[node name="BodyRightFoot" type="CSGCombiner" parent="Skin"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.529327, -0.707403, 0 )
 
-[node name="CSGCylinder" type="CSGCylinder" parent="BodyRightFoot"]
-transform = Transform( 0.2, 0, 0, 0, -1.74846e-008, -0.25, 0, 0.4, -1.09278e-008, 0, 0, 0 )
+[node name="CSGCylinder" type="CSGCylinder" parent="Skin/BodyRightFoot"]
+transform = Transform( 0.2, 0, 0, 0, -1.74846e-08, -0.25, 0, 0.4, -1.09278e-08, 0, 0, 0 )
 material = ExtResource( 4 )
 
-[node name="CSGBox" type="CSGBox" parent="BodyRightFoot"]
+[node name="CSGBox" type="CSGBox" parent="Skin/BodyRightFoot"]
 transform = Transform( 0.3, 0, 0, 0, 0.173095, 0, 0, 0, 0.294069, 0, -0.171094, 0 )
 operation = 2
 material = ExtResource( 4 )
 
-[node name="BodyLeftFoot" type="CSGCombiner" parent="."]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.521732, -0.706464, -0.0927713 )
+[node name="BodyLeftFoot" type="CSGCombiner" parent="Skin"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.521512, -0.707403, 0 )
 
-[node name="CSGCylinder" type="CSGCylinder" parent="BodyLeftFoot"]
-transform = Transform( 0.2, 0, 0, 0, -1.74846e-008, -0.25, 0, 0.4, -1.09278e-008, 0, 0, 0 )
+[node name="CSGCylinder" type="CSGCylinder" parent="Skin/BodyLeftFoot"]
+transform = Transform( 0.2, 0, 0, 0, -1.74846e-08, -0.25, 0, 0.4, -1.09278e-08, 0, 0, 0 )
 material = ExtResource( 4 )
 
-[node name="CSGBox" type="CSGBox" parent="BodyLeftFoot"]
+[node name="CSGBox" type="CSGBox" parent="Skin/BodyLeftFoot"]
 transform = Transform( 0.3, 0, 0, 0, 0.173095, 0, 0, 0, 0.294069, 0, -0.171094, 0 )
 operation = 2
 material = ExtResource( 4 )
+
+[node name="PunchTimer" type="Timer" parent="Skin"]
+wait_time = 0.3
+one_shot = true
+
+[node name="HitBox" parent="." instance=ExtResource( 48 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.779715, 0 )
+combat_stats_path = NodePath("../CombatStats")
+particles_scene = null
+
+[node name="CollisionShape" parent="HitBox" index="0"]
+transform = Transform( 1, 0, 0, 0, -0.0374984, 0.999297, 0, -0.999297, -0.0374984, 0, -0.0792805, 0 )
+shape = SubResource( 3 )
 
 [node name="CatchArea" type="Area" parent="."]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.360354, 1.12432 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.697181, -1.15296 )
 collision_layer = 16
 collision_mask = 38
 
 [node name="CollisionShape" type="CollisionShape" parent="CatchArea"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0875394 )
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="EnnemyDetection" type="Area" parent="."]
-editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.692868, 0 )
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="EnnemyDetection"]
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 
 [node name="HoldPosition" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44492, 0.843572 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0375, -1.04284 )
 
-[node name="Overlay" type="Spatial" parent="."]
-editor/display_folded = true
+[node name="Overlay" type="Control" parent="."]
+rect_min_size = Vector2( 100, 15 )
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HealthProgressBar" type="TextureProgress" parent="Overlay"]
-visible = false
-margin_right = 100.0
-margin_bottom = 15.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 rect_min_size = Vector2( 100, 15 )
 texture_under = ExtResource( 6 )
 texture_over = ExtResource( 7 )
 texture_progress = ExtResource( 8 )
 script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Tween" type="Tween" parent="Overlay/HealthProgressBar"]
 
+[node name="TweenFade" type="Tween" parent="Overlay/HealthProgressBar"]
+
+[node name="AvoidObstacle" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.707241, -0.627559 )
+enabled = true
+cast_to = Vector3( 0, 0, -3 )
+collision_mask = 2
+
 [node name="AIHandler" type="Node" parent="."]
-editor/display_folded = true
 script = ExtResource( 10 )
 
-[node name="GoapPlanner" parent="AIHandler" instance=ExtResource( 11 )]
+[node name="PlayerHandler" type="Node" parent="."]
+script = ExtResource( 23 )
+
+[node name="ControlSM" type="Node" parent="."]
+script = ExtResource( 34 )
+initial_state = NodePath("Control/None")
+
+[node name="Control" type="Node" parent="ControlSM"]
+script = ExtResource( 36 )
+
+[node name="None" type="Node" parent="ControlSM/Control"]
+script = ExtResource( 38 )
+
+[node name="Player" type="Node" parent="ControlSM/Control"]
+script = ExtResource( 37 )
+
+[node name="Target" parent="ControlSM/Control/Player" instance=ExtResource( 24 )]
+visible = false
+
+[node name="AI" type="Node" parent="ControlSM/Control"]
+script = ExtResource( 42 )
+
+[node name="GoapPlanner" parent="ControlSM/Control/AI" instance=ExtResource( 11 )]
 world_state = {
 "builder_full": false,
 "builder_ready": false,
@@ -253,116 +343,81 @@ world_state = {
 goal_state = {
 
 }
+goap_state_machine_path = NodePath("../GoapSM")
 
-[node name="TakeHeal" parent="AIHandler/GoapPlanner" instance=ExtResource( 12 )]
-preconditions = {
-"see_heal": true
-}
-effects = {
-"health_low": false
-}
+[node name="DropBox" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 16 )]
+action_resource = ExtResource( 52 )
 
-[node name="TakeAmmo" parent="AIHandler/GoapPlanner" instance=ExtResource( 13 )]
-preconditions = {
-"have_weapon": true,
-"see_ammo": true
-}
-effects = {
-"have_ammo": true
-}
+[node name="DestroyBox" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 17 )]
+action_resource = ExtResource( 54 )
 
-[node name="TakeWeapon" parent="AIHandler/GoapPlanner" instance=ExtResource( 14 )]
-preconditions = {
-"have_weapon": false
-}
-effects = {
-"have_weapon": true
-}
+[node name="TakeHeal" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 12 )]
+action_resource = ExtResource( 55 )
 
-[node name="TakeBox" parent="AIHandler/GoapPlanner" instance=ExtResource( 15 )]
-preconditions = {
-"hold_box": false
-}
-effects = {
-"hold_box": true
-}
+[node name="TakeAmmo" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 13 )]
+action_resource = ExtResource( 56 )
 
-[node name="DropBox" parent="AIHandler/GoapPlanner" instance=ExtResource( 16 )]
-preconditions = {
-"hold_box": true
-}
-effects = {
-"box_dropped": true,
-"hold_box": false
-}
+[node name="TakeWeapon" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 14 )]
+action_resource = ExtResource( 49 )
 
-[node name="DestroyBox" parent="AIHandler/GoapPlanner" instance=ExtResource( 17 )]
-preconditions = {
-"hold_box": false
-}
-effects = {
-"see_ammo": true,
-"see_heal": true
-}
+[node name="TakeBox" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 15 )]
+action_resource = ExtResource( 50 )
 
-[node name="BringBoxNearConstruct" parent="AIHandler/GoapPlanner" instance=ExtResource( 18 )]
-preconditions = {
-"hold_box": true
-}
-effects = {
-"near_constructor": true
-}
+[node name="BringBoxNearConstruct" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 18 )]
+action_resource = ExtResource( 51 )
 
-[node name="BringBoxToConstruct" parent="AIHandler/GoapPlanner" instance=ExtResource( 19 )]
-preconditions = {
-"builder_full": false,
-"builder_ready": false,
-"hold_box": true
-}
-effects = {
-"builder_ready": true,
-"hold_box": false
-}
+[node name="BringBoxToConstruct" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 19 )]
+action_resource = ExtResource( 59 )
 
-[node name="Build" parent="AIHandler/GoapPlanner" instance=ExtResource( 20 )]
-preconditions = {
-"builder_ready": true,
-"hold_box": false
-}
-effects = {
-"build_done": true,
-"builder_full": false,
-"builder_ready": false
-}
+[node name="Build" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 20 )]
+action_resource = ExtResource( 57 )
 
-[node name="AttackWithWeapon" parent="AIHandler/GoapPlanner" instance=ExtResource( 21 )]
-preconditions = {
-"have_ammo": true,
-"have_weapon": true,
-"hold_box": false
-}
-effects = {
-"attack": true
-}
+[node name="AttackWithWeapon" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 21 )]
+action_resource = ExtResource( 58 )
+boid_config = SubResource( 6 )
 
-[node name="AttachWithFists" parent="AIHandler/GoapPlanner" instance=ExtResource( 22 )]
-preconditions = {
-"health_low": false,
-"hold_box": false
-}
-effects = {
-"attack": true
-}
+[node name="AttackWithFists" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 22 )]
+action_resource = ExtResource( 53 )
 
-[node name="PathDebug" type="ImmediateGeometry" parent="AIHandler"]
-visible = false
+[node name="SearchEnnemy" parent="ControlSM/Control/AI/GoapPlanner" instance=ExtResource( 64 )]
 
-[node name="PlayerHandler" type="Node" parent="."]
-editor/display_folded = true
-script = ExtResource( 23 )
+[node name="GoapSM" type="Node" parent="ControlSM/Control/AI"]
+script = ExtResource( 60 )
+initial_state = NodePath("Goap/Idle")
+goap_planner_path = NodePath("../GoapPlanner")
 
-[node name="Target" parent="PlayerHandler" instance=ExtResource( 24 )]
-visible = false
+[node name="Goap" type="Node" parent="ControlSM/Control/AI/GoapSM"]
+script = ExtResource( 46 )
+
+[node name="Idle" type="Node" parent="ControlSM/Control/AI/GoapSM/Goap"]
+script = ExtResource( 45 )
+
+[node name="MoveTo" type="Node" parent="ControlSM/Control/AI/GoapSM/Goap"]
+script = ExtResource( 44 )
+
+[node name="PathDebug" type="ImmediateGeometry" parent="ControlSM/Control/AI/GoapSM/Goap/MoveTo"]
+
+[node name="Animation" type="Node" parent="ControlSM/Control/AI/GoapSM/Goap"]
+script = ExtResource( 43 )
+
+[node name="AIDebug" type="Node" parent="ControlSM/Control/AI"]
+script = ExtResource( 63 )
+
+[node name="LocomotionSM" type="Node" parent="."]
+script = ExtResource( 34 )
+initial_state = NodePath("Locomotion/Idle")
+
+[node name="Locomotion" type="Node" parent="LocomotionSM"]
+script = ExtResource( 35 )
+max_speed = 5.0
+
+[node name="Idle" type="Node" parent="LocomotionSM/Locomotion"]
+script = ExtResource( 39 )
+
+[node name="Walk" type="Node" parent="LocomotionSM/Locomotion"]
+script = ExtResource( 40 )
+
+[node name="CombatStats" parent="." instance=ExtResource( 47 )]
 
 [node name="PunchSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 25 )
@@ -384,13 +439,23 @@ anims/punch = ExtResource( 32 )
 anims/walk-cycle = ExtResource( 33 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 16 )
+tree_root = SubResource( 18 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/Hit/active = false
 parameters/HoldObject/blend_amount = 0.0
-parameters/Move/playback = SubResource( 17 )
+parameters/Move/playback = SubResource( 19 )
 parameters/Punch/active = false
 [connection signal="on_health_change" from="." to="Overlay/HealthProgressBar" method="_on_Buddy_on_health_change"]
+[connection signal="hit" from="Skin/BodyLeftHand/LeftHand/DamageSource" to="Skin" method="_on_DamageSource_hit"]
+[connection signal="timeout" from="Skin/PunchTimer" to="Skin" method="_on_PuchTimer_timeout"]
 [connection signal="body_entered" from="EnnemyDetection" to="." method="_on_EnnemyDetection_body_entered"]
 [connection signal="body_exited" from="EnnemyDetection" to="." method="_on_EnnemyDetection_body_exited"]
+[connection signal="action_list_updated" from="ControlSM/Control/AI/GoapPlanner" to="ControlSM/Control/AI/AIDebug" method="_on_GoapPlanner_action_list_updated"]
+[connection signal="transitioned" from="ControlSM/Control/AI/GoapSM" to="ControlSM/Control/AI/AIDebug" method="_on_GoapSM_transitioned"]
+[connection signal="health_changed" from="CombatStats" to="." method="_on_CombatStats_health_changed"]
+[connection signal="health_depleted" from="CombatStats" to="." method="_on_CombatStats_health_depleted"]
+
+[editable path="Skin/BodyLeftHand/LeftHand/DamageSource"]
+
+[editable path="HitBox"]

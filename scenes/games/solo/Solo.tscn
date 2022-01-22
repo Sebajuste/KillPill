@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/ui/player/PlayerUI.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/ui/ingame-menu/InGameMenu.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/ui/game-over/GameOver.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/games/solo/Solo.gd" type="Script" id=5]
+[ext_resource path="res://scenes/miscs/camera_rig/CameraRig.tscn" type="PackedScene" id=8]
+
+[node name="Solo" type="Node"]
+pause_mode = 2
+script = ExtResource( 5 )
+
+[node name="Level" type="Spatial" parent="."]
+pause_mode = 1
+
+[node name="CameraRig" parent="Level" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 0.701469, 0.7127, 0, -0.7127, 0.701469, -36.9122, 0, 38.0428 )
+target_path = NodePath("")
+
+[node name="Teams" type="Node" parent="."]
+pause_mode = 1
+
+[node name="PlayerUI" parent="." instance=ExtResource( 1 )]
+pause_mode = 1
+
+[node name="GameOver" parent="." instance=ExtResource( 3 )]
+visible = false
+
+[node name="InGameMenu" parent="." instance=ExtResource( 2 )]

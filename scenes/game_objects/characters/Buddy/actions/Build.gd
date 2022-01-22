@@ -1,4 +1,5 @@
-extends "res://addons/goap/goap_action.gd"
+extends PlayerGoapAction
+
 
 func execute(actor):
 	
@@ -12,9 +13,9 @@ func execute(actor):
 	if constructor == null:
 		return false
 	
-	actor.move_to_object(constructor)
+	move_to_object(constructor)
 	
-	if not yield(actor, "on_move_reached"):
+	if not yield(goap_planner.goap_state_machine, "on_move_reached"):
 		print("Cannot end Build action")
 		emit_signal("on_action_end", false)
 		return

@@ -2,7 +2,6 @@
 
 [ext_resource path="res://scenes/miscs/team/Team.gd" type="Script" id=1]
 
-
 [node name="Team" type="Node"]
 script = ExtResource( 1 )
 

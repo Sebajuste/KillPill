@@ -4,7 +4,7 @@ extends EditorPlugin
 
 func _enter_tree():
 	
-	add_custom_type("AStarGridVector2", "Node", preload("vector2/grid_vector2.gd"), null)
+	add_custom_type("AStarGridVector2", "Node", load("vector2/grid_vector2.gd"), null)
 	
 	pass
 

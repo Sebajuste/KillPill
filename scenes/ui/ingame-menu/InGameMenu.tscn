@@ -2,10 +2,8 @@
 
 [ext_resource path="res://scenes/ui/ingame-menu/InGameMenu.gd" type="Script" id=1]
 [ext_resource path="res://assets/fonts/WendyOne-Regular-Title.tres" type="DynamicFont" id=2]
-[ext_resource path="res://assets/fonts/WendyOne-Regular.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/themes/main_theme.theme" type="Theme" id=3]
 [ext_resource path="res://scenes/ui/options/Options.tscn" type="PackedScene" id=4]
-
-
 
 [node name="InGameMenu" type="CanvasLayer"]
 pause_mode = 2
@@ -20,49 +18,49 @@ margin_left = -131.0
 margin_top = -92.0
 margin_right = 131.0
 margin_bottom = 92.0
+theme = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_right = 262.0
-margin_bottom = 206.0
+margin_bottom = 184.0
 custom_constants/separation = 15
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 margin_right = 262.0
-margin_bottom = 26.0
+margin_bottom = 2.0
 custom_fonts/font = ExtResource( 2 )
 text = "title_options"
 align = 1
 
 [node name="ResumeButton" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 41.0
+margin_top = 17.0
 margin_right = 262.0
-margin_bottom = 71.0
+margin_bottom = 47.0
 rect_min_size = Vector2( 0, 30 )
-custom_fonts/font = ExtResource( 3 )
 text = "btn_resume"
 
 [node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 86.0
+margin_top = 62.0
 margin_right = 262.0
-margin_bottom = 116.0
+margin_bottom = 92.0
 rect_min_size = Vector2( 0, 30 )
-custom_fonts/font = ExtResource( 3 )
 text = "btn_options"
 
 [node name="ReturnMenuButton" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 131.0
+margin_top = 107.0
 margin_right = 262.0
-margin_bottom = 161.0
+margin_bottom = 137.0
 rect_min_size = Vector2( 0, 30 )
-custom_fonts/font = ExtResource( 3 )
 text = "btn_back_main"
 
 [node name="ExitGameButton" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 176.0
+margin_top = 152.0
 margin_right = 262.0
-margin_bottom = 206.0
+margin_bottom = 182.0
 rect_min_size = Vector2( 0, 30 )
-custom_fonts/font = ExtResource( 3 )
 text = "btn_quit"
 
 [node name="Options" parent="." instance=ExtResource( 4 )]

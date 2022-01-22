@@ -2,7 +2,6 @@
 
 [ext_resource path="res://scenes/miscs/target/target.material" type="Material" id=1]
 
-
 [sub_resource type="QuadMesh" id=1]
 
 [sub_resource type="Animation" id=2]
@@ -18,7 +17,7 @@ tracks/0/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
 [node name="Target" type="Spatial"]
 
 [node name="MeshInstance2" type="MeshInstance" parent="."]
-transform = Transform( 1, -5.29441e-008, 2.31888e-008, 5.29441e-008, 1, -7.74173e-009, -2.31888e-008, 7.74173e-009, 1, 0, 0, 0 )
+transform = Transform( 1, -5.29441e-08, 2.31888e-08, 5.29441e-08, 1, -7.74173e-09, -2.31888e-08, 7.74173e-09, 1, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = ExtResource( 1 )
 

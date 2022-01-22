@@ -1,107 +1,93 @@
+tool
+class_name Player
 extends KinematicBody
 
-class_name Pill
 
-var PillExplosion = preload("res://effects/explosions/PillExplosion.tscn")
+const PillExplosion = preload("res://effects/explosions/PillExplosion.tscn")
 
-var CatchableObject = preload("res://tools/CatchableObject.tscn")
+const CatchableObject = preload("res://scenes/game_objects/gameplay/catchable_object/CatchableObject.tscn")
 
-const ACCEL= 4
-const DEACCEL= 8
-const GRAVITY := -9.8
+
 
 signal on_health_change(value, max_value)
 signal on_drop_object(object)
 signal on_take_object(object)
 signal on_hold_object(object)
 signal on_death(object)
-
-signal on_move_reached(result)
+signal ennemy_detected(player, ennemy)
 
 export var team : String = "Team_0"
 
-export var move_speed = 5.0
-export var max_health = 100
-export var immortal := false
+export var max_health := 100
+export var invincible := false setget set_invincible
 
-export(String, "Blue", "Red", "Yellow") var color setget set_color
+export(String, "Blue", "Red", "Yellow", "Green") var color setget set_color
 
 export(String, "None", "AI", "Player") var handler := "None" setget set_handler
 
-class HandlerNone:
-	
-	func control(delta) -> Vector3:
-		return Vector3()
-	
 
 
-var health = max_health
+onready var skin := $Skin
+
+onready var avoid_obstacle_ray := $AvoidObstacle
+
+onready var control_state_machine := $ControlSM
+onready var locomoton_state_mahcine := $LocomotionSM
+
+onready var combat_stats : CombatStats = $CombatStats
+
 
 var dead = false
 
-var velocity = Vector3()
-
-var look_dir = Vector3()
-
 var ennemies := []
 
-var target_pos = null
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	
+	combat_stats.max_health = max_health
+	$Overlay/HealthProgressBar._on_Buddy_on_health_change(combat_stats.health, combat_stats.max_health)
+	
+	set_color(color)
+	set_handler(handler)
+	
+	emit_status()
+	
 
 
 func set_handler(value):
 	handler = value
-	
+	if control_state_machine == null:
+		return
 	match handler:
 		"None":
-			$AIHandler.enable = false
-			$PlayerHandler.enable = false
-		
+			control_state_machine.transition_to("Control/None")
 		"AI":
-			$AIHandler.enable = true
-			$PlayerHandler.enable = false
-		
+			control_state_machine.transition_to("Control/AI")
 		"Player":
-			$AIHandler.enable = false
-			$PlayerHandler.enable = true
-	
+			control_state_machine.transition_to("Control/Player")
 
-func get_current_handler():
-	match handler:
-		"None":
-			return HandlerNone.new()
-		
-		"AI":
-			return $AIHandler
-		
-		"Player":
-			return $PlayerHandler
-	return HandlerNone.new()
 
-"""
-Function to move character. Only work when the character is an AI
-"""
-func move_to_object(object, min_distance := 1.5) -> bool:
-	return get_current_handler().move_to_object(object, min_distance)
-
-func move_to_position(target: Vector3, min_distance := 1.5) -> bool:
-	return get_current_handler().move_to_position(target, min_distance)
-
-func move_cancel() -> bool:
-	return get_current_handler().move_cancel()
-
-"""
-Functions for objects manipulation
-"""
+#
+# Functions for objects manipulation
+#
 func has_object() -> bool:
-	return $BodyRightHand/RightHand.get_child_count() > 0
+	
+	return $Skin/BodyRightHand/RightHand.get_child_count() > 0
+	
+
 
 func get_object():
 	if has_object():
-		return $BodyRightHand/RightHand.get_child(0)
+		return $Skin/BodyRightHand/RightHand.get_child(0)
 	return null
 
+
 func is_holding() -> bool:
+	
 	return $HoldPosition.get_child_count() > 0
+	
+
 
 #
 # See weakref
@@ -111,29 +97,29 @@ func is_holding() -> bool:
 func take_object(object_container) -> bool:
 	if not has_object() and object_container != null and object_container.has_object():
 		var object = object_container.take_object()
-		$BodyRightHand/RightHand.add_child(object)
+		$Skin/BodyRightHand/RightHand.add_child(object)
 		object.owned = true
 		$PickUpSound.play()
 		emit_signal("on_take_object", object)
 		return true
 	return false
 
+
 func drop_object():
 	if has_object():
-		var object = $BodyRightHand/RightHand.get_child(0)
-		$BodyRightHand/RightHand.remove_child(object)
+		var object = $Skin/BodyRightHand/RightHand.get_child(0)
+		$Skin/BodyRightHand/RightHand.remove_child(object)
 		
 		var catchable_object = CatchableObject.instance()
 		catchable_object.set_object(object)
 		
-		var root = get_tree().get_root().get_node("Game")
-		root.find_node("Objects").add_child(catchable_object)
+		Game.add_node_in_level(catchable_object)
 		
-		catchable_object.global_transform.origin = global_transform.origin
+		var dir = (-$HoldPosition.global_transform.basis.z + Vector3.UP).normalized()
+		var throw_force := 4.0
+		catchable_object.global_transform = Transform(global_transform.basis, global_transform.origin + dir)
 		
-		var dir = $BodyRightHand/RightHand.global_transform.basis.z + Vector3.UP
-		
-		catchable_object.apply_central_impulse(dir.normalized() * 4 + velocity)
+		catchable_object.apply_central_impulse(dir * throw_force + get_velocity() )
 		
 		object.owned = false
 		emit_signal("on_drop_object", object)
@@ -143,14 +129,13 @@ func hold_object(object) -> bool:
 	
 	if not is_holding() and object.is_in_group("catchable"):
 		
-		if object.hold(self):
+		if self.global_transform.origin.distance_squared_to(object.global_transform.origin) < 1.5*1.5 and object.hold(self):
 			object.get_parent().remove_child(object)
-			object.transform.origin = Vector3()
+			object.transform.origin = Vector3.ZERO
 			object.transform.basis = Basis()
 			$HoldPosition.add_child(object)
 			
-			$BodyRightHand/RightHand.visible = false
-			$AnimationTree.set("parameters/HoldObject/blend_amount", 1.0)
+			skin.play_animation("catch_object")
 			
 			emit_signal("on_hold_object", object)
 			
@@ -158,10 +143,12 @@ func hold_object(object) -> bool:
 	
 	return false
 
-func get_holded():
+
+func get_holded() -> Node:
 	if is_holding():
 		return $HoldPosition.get_child(0)
 	return null
+
 
 func release_hold() -> bool:
 	
@@ -171,20 +158,24 @@ func release_hold() -> bool:
 		
 		$HoldPosition.remove_child(object)
 		
-		var root = get_tree().get_root().get_node("Game")
-		root.get_node("Objects").add_child(object)
+		#var root = get_tree().get_root().get_node("Game")
+		#get_parent().add_child(object)
 		
-		var dir = ($HoldPosition.global_transform.basis.z + Vector3.UP).normalized()
-		object.global_transform.origin = global_transform.origin + dir
+		Game.add_node_in_level(object)
+		
+		var dir = (-$HoldPosition.global_transform.basis.z + Vector3.UP).normalized()
+		var throw_force := 4.0
+		object.global_transform = Transform(global_transform.basis, global_transform.origin + dir)
 		object.release()
 		
-		object.apply_central_impulse(dir * 4 + velocity)
+		object.apply_central_impulse(dir * throw_force + get_velocity() )
 		
-		$BodyRightHand/RightHand.visible = true
-		$AnimationTree.set("parameters/HoldObject/blend_amount", 0.0)
+		skin.play_animation("release_object")
+		
 		return true
 	
 	return false
+
 
 """
 Action functions
@@ -192,42 +183,33 @@ Action functions
 func shoot() -> bool:
 	
 	if not is_holding():
-		var right_hand = $BodyRightHand/RightHand
+		var right_hand = $Skin/BodyRightHand/RightHand
 		if right_hand.get_child_count() > 0:
-			
-			_aiming_target()
-			
 			var weapon = right_hand.get_child(0)
 			return weapon.shoot()
 	else:
 		print("[%s] Cannot shoot. He is holding box !" % get_name() )
 	return false
 
-func punch() -> bool:
-	
-	if not is_holding():
-		
-		$AnimationTree.set("parameters/Punch/active", true)
-		
-		var result = $CatchArea.get_overlapping_bodies()
-		
-		var nearest_object = null
-		var nearest_distance = null
-		
-		for object in result:
-			if object.has_method("damage") and object != self:
-				
-				var distance = (object.global_transform.origin - self.global_transform.origin).length()
-				
-				if nearest_distance == null or distance < nearest_distance:
-					nearest_distance = distance
-					nearest_object = object
-		
-		if nearest_object != null:
-			nearest_object.damage($BodyLeftHand.global_transform.origin, null, {"damage": 1})
-			return true
-		
 
+func have_weapon() -> bool:
+	if not is_holding():
+		var right_hand = $Skin/BodyRightHand/RightHand
+		if right_hand.get_child_count() > 0:
+			var object = right_hand.get_child(0)
+			return object.is_in_group("weapon")
+	return false
+
+
+func get_weapon() -> Node:
+	var right_hand = $Skin/BodyRightHand/RightHand
+	return right_hand.get_child(0)
+
+
+func punch() -> bool:
+	if not is_holding():
+		skin.play_animation("punch")
+		return true
 	return false
 
 
@@ -246,9 +228,10 @@ func catch_front() -> bool:
 	return false
 	
 
-"""
-Action to build and drop box on constructor
-"""
+
+#
+# Action to build and drop box on constructor
+#
 func use_front() -> bool:
 	
 	var areas = $CatchArea.get_overlapping_areas()
@@ -259,9 +242,7 @@ func use_front() -> bool:
 		
 		if not areas.empty():
 			var area = areas[0]
-			
 			return constructor_put_box(area, object)
-			
 	
 	for area in areas:
 		if constructor_build(area):
@@ -269,209 +250,93 @@ func use_front() -> bool:
 	
 	return false
 
+
 func constructor_build(constructor) -> bool:
 	if constructor.is_in_group("constructor") and constructor.team == team:
 		constructor.build()
 		return true
 	return false
 
+
 func constructor_put_box(constructor, box) -> bool:
 	
 	if constructor.is_in_group("constructor") and constructor.team == team:
 		$HoldPosition.remove_child(box)
 		
-		var added = get_current_handler().add_object_to_constructor(box, constructor)
+		
+		var added = constructor.add_object($CatchArea, box)
+		
+		#var added = get_current_handler().add_object_to_constructor(box, constructor)
 		
 		if added:
-			$BodyRightHand/RightHand.visible = true
-			$AnimationTree.set("parameters/HoldObject/blend_amount", 0.0)
+			skin.play_animation("release_object")
 			return true
 		else:
 			$HoldPosition.add_child(box)
+		
 	return false
 
 
-func heal(value) -> bool:
+func stop_move():
 	
-	if health >= max_health:
-		return false
+	$ControlSM/Control/AI/GoapSM.transition_to("Goap/Idle")
 	
-	health += value
-	
-	if health > max_health:
-		health = max_health
-	
-	emit_signal("on_health_change", health, max_health)
-	
-	return true
+	pass
 
-func damage(position, normal, bullet):
+
+func heal(value):
 	
-	if immortal:
-		return
+	combat_stats.heal(value)
 	
-	health -= bullet.damage
-	emit_signal("on_health_change", health, max_health)
-	
-	$AnimationTree.set("parameters/Hit/active", true)
-	
-	if health <= 0:
-		dead = true
-		
-		release_hold()
-		drop_object()
-		
-		var explosion = PillExplosion.instance()
-		get_parent().add_child(explosion)
-		explosion.global_transform.origin = self.global_transform.origin
-		explosion.color = color
-		emit_signal("on_death", self)
-		visible = false
-		queue_free()
-	
+
 
 func set_color(value):
 	
 	color = value
 	
+	if get_node("Skin/Body/Body") == null:
+		return
+	
 	match color:
 		"Blue":
-			var material = load("res://characters/Buddy/BodyBlue.material")
-			$Body/Body.set_surface_material(0, material)
-		
+			var material = load("res://scenes/game_objects/characters/Buddy/BodyBlue.material")
+			$Skin/Body/Body.set_surface_material(0, material)
 		"Red":
-			var material = load("res://characters/Buddy/BodyRed.material")
-			$Body/Body.set_surface_material(0, material)
+			var material = load("res://scenes/game_objects/characters/Buddy/BodyRed.material")
+			$Skin/Body/Body.set_surface_material(0, material)
 		"Yellow":
-			var material = load("res://characters/Buddy/BodyYellow.material")
-			$Body/Body.set_surface_material(0, material)
+			var material = load("res://scenes/game_objects/characters/Buddy/BodyYellow.material")
+			$Skin/Body/Body.set_surface_material(0, material)
+		"Green":
+			var material = load("res://scenes/game_objects/characters/Buddy/BodyGreen.material")
+			$Skin/Body/Body.set_surface_material(0, material)
 
-func _aiming_target():
-	var right_hand = $BodyRightHand/RightHand
-	
-	if not is_holding() and right_hand.get_child_count() > 0 and target_pos != null:
-		
-		var target_transform = Transform(Basis(), target_pos)
-		target_transform.origin.y = right_hand.global_transform.origin.y
-		
-		right_hand.global_transform.basis = target_transform.looking_at($BodyRightHand.global_transform.origin, Vector3.UP).basis
-	elif target_pos == null:
-		right_hand.transform.basis = Basis()
 
-func _next_target_pos(target: Pill, t=1.0):
-	return target.global_transform.origin + (target.velocity * 2.0) * t 
-
-func _next_shoot_rayon(t):
-	var gun = $BodyRightHand/RightHand.get_child(0)
-	return gun.bullet_speed * t
-
-func _next_shoot_pos(target: Pill):
-	
-	var min_delta = null
-	var shoot_pos = null
-	
-	for i in range(20):
-		var t: float = i * 0.2
-		
-		var next_target_pos = _next_target_pos(target, t)
-		var length = (global_transform.origin - next_target_pos).length()
-		var shoot_length = _next_shoot_rayon(t)
-		var delta = abs(length - shoot_length)
-		
-		if min_delta == null or delta < min_delta:
-			min_delta = delta
-			shoot_pos = next_target_pos
-	
-	return shoot_pos
+func set_invincible(value):
+	invincible = value
+	$CombatStats.invincible = value
 
 
 func emit_status():
-	emit_signal("on_health_change", health, max_health)
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
 	
-	health = max_health
-	
-	set_color(color)
-	set_handler(handler)
-	
-	emit_status()
-	
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	
-	
-	#
-	# Gun direction update to target_pos
-	#
-	
-	_aiming_target()
-	
-	
-	#
-	# Move
-	#
-	var dir = Vector3()
-	if not dead:
-		dir = get_current_handler().control(delta)
-	
-	velocity.y += delta * GRAVITY
-	
-	var hvel = velocity
-	hvel.y = 0
-	
-	var target = dir * move_speed
-	
-	var accel
-	if dir.dot(hvel) > 0:
-		accel = ACCEL
-	else:
-		accel = DEACCEL
-	
-	hvel = hvel.linear_interpolate(target, accel * delta)
-	
-	velocity.x = hvel.x
-	velocity.z = hvel.z
-	
-	
-	
-	velocity = self.move_and_slide( velocity, Vector3.UP )
-	
-	var state_machines = $AnimationTree["parameters/Move/playback"]
-	
-	if velocity.length() > 0.1:
-		var angle = atan2(velocity.x, velocity.z)
-		var rot = get_rotation()
-		rot.y = angle;
-		set_rotation(rot)
-		
-		if state_machines.is_playing():
-			state_machines.travel("walk-cycle")
-		else:
-			state_machines.start("walk-cycle")
-	else:
-		if state_machines.is_playing():
-			state_machines.travel("idle")
-		else:
-			state_machines.start("idle")
-	
-	if look_dir != Vector3():
-		var look_pos = global_transform.origin - look_dir
-		var rotTransform = global_transform.looking_at(look_pos, Vector3.UP)
-		global_transform = Transform(rotTransform.basis, global_transform.origin)
-		
-		pass
-	
+	#emit_signal("on_health_change", health, max_health)
 	pass
+
+
+func get_velocity():
+	
+	return $LocomotionSM/Locomotion.velocity
+	
+
 
 
 func _on_EnnemyDetection_body_entered(character):
 	
 	if not ennemies.has(character) and character.team != self.team:
 		ennemies.append(character)
+		
+		emit_signal("ennemy_detected", self, character)
+		
 	
 
 func _on_EnnemyDetection_body_exited(character):
@@ -479,4 +344,31 @@ func _on_EnnemyDetection_body_exited(character):
 	var index = ennemies.find( character )
 	if index != -1:
 		ennemies.remove(index)
+	
+
+func _on_CombatStats_health_changed(new_value, old_value):
+	
+	if new_value < old_value:
+		skin.play_animation("hit")
+	
+	$Overlay/HealthProgressBar._on_Buddy_on_health_change(new_value, combat_stats.max_health)
+	
+	emit_signal("on_health_change", new_value, combat_stats.max_health)
+	
+	pass # Replace with function body.
+
+
+func _on_CombatStats_health_depleted():
+	
+	dead = true
+	
+	release_hold()
+	drop_object()
+	
+	var explosion = PillExplosion.instance()
+	get_parent().add_child(explosion)
+	explosion.global_transform.origin = self.global_transform.origin
+	explosion.color = color
+	emit_signal("on_death", self)
+	queue_free()
 	

@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/menus/main/MainMenu.gd" type="Script" id=1]
-[ext_resource path="res://assets/2d/KillPill_background.jpg" type="Texture" id=2]
-[ext_resource path="res://assets/2d/KillPill_pills.png" type="Texture" id=3]
+[ext_resource path="res://assets/2d/backgrounds/KillPill_background.jpg" type="Texture" id=2]
+[ext_resource path="res://assets/2d/backgrounds/KillPill_pills.png" type="Texture" id=3]
 [ext_resource path="res://scenes/ui/options/Options.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/music/main_theme.ogg" type="AudioStream" id=6]
 [ext_resource path="res://assets/themes/main_theme.theme" type="Theme" id=7]

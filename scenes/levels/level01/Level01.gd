@@ -1,80 +1,43 @@
-extends Node
+extends Level
 
-onready var player_team = get_node("Teams/TeamBlue")
 
-var player_team_member
+#onready var player_team = get_node("Teams/TeamBlue")
+
+
+#var player_team_member
+
+
+#var game : Game
 
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	NavigationManager.navigation = $Navigation
 	
-	for team in $Teams.get_children():
-		
-		if team == player_team:
-			player_team_member = team.get_team().front()
-			player_team_member.handler = "Player"
-			
-		else:
-			team.get_team().front().handler = "AI"
-	
-	
-	switch_player(null, $Characters/Player )
-	
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	
-	if Input.is_action_just_pressed("menu"):
-		$InGameMenu.toggle()
-	
-	if Input.is_action_just_pressed("switch_next_team_member"):
-		
-		var next_member = player_team.get_next_member(player_team_member)
-		print("next_member: ", next_member)
-		
-		if next_member != null and next_member != player_team_member:
-			switch_player(player_team_member, next_member)
-			
-		
-		pass
-	
-	if Input.is_action_just_pressed("switch_previous_team_member"):
-		
-		var previous_member = player_team.get_previous_member(player_team_member)
-		print("previous_member: ", previous_member)
-		
-		if previous_member != null and previous_member != player_team_member:
-			switch_player(player_team_member, previous_member)
-		
-		pass
-	
-	var team_dead_count = 0
-	
-	for teams in $Teams.get_children():
-		if teams.get_team().empty():
-			team_dead_count += 1
-	
-	if team_dead_count == 2:
-		$GameOver.visible = true
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+#func _process(_delta):
+#	pass
 
 
-func get_player_team_member():
-	return player_team_member
+func init(context : Dictionary = {}):
+	.init(context)
+	
+	pass
 
 
+"""
 func find_team(character):
 	for team in $Teams.get_children():
 		if team.team == character.team:
 			return team
 	return null
+"""
 
-
+"""
 func switch_player(old_char, new_char):
 	
 	if old_char:
@@ -93,11 +56,14 @@ func switch_player(old_char, new_char):
 	
 	player_team_member = new_char
 	
+	$Environment/CameraRig.target = new_char
+	
 	new_char.emit_status()
 	
 	pass
+"""
 
-
+"""
 func _on_Player_on_death(player):
 	
 	var team_player = find_team(player)
@@ -110,9 +76,17 @@ func _on_Player_on_death(player):
 		$GameOver.visible = true
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
+"""
 
-
+"""
 func _on_InGameMenu_on_close():
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	
+
+
+func _on_object_emitted(object):
+	
+	game.add_node_in_level(object)
+	
+"""

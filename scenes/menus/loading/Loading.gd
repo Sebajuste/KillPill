@@ -1,10 +1,6 @@
 extends Control
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,12 +12,16 @@ func _ready():
 #	pass
 
 
-func set_progress(min_value, max_value, value):
+func set_progress(min_value : float, max_value : float, value : float):
 	
 	$MarginContainer/ProgressBar.min_value = min_value
 	$MarginContainer/ProgressBar.max_value = max_value
 	
-	$ProgressTween.interpolate_property($MarginContainer/ProgressBar, "value", $MarginContainer/ProgressBar.value, value, 1.0)
+	#var percentage : float = (value / max_value) * 100
+	
+	#print("percentage : ", percentage)
+	
+	$ProgressTween.interpolate_property($MarginContainer/ProgressBar, "value", $MarginContainer/ProgressBar.value, value, 0.1)
 	$ProgressTween.start()
 	
 

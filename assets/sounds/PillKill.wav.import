@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/PillKill.wav-ead6d3dd244e0190a141ed32ff9449cf.sample"
+
+[deps]
+
+source_file="res://assets/sounds/PillKill.wav"
+dest_files=[ "res://.import/PillKill.wav-ead6d3dd244e0190a141ed32ff9449cf.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

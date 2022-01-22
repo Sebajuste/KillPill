@@ -2,13 +2,5 @@
 
 [ext_resource path="res://scenes/game_objects/characters/Buddy/actions/TakeBox.gd" type="Script" id=1]
 
-
 [node name="TakeBox" type="Node"]
 script = ExtResource( 1 )
-preconditions = {
-"hold_box": false
-}
-effects = {
-"hold_box": true
-}
-cost = 10.0

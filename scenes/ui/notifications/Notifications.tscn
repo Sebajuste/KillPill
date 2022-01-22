@@ -2,7 +2,6 @@
 
 [ext_resource path="res://scenes/ui/notifications/Notifications.gd" type="Script" id=1]
 
-
 [node name="Notifications" type="CanvasLayer"]
 script = ExtResource( 1 )
 

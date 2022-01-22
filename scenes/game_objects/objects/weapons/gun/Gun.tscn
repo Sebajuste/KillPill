@@ -8,8 +8,6 @@
 [ext_resource path="res://assets/sounds/shoot.wav" type="AudioStream" id=6]
 [ext_resource path="res://scenes/game_objects/objects/weapons/gun/shoot.anim" type="Animation" id=7]
 
-
-
 [sub_resource type="CubeMesh" id=1]
 
 [sub_resource type="CylinderMesh" id=2]
@@ -49,7 +47,7 @@ mesh = ExtResource( 4 )
 material/0 = ExtResource( 5 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Muzzle/Flames"]
-transform = Transform( -4.12464e-009, 1, 0, -0.0943608, -4.37114e-008, 0, 0, 0, 0.262712, 0, 0, 0 )
+transform = Transform( -4.12464e-09, 1, 0, -0.0943608, -4.37114e-08, 0, 0, 0, 0.262712, 0, 0, 0 )
 mesh = ExtResource( 4 )
 material/0 = ExtResource( 5 )
 

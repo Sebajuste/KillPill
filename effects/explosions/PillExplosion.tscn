@@ -4,7 +4,6 @@
 [ext_resource path="res://effects/explosions/pill_explode_red.material" type="Material" id=2]
 [ext_resource path="res://assets/sounds/PillKill.wav" type="AudioStream" id=3]
 
-
 [sub_resource type="ParticlesMaterial" id=1]
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
@@ -13,7 +12,7 @@ initial_velocity_random = 1.0
 angular_velocity = 200.0
 angular_velocity_random = 1.0
 
-[sub_resource type="QuadMesh" id=3]
+[sub_resource type="QuadMesh" id=2]
 material = ExtResource( 2 )
 size = Vector2( 0.25, 0.25 )
 
@@ -28,7 +27,7 @@ lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource( 1 )
-draw_pass_1 = SubResource( 3 )
+draw_pass_1 = SubResource( 2 )
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 3 )

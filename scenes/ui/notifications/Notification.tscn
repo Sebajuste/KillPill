@@ -1,15 +1,18 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/ui/notifications/Notification.gd" type="Script" id=1]
-[ext_resource path="res://assets/fonts/WendyOne-Regular-Title.tres" type="DynamicFont" id=2]
-[ext_resource path="res://assets/fonts/WendyOne-Regular.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/themes/main_theme.theme" type="Theme" id=2]
 
 [node name="Notification" type="Panel"]
 margin_right = 280.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 0, 200 )
 size_flags_horizontal = 3
+theme = ExtResource( 2 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 auto_hide = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -28,24 +31,21 @@ margin_bottom = 170.0
 margin_right = 240.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
-custom_fonts/font = ExtResource( 2 )
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 margin_top = 34.0
 margin_right = 240.0
-margin_bottom = 142.0
+margin_bottom = 141.0
 size_flags_vertical = 3
-custom_fonts/normal_font = ExtResource( 3 )
 scroll_active = false
 
 [node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer"]
 margin_left = 147.0
-margin_top = 146.0
+margin_top = 145.0
 margin_right = 240.0
 margin_bottom = 170.0
 size_flags_horizontal = 8
 size_flags_vertical = 0
-custom_fonts/font = ExtResource( 3 )
 text = "btn_close"
 align = 2
 

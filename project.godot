@@ -22,9 +22,9 @@ _global_script_classes=[ {
 "base": "AStarGridNode",
 "class": "AStarGoapGridNode",
 "language": "GDScript",
-"path": "res://addons/goap/astar/grid_node_status.gd"
+"path": "res://addons/goap/astar/grid_node_goap.gd"
 }, {
-"base": "Node",
+"base": "Object",
 "class": "AStarGrid",
 "language": "GDScript",
 "path": "res://addons/astar/astar_grid.gd"
@@ -44,10 +44,130 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/astar/vector2/grid_node_vector2.gd"
 }, {
+"base": "Reference",
+"class": "Aiming",
+"language": "GDScript",
+"path": "res://aiming.gd"
+}, {
+"base": "Object",
+"class": "Boid2D",
+"language": "GDScript",
+"path": "res://scripts/miscs/boids/boid2D.gd"
+}, {
+"base": "Object",
+"class": "Boid3D",
+"language": "GDScript",
+"path": "res://scripts/miscs/boids/boid3D.gd"
+}, {
+"base": "Resource",
+"class": "BoidConfig",
+"language": "GDScript",
+"path": "res://scripts/miscs/boids/boid_config.gd"
+}, {
+"base": "Node",
+"class": "CombatStats",
+"language": "GDScript",
+"path": "res://scenes/miscs/combat/combat_stats/CombatStats.gd"
+}, {
+"base": "Spatial",
+"class": "Constructor",
+"language": "GDScript",
+"path": "res://scenes/game_objects/gameplay/Constructor/Constructor.gd"
+}, {
+"base": "Area",
+"class": "DamageSource",
+"language": "GDScript",
+"path": "res://scenes/miscs/combat/damage_source/DamageSource.gd"
+}, {
+"base": "HBoxContainer",
+"class": "DebugStatusItem",
+"language": "GDScript",
+"path": "res://scenes/ui/debug/pill_status/StatusItem.gd"
+}, {
+"base": "Node",
+"class": "DebugStatusValue",
+"language": "GDScript",
+"path": "res://scenes/ui/debug/pill_status/status_values.gd"
+}, {
+"base": "Node",
+"class": "GoapAction",
+"language": "GDScript",
+"path": "res://addons/goap/goap_action.gd"
+}, {
+"base": "Resource",
+"class": "GoapActionResource",
+"language": "GDScript",
+"path": "res://addons/goap/goap_action_resource.gd"
+}, {
+"base": "Node",
+"class": "GoapPlanner",
+"language": "GDScript",
+"path": "res://addons/goap/goap_planner.gd"
+}, {
+"base": "StateMachine",
+"class": "GoapStateMachine",
+"language": "GDScript",
+"path": "res://scenes/game_objects/characters/Buddy/goap_state/goap_state_machine.gd"
+}, {
+"base": "Object",
+"class": "Hit",
+"language": "GDScript",
+"path": "res://scenes/miscs/combat/damage_source/hit.gd"
+}, {
+"base": "Area",
+"class": "HitBox",
+"language": "GDScript",
+"path": "res://scenes/miscs/combat/hitbox/HitBox.gd"
+}, {
+"base": "Node",
+"class": "Level",
+"language": "GDScript",
+"path": "res://scripts/miscs/level/level.gd"
+}, {
 "base": "KinematicBody",
-"class": "Pill",
+"class": "Player",
 "language": "GDScript",
 "path": "res://scenes/game_objects/characters/Buddy/Buddy.gd"
+}, {
+"base": "GoapAction",
+"class": "PlayerGoapAction",
+"language": "GDScript",
+"path": "res://scenes/game_objects/characters/Buddy/goap_state/player_goap_action.gd"
+}, {
+"base": "State",
+"class": "PlayerState",
+"language": "GDScript",
+"path": "res://scenes/game_objects/characters/Buddy/player_state.gd"
+}, {
+"base": "Spatial",
+"class": "Shake",
+"language": "GDScript",
+"path": "res://scripts/miscs/shake.gd"
+}, {
+"base": "Node",
+"class": "State",
+"language": "GDScript",
+"path": "res://scripts/miscs/state_machine/state.gd"
+}, {
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://scripts/miscs/state_machine/state_machine.gd"
+}, {
+"base": "Reference",
+"class": "Steering3D",
+"language": "GDScript",
+"path": "res://scripts/miscs/steering3d.gd"
+}, {
+"base": "Node",
+"class": "TeamHandler",
+"language": "GDScript",
+"path": "res://scenes/miscs/team/Team.gd"
+}, {
+"base": "Resource",
+"class": "TestResource",
+"language": "GDScript",
+"path": "res://scenes/levels/Test01/test_resource.gd"
 } ]
 _global_script_class_icons={
 "AStarEdge": "",
@@ -57,19 +177,47 @@ _global_script_class_icons={
 "AStarGridNode": "",
 "AStarPathNode": "",
 "AStarVector2GridNode": "",
-"Pill": ""
+"Aiming": "",
+"Boid2D": "",
+"Boid3D": "",
+"BoidConfig": "",
+"CombatStats": "",
+"Constructor": "",
+"DamageSource": "",
+"DebugStatusItem": "",
+"DebugStatusValue": "",
+"GoapAction": "",
+"GoapActionResource": "",
+"GoapPlanner": "",
+"GoapStateMachine": "",
+"Hit": "",
+"HitBox": "",
+"Level": "",
+"Player": "",
+"PlayerGoapAction": "",
+"PlayerState": "",
+"Shake": "",
+"State": "",
+"StateMachine": "",
+"Steering3D": "",
+"TeamHandler": "",
+"TestResource": ""
 }
 
 [application]
 
 config/name="Kill Pill"
-run/main_scene="res://scenes/levels/MainScene.tscn"
+run/main_scene="res://scenes/games/entrypoint/MainScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 configuration="*res://scripts/singletons/configuration.gd"
 Loading="*res://scripts/singletons/loading.gd"
+NavigationManager="*res://scripts/singletons/navigation_manager.gd"
+Network="*res://scripts/singletons/network.gd"
+Controller="*res://scripts/singletons/controller.gd"
+Game="*res://scripts/singletons/game.gd"
 
 [display]
 
@@ -99,25 +247,25 @@ catch={
  ]
 }
 move_up={
-"deadzone": 0.5,
+"deadzone": 0.1,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":-1.0,"script":null)
  ]
 }
 move_down={
-"deadzone": 0.5,
+"deadzone": 0.1,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":1.0,"script":null)
  ]
 }
 move_right={
-"deadzone": 0.5,
+"deadzone": 0.1,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":0,"axis_value":1.0,"script":null)
  ]
 }
 move_left={
-"deadzone": 0.5,
+"deadzone": 0.1,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":81,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":0,"axis_value":-1.0,"script":null)
  ]
@@ -141,22 +289,22 @@ use={
  ]
 }
 look_up={
-"deadzone": 0.5,
+"deadzone": 0.1,
 "events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":3,"axis_value":-1.0,"script":null)
  ]
 }
 look_down={
-"deadzone": 0.5,
+"deadzone": 0.1,
 "events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":3,"axis_value":1.0,"script":null)
  ]
 }
 look_right={
-"deadzone": 0.5,
+"deadzone": 0.1,
 "events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":2,"axis_value":1.0,"script":null)
  ]
 }
 look_left={
-"deadzone": 0.5,
+"deadzone": 0.1,
 "events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":2,"axis_value":-1.0,"script":null)
  ]
 }
@@ -191,6 +339,8 @@ switch_previous_team_member={
 3d_physics/layer_4="bullets"
 3d_physics/layer_5="catch-area"
 3d_physics/layer_6="constructor"
+3d_physics/layer_7="hitbox"
+3d_physics/layer_8="damage-source"
 
 [locale]
 

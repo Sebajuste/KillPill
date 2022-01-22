@@ -1,17 +1,16 @@
-extends "res://addons/goap/goap_action.gd"
+extends PlayerGoapAction
 
-func is_reachable(context: Dictionary) -> bool:
+
+func is_reachable(_context: Dictionary) -> bool:
 	
 	var boxes = get_tree().get_nodes_in_group("box")
-	
-	if boxes.empty():
-		false
 	
 	for box in boxes:
 		if not box.catched:
 			return true
 	
 	return false
+
 
 func execute(actor):
 	
@@ -32,9 +31,9 @@ func execute(actor):
 	
 	var box_ref = weakref(nearest_box)
 	
-	actor.move_to_object(nearest_box, 0.5)
+	move_to_object(nearest_box, 0.5)
 	
-	if not yield(actor, "on_move_reached"):
+	if not yield(goap_planner.goap_state_machine, "on_move_reached"):
 		print("Cannot end TakeBox action")
 		emit_signal("on_action_end", false)
 		return

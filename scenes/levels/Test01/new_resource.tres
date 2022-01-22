@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://scenes/levels/Test01/test_resource.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+preconditions = {
+"hold_box": true
+}
+effects = {
+
+}
+cost = 1.0

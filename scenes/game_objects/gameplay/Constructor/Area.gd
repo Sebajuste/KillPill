@@ -5,17 +5,32 @@ extends Area
 # var b = "text"
 
 
-func has_object() -> bool:
-	return $ObjectContainer.get_child_count() > 0
 
-func add_object(object) -> bool:
-	if not has_object():
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+
+
+func has_object() -> bool:
+	
+	return $ObjectContainer.get_child_count() > 0
+	
+
+
+func add_object(object : Node) -> bool:
+	if not has_object() and object.is_in_group("catchable"):
 		$ObjectContainer.add_child(object)
 		object.catched = true
 		return true
 	return false
 
-func remove_object():
+
+func remove_object() -> Node:
 	if has_object():
 		var object = $ObjectContainer.get_child(0)
 		$ObjectContainer.remove_child(object)
@@ -23,28 +38,20 @@ func remove_object():
 		return object
 	return null
 
+
 func delete_object():
 	if has_object():
 		$ObjectContainer.get_child(0).queue_free()
 
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-func _on_Area_body_entered(body):
+func _on_Area_body_entered(_body):
 	
 	#$MeshInstance.visible = true
 	
 	pass # Replace with function body.
 
 
-func _on_Area_body_exited(body):
+func _on_Area_body_exited(_body):
 	
 	#$MeshInstance.visible = false
 	
@@ -52,19 +59,12 @@ func _on_Area_body_exited(body):
 
 
 func _on_Area_area_entered(area):
-	
 	var character = area.get_parent()
-	
 	if character.is_holding():
 		get_parent().get_parent().add_helper(self, area)
-	
-	
 
 
 func _on_Area_area_exited(area):
-	
 	var character = area.get_parent()
-	
 	if character.is_holding():
 		get_parent().get_parent().remove_helper(self, area)
-	

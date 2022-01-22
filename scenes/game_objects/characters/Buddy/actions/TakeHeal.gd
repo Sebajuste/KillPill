@@ -1,4 +1,5 @@
-extends "res://addons/goap/goap_action.gd"
+extends PlayerGoapAction
+
 
 func execute(actor):
 	
@@ -17,9 +18,10 @@ func execute(actor):
 	if nearest_heal == null:
 		return false
 	
-	actor.move_to_object(nearest_heal)
 	
-	if not yield(actor, "on_move_reached"):
+	move_to_object(nearest_heal)
+	
+	if not yield(goap_planner.goap_state_machine, "on_move_reached"):
 		print("Cannot end TakeHeal action")
 		emit_signal("on_action_end", false)
 		return

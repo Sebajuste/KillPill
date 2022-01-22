@@ -1,15 +1,16 @@
-extends "res://addons/goap/goap_action.gd"
+extends PlayerGoapAction
 
-func is_reachable(context: Dictionary) -> bool:
-	
+
+func is_reachable(_context: Dictionary) -> bool:
 	for weapon in get_tree().get_nodes_in_group("weapon"):
-		
 		if not weapon.owned:
 			return true
-		
 	return false
 
+
 func execute(actor):
+	
+	print("Execute take weapon")
 	
 	var catchables = get_tree().get_nodes_in_group("object_container")
 	
@@ -34,12 +35,9 @@ func execute(actor):
 	
 	var weapon_ref = weakref(nearest_weapon)
 	
-	#actor._move_target_ref = weapon_ref
+	move_to_object(nearest_weapon)
 	
-	#actor.go_to(nearest_weapon.global_transform.origin)
-	actor.move_to_object(nearest_weapon)
-	
-	if not yield(actor, "on_move_reached"):
+	if not yield(goap_planner.goap_state_machine, "on_move_reached"):
 		print("Cannot end TakeBox action")
 		emit_signal("on_action_end", false)
 		return

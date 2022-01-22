@@ -1,4 +1,5 @@
-extends "res://addons/goap/goap_action.gd"
+extends PlayerGoapAction
+
 
 export var min_distance := 1.0
 
@@ -10,21 +11,22 @@ func get_constructor(actor):
 		if c.team == actor.team:
 			constructor = c
 			break
-	
 	return constructor
 
-func is_reachable(context: Dictionary) -> bool:
+
+func is_reachable(_context: Dictionary) -> bool:
 	
 	var boxes = get_tree().get_nodes_in_group("box")
 	
 	if boxes.empty():
-		false
+		return false
 	
 	for box in boxes:
 		if not box.catched:
 			return true
 	
 	return false
+
 
 func execute(actor):
 	
@@ -47,23 +49,21 @@ func execute(actor):
 				nearset_distance = distance
 				nearest_box = box
 	
+	
 	if nearest_box == null:
-		print("no near box")
 		return false
-	
-	
 	
 	var box_ref = weakref(nearest_box)
 	
-	actor.move_to_object(nearest_box)
+	move_to_object(nearest_box)
 	
-	
-	if not yield(actor, "on_move_reached"):
+	if not yield(goap_planner.goap_state_machine, "on_move_reached"):
 		print("Cannot end TakeBox action")
 		emit_signal("on_action_end", false)
 		return
 	
-	if (!box_ref.get_ref() and not box_ref.get_ref().catched ):
+	var box = box_ref.get_ref()
+	if box == null or box.catched:
 		emit_signal("on_action_end", false)
 	else:
 		emit_signal("on_action_end", actor.hold_object( box_ref.get_ref() ) )

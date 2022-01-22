@@ -14,8 +14,8 @@ var target_ref = null
 
 func _ready():
 	
-	$Target.set_as_toplevel(true)
-	
+	#$Target.set_as_toplevel(true)
+	pass
 
 
 func set_controller(value: String):
@@ -24,7 +24,7 @@ func set_controller(value: String):
 
 func set_enable(value: bool):
 	enable = value
-	$Target.visible = enable
+	#$Target.visible = enable
 
 
 func add_object_to_constructor(object, constructor):
@@ -41,8 +41,6 @@ func _mouse_look(mouse_pos) -> Vector3:
 	mouse_pos += Vector2(16, 16)
 	
 	var ray_length = 1000
-	
-	get_tree()
 	
 	var camera = get_tree().get_root().get_camera()
 	
@@ -67,7 +65,7 @@ func _mouse_look(mouse_pos) -> Vector3:
 	return dir
 
 
-func control(delta) -> Vector3:
+func control(_delta) -> Vector3:
 	
 	if not enable:
 		print("oups")

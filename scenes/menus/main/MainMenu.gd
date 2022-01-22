@@ -23,15 +23,44 @@ func _ready():
 
 func _on_TutorialButton_pressed():
 	
-	#get_tree().change_scene("res://scenes/tutorial/Tutorial.tscn")
+	"""
+	Loading.load_scene("res://scenes/levels/tutorial/Tutorial.tscn", {
+		"switch": true
+	})
+	"""
 	
-	Loading.change_scene("res://scenes/levels/tutorial/Tutorial.tscn", {"switch": true})
+	Loading.load_level({
+		"parent": "root",
+		"path": "res://scenes/levels/tutorial/Tutorial.tscn"
+	})
 	
 
 
 func _on_PlayButton_pressed():
+	"""
+	Loading.load_scene("res://scenes/games/solo/Solo.tscn", {
+		"switch": true,
+		"level": "res://scenes/levels/level01/Level01.tscn",
+		"teams": ["Blue", "Red", "Yellow", "Green"],
+		"player_team": "Blue",
+		"root": true
+	})
 	
-	#get_tree().change_scene("res://scenes/level01/Level01.tscn")
+	Loading.load_scene("res://scenes/levels/level01/Level01.tscn", {
+		"child": true
+	})
+	"""
+	
+	Loading.load_level({
+		"parent": "root",
+		"path": "res://scenes/games/solo/Solo.tscn",
+		"childs": [
+			{
+				"path": "res://scenes/levels/level01/Level01.tscn"
+			}
+		]
+	})
+	
 	pass
 
 

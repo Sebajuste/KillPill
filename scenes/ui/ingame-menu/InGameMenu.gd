@@ -17,10 +17,10 @@ func set_visible(value):
 		emit_signal("on_close")
 	
 
-func toggle():
+func toggle() -> bool:
 	
 	set_visible(not visible)
-	
+	return visible
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -44,7 +44,8 @@ func _on_OptionsButton_pressed():
 func _on_ReturnMenuButton_pressed():
 	
 	get_tree().paused = false
-	get_tree().change_scene("res://ui/main-menu/MainMenu.tscn")
+	
+	Loading.load_scene("res://scenes/menus/main/MainMenu.tscn", {"switch": true})
 	
 
 

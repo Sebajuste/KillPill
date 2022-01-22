@@ -1,8 +1,11 @@
+class_name TeamHandler
 extends Node
 
+
 export var team := ""
-export(String, "Blue", "Red", "Yellow") var color
+export(String, "Blue", "Red", "Yellow", "Green") var color
 export var max_team = 5
+
 
 var _team_member_refs := Array()
 
@@ -14,8 +17,11 @@ func _ready():
 	
 	var constructor = get_constructor()
 	
+	if constructor == null:
+		return
+	
 	constructor.color = color
-	#constructor.connect("on_build", self, "_on_constructor_build")
+	constructor.connect("on_build", self, "_on_constructor_build")
 	
 	for character in get_tree().get_nodes_in_group("character"):
 		if character.team == self.team:
@@ -27,9 +33,7 @@ func _ready():
 #	pass
 
 
-
-func get_constructor():
-	
+func get_constructor() -> Constructor:
 	var constructors = get_tree().get_nodes_in_group("constructor")
 	for constructor in constructors:
 		if constructor.team == self.team:
@@ -95,6 +99,7 @@ func get_weapons():
 	return get_tree().get_nodes_in_group("object_container")
 	
 
+
 func compare_goals(expect: Dictionary, state: Dictionary) -> bool:
 	for key in expect:
 		if not state.has(key) or state[key] != expect[key]:
@@ -112,12 +117,15 @@ func _find_character(character) -> int:
 
 func set_goal(team_member, goal_state):
 	
-	var goap_planner = team_member.get_node("AIHandler/GoapPlanner")
+	var goap_planner = team_member.get_node("ControlSM/Control/AI/GoapPlanner")
 	
 	if not compare_goals(goal_state, goap_planner.goal_state):
 		print("[%s - %s] New goal: " % [team, team_member.get_name()], goal_state)
 		goap_planner.goal_state = goal_state
-		team_member.move_cancel()
+		#team_member.move_cancel()
+		
+		var ai_handler = team_member.get_node("ControlSM/Control/AI")
+		ai_handler.goap_state_machine.transition_to("Goap/Idle")
 
 
 func _get_nearest_weapon(actor, weapons: Array, min_distance := 0.0):
@@ -141,6 +149,8 @@ func _update_team_array():
 
 
 func _update_ai():
+	
+	
 	
 	if get_team().empty():
 		return
@@ -181,6 +191,9 @@ func _update_ai():
 	# Build
 	#
 	
+	if constructor == null:
+		return
+	
 	constructor.target_pattern_name = ""
 	
 	if team.size() < max_team / 2:
@@ -219,7 +232,7 @@ func _update_ai():
 			
 			var team_member = team[nearest_index_member]
 			
-			var goap_planner = team_member.get_node("AIHandler/GoapPlanner")
+			var goap_planner = team_member.get_node("ControlSM/Control/AI/GoapPlanner")
 			
 			set_goal(team_member, { "build_done": true })
 			var take_boxe_action = goap_planner.get_node("TakeBox")
@@ -237,7 +250,7 @@ func _update_ai():
 	#
 	for team_member in team:
 		
-		var goap_planner = team_member.get_node("AIHandler/GoapPlanner")
+		var goap_planner = team_member.control_state_machine.get_node("Control/AI/GoapPlanner")
 		
 		if constructor.target_pattern_name == "" or constructor.target_ready_to_build():
 			set_goal(team_member, { "near_constructor": true, "box_dropped": true})
@@ -269,7 +282,7 @@ func _update_ai():
 				nearest_member = team_member
 		
 		if nearest_member != null:
-			var goap_planner = nearest_member.get_node("AIHandler/GoapPlanner")
+			var goap_planner = nearest_member.get_node("ControlSM/Control/AI/GoapPlanner")
 			set_goal(nearest_member, { "builder_ready": true })
 			var take_boxe_action = goap_planner.get_node("TakeBox") #nearest_member.get_node("GoapPlanner/TakeBox")
 			if take_boxe_action:
@@ -302,21 +315,21 @@ func _update_ai():
 					set_goal(team_member, { "attack": true })
 
 
-func _on_actions_done(team_member):
+func _on_actions_done(_team_member):
 	
 	#_update_ai()
 	
 	pass
 
+
 func _on_constructor_build(name, object):
 	
 	if name == "pill":
 		object.connect("on_death", self, "_on_pill_death")
-		object.get_node("AIHandler").connect("on_actions_done", self, "_on_actions_done")
+		#object.get_node("AIHandler").connect("on_actions_done", self, "_on_actions_done")
 		_team_member_refs.push_back( weakref(object) )
 	
 	_update_ai()
-	
 
 
 func _on_pill_death(object):

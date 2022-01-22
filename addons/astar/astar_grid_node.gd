@@ -1,10 +1,11 @@
+class_name AStarGridNode
 extends Object
 
-class_name AStarGridNode
 
 var weight: float = 1.0
 
 var links: Array = []
+
 
 func get_link_to(node: AStarGridNode):
 	
@@ -13,8 +14,12 @@ func get_link_to(node: AStarGridNode):
 			return link
 	return null
 
+
 func get_weight() -> float:
+	
 	return weight
+	
+
 
 func add_link(edge):
 	
@@ -23,7 +28,12 @@ func add_link(edge):
 	
 
 func equals(other: AStarGridNode) -> bool:
+	
 	return self == other
+	
+
 
 func heuristic(goal: AStarGridNode, context: Dictionary) -> float:
+	
 	return 1.0
+	

@@ -1,4 +1,4 @@
-extends Node
+extends Level
 
 
 const STEPS = [
@@ -16,8 +16,13 @@ const STEPS = [
 var next_step_index = 0
 
 
+onready var level = $Level
+
+
+"""
 func get_player_team_member():
 	return $Characters/Player
+"""
 
 func show_next_step(clear_previous := true):
 	
@@ -38,21 +43,13 @@ func show_current_step():
 
 
 func disable_lights():
-	
-	for lights in $Environment/Lights.get_children():
+	for lights in $Level/Lights.get_children():
 		lights.visible = false
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-	
-	disable_lights()
-	show_next_step()
-	
-	$Environment/Lights/SpotStep1.visible = true
-	
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -61,14 +58,29 @@ func _process(delta):
 		$InGameMenu.toggle()
 	
 
+
+func init(context : Dictionary = {}):
+	.init(context)
+	
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	
+	disable_lights()
+	show_next_step()
+	
+	level.get_node("Lights/SpotStep1").visible = true
+	
+
+
+
 """
 First Step
 """
 func _on_MarkArray_body_entered(body):
 	$Helper/MarkArray.visible = false
-	$Environment/BoxEmitter.max_box = 1
+	$Level/BoxEmitter.max_box = 1
+	$Level/BoxEmitter.enabled = true
 	disable_lights()
-	$Environment/Lights/SpotStep2.visible = true
+	$Level/Lights/SpotStep2.visible = true
 	show_next_step()
 
 """
@@ -80,7 +92,7 @@ func _on_Player_on_hold_object(object):
 	if _first_hold:
 		_first_hold = false
 		disable_lights()
-		$Environment/Lights/SpotStep3.visible = true
+		$Level/Lights/SpotStep3.visible = true
 		show_next_step()
 		$Notifications.create_notification(tr("tuto_tips"), tr("tuto_tips_drop"))
 
@@ -118,8 +130,8 @@ func _on_Constructor_on_build(name, object):
 				_first_pill = false
 				show_next_step()
 				disable_lights()
-				$Environment/LastStepBarrier.queue_free()
-				$Environment/BoxEmitterFight.max_box = 15
+				$Level/LastStepBarrier.queue_free()
+				$Level/BoxEmitterFight.max_box = 15
 			
 			for character in get_node("Characters").get_children():
 				
@@ -145,7 +157,7 @@ func _on_Player_on_take_object(object):
 		show_next_step()
 		$Notifications.create_notification(tr("tuto_tips"), tr("tuto_tips_aiming") )
 		disable_lights()
-		$Environment/Lights/SpotStep4.visible = true
+		$Level/Lights/SpotStep4.visible = true
 	
 	$PlayerUI._on_Player_on_take_object(object)
 	
@@ -161,8 +173,8 @@ func _on_BuddyTarget_on_death(character):
 	$Notifications.create_notification(tr("tuto_tips"), tr("tuto_tips_ammo") )
 	
 	disable_lights()
-	$Environment/Lights/SpotStep5.visible = true
-	$Environment/Lights/SpotStep5Bis.visible = true
+	$Level/Lights/SpotStep5.visible = true
+	$Level/Lights/SpotStep5Bis.visible = true
 	
 	$Characters/BuddyBounce.visible = true
 	
@@ -173,10 +185,10 @@ Step
 func _on_BuddyBounce_on_death(character):
 	
 	show_next_step()
-	$Environment/BoxEmitter.max_box = 5
+	$Level/BoxEmitter.max_box = 5
 	disable_lights()
-	$Environment/Lights/SpotStep2.visible = true
-	$Environment/Lights/SpotStep3.visible = true
+	$Level/Lights/SpotStep2.visible = true
+	$Level/Lights/SpotStep3.visible = true
 	
 
 

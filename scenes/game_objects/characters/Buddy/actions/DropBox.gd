@@ -1,4 +1,5 @@
-extends "res://addons/goap/goap_action.gd"
+extends PlayerGoapAction
+
 
 func execute(actor):
 	

@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/game_objects/objects/bullets/Bullet.gd" type="Script" id=1]
 [ext_resource path="res://assets/sounds/hit.wav" type="AudioStream" id=2]
-
-
+[ext_resource path="res://scenes/miscs/combat/damage_source/DamageSource.tscn" type="PackedScene" id=3]
 
 [sub_resource type="SphereShape" id=1]
 radius = 0.101014
@@ -23,6 +22,8 @@ transform = Transform( 0.0998991, 0, 0, 0, 0.0998991, 0, 0, 0, 0.0998991, 0, 0, 
 mesh = SubResource( 2 )
 material/0 = null
 
+[node name="DamageSource" parent="." instance=ExtResource( 3 )]
+
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
@@ -34,4 +35,7 @@ unit_db = 20.0
 max_distance = 30.0
 bus = "SoundEffects"
 doppler_tracking = 2
+[connection signal="hit" from="DamageSource" to="." method="_on_DamageSource_hit"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+
+[editable path="DamageSource"]

@@ -2,12 +2,5 @@
 
 [ext_resource path="res://scenes/game_objects/characters/Buddy/actions/TakeHeal.gd" type="Script" id=1]
 
-
 [node name="TakeHeal" type="Node"]
 script = ExtResource( 1 )
-preconditions = {
-"see_heal": true
-}
-effects = {
-"health_low": false
-}
