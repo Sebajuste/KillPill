@@ -106,6 +106,7 @@ stream = ExtResource( 6 )
 volume_db = -10.0
 autoplay = true
 bus = "Music"
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/TutorialButton" to="." method="_on_TutorialButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/PlayButton2" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Options/OptionsButton" to="." method="_on_OptionsButton_pressed"]

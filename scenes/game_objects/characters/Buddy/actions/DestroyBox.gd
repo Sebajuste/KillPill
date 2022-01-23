@@ -22,7 +22,7 @@ func execute(actor):
 	for box in boxes:
 		var distance = (actor.global_transform.origin - box.global_transform.origin).length()
 		
-		if nearest_box == null or distance < nearset_distance:
+		if not box.catched and (nearest_box == null or distance < nearset_distance):
 			nearset_distance = distance
 			nearest_box = box
 	

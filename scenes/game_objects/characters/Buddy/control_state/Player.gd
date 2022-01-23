@@ -91,7 +91,7 @@ func get_look_position() -> Vector3:
 
 func get_move_target() -> Vector3:
 	
-	return player.global_transform.origin + _get_input_direction().normalized() * 10
+	return player.global_transform.origin + _get_move_direction().normalized() * 10
 	
 
 
@@ -99,6 +99,9 @@ func _get_mouse_look_position() -> Vector3:
 	var mouse_pos := get_viewport().get_mouse_position()
 	
 	var camera := get_tree().get_root().get_camera()
+	
+	if not camera:
+		return Vector3.ZERO
 	
 	var from := camera.project_ray_origin(mouse_pos)
 	var to := from + camera.project_ray_normal(mouse_pos) * 1000
@@ -129,6 +132,19 @@ func _get_input_direction() -> Vector3:
 		0,
 		Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	)
+
+
+func _get_move_direction() -> Vector3:
+	var input_direction: Vector3 = _get_input_direction()
+	#var forwards: Vector3 = player.camera.global_transform.basis.z * input_direction.z
+	#var right: Vector3 = player.camera.global_transform.basis.x * input_direction.x
+	
+	var camera = get_tree().get_root().get_camera()
+	if camera:
+		var forwards: Vector3 = camera.global_transform.basis.z * input_direction.z
+		var right: Vector3 = camera.global_transform.basis.x * input_direction.x
+		return forwards + right
+	return input_direction
 
 
 func _get_look_input_direction() -> Vector3:

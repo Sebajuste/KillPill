@@ -1,8 +1,6 @@
 extends Control
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,14 +29,21 @@ func _on_TutorialButton_pressed():
 	
 	Loading.load_level({
 		"parent": "root",
-		"path": "res://scenes/levels/tutorial/Tutorial.tscn"
+		"path": "res://scenes/games/Solo/Solo.tscn",
+		"childs": [{
+			"path": "res://scenes/levels/tutorial/Tutorial.tscn"
+		}],
+		"parameters": {
+			"teams": ["Blue"],
+			"player_team": "Blue"
+		}
 	})
 	
 
 
 func _on_PlayButton_pressed():
 	"""
-	Loading.load_scene("res://scenes/games/solo/Solo.tscn", {
+	Loading.load_scene("res://scenes/games/Solo/Solo.tscn", {
 		"switch": true,
 		"level": "res://scenes/levels/level01/Level01.tscn",
 		"teams": ["Blue", "Red", "Yellow", "Green"],
@@ -52,13 +57,16 @@ func _on_PlayButton_pressed():
 	"""
 	
 	Loading.load_level({
-		"parent": "root",
-		"path": "res://scenes/games/solo/Solo.tscn",
+		"path": "res://scenes/games/Solo/Solo.tscn",
 		"childs": [
 			{
 				"path": "res://scenes/levels/level01/Level01.tscn"
 			}
-		]
+		],
+		"parameters": {
+			"teams": ["Blue", "Red", "Yellow", "Green"],
+			"player_team": "Blue"
+		}
 	})
 	
 	pass

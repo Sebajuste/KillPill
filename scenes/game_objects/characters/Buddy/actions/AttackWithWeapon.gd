@@ -109,15 +109,12 @@ func execute(actor) -> bool:
 	ai_handler.enable_target = true
 	ai_handler.target_ref = weakref(target)
 	
-	
-	
 	if actor.have_weapon():
 		var weapon : Node = actor.get_weapon()
 		
 		if weapon.ready_to_shoot:
 			return _shoot(ai_handler, weapon)
 		
-		print("> wait ready")
 		yield(weapon, "shoot_ready")
 		return _shoot(ai_handler, weapon)
 		
@@ -125,7 +122,6 @@ func execute(actor) -> bool:
 	ai_handler.enable_boid = false
 	ai_handler.enable_target = false
 	
-	print("> Weapon not ready")
 	emit_signal("on_action_end", false)
 	return false
 
@@ -134,7 +130,6 @@ func _shoot(ai_handler, weapon):
 	var result = weapon.shoot()
 	ai_handler.enable_boid = false
 	ai_handler.enable_target = false
-	print("> shoot result : ", result)
 	emit_signal("on_action_end", result)
 	return result
 

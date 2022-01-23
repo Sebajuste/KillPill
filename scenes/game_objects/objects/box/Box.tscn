@@ -10,10 +10,7 @@
 
 [sub_resource type="BoxShape" id=1]
 
-[node name="Box" type="RigidBody" groups=[
-"box",
-"catchable",
-]]
+[node name="Box" type="RigidBody" groups=["box", "catchable"]]
 collision_layer = 4
 collision_mask = 23
 contact_monitor = true
@@ -62,7 +59,6 @@ material = ExtResource( 3 )
 
 [node name="HitBox" parent="." instance=ExtResource( 6 )]
 combat_stats_path = NodePath("../CombatStats")
-particles_scene = null
 
 [node name="CombatStats" parent="." instance=ExtResource( 7 )]
 max_health = 1
@@ -76,6 +72,7 @@ max_distance = 20.0
 stream = ExtResource( 5 )
 unit_db = 25.0
 max_distance = 10.0
+
 [connection signal="health_depleted" from="CombatStats" to="." method="_on_CombatStats_health_depleted"]
 
 [editable path="HitBox"]

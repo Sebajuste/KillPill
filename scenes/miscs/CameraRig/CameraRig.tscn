@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/miscs/CameraRig/CameraRig.gd" type="Script" id=1]
+[ext_resource path="res://scenes/miscs/CameraRig/controls/Follow.gd" type="Script" id=3]
+[ext_resource path="res://scripts/miscs/state_machine/state_machine.gd" type="Script" id=4]
+[ext_resource path="res://scenes/miscs/CameraRig/controls/Control.gd" type="Script" id=5]
+
+[node name="CameraRig" type="Spatial"]
+script = ExtResource( 1 )
+target_path = NodePath("../../Characters/Player")
+
+[node name="Pivot" type="Spatial" parent="."]
+
+[node name="InterpolatedCamera" type="InterpolatedCamera" parent="Pivot"]
+current = true
+target = NodePath("../SpringArm/CameraTarget")
+speed = 10.0
+enabled = true
+
+[node name="SpringArm" type="SpringArm" parent="Pivot"]
+
+[node name="CameraTarget" type="Position3D" parent="Pivot/SpringArm"]
+
+[node name="ControlSM" type="Node" parent="."]
+script = ExtResource( 4 )
+initial_state = NodePath("Control/Follow")
+
+[node name="Control" type="Node" parent="ControlSM"]
+script = ExtResource( 5 )
+
+[node name="Follow" type="Node" parent="ControlSM/Control"]
+script = ExtResource( 3 )
+offset_y = 2.0

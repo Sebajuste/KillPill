@@ -490,24 +490,16 @@ team = "Green"
 
 [node name="StartPositions" type="Spatial" parent="."]
 
-[node name="Blue" type="Position3D" parent="StartPositions" groups=[
-"start_position",
-]]
+[node name="Blue" type="Position3D" parent="StartPositions" groups=["start_position"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -34.5518, 0.213185, 37.0858 )
 
-[node name="Red" type="Position3D" parent="StartPositions" groups=[
-"start_position",
-]]
+[node name="Red" type="Position3D" parent="StartPositions" groups=["start_position"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27.236, 0.213185, -40.0246 )
 
-[node name="Yellow" type="Position3D" parent="StartPositions" groups=[
-"start_position",
-]]
+[node name="Yellow" type="Position3D" parent="StartPositions" groups=["start_position"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -34.5518, 0.213185, -40.0246 )
 
-[node name="Green" type="Position3D" parent="StartPositions" groups=[
-"start_position",
-]]
+[node name="Green" type="Position3D" parent="StartPositions" groups=["start_position"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.5038, 0.213185, 36.9194 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
@@ -529,6 +521,7 @@ stream = ExtResource( 8 )
 volume_db = -10.0
 autoplay = true
 bus = "Music"
+
 [connection signal="object_emitted" from="ConstructorBlue" to="." method="_on_object_emitted"]
 [connection signal="object_emitted" from="ConstructorRed" to="." method="_on_object_emitted"]
 [connection signal="object_emitted" from="ConstructorYellow" to="." method="_on_object_emitted"]

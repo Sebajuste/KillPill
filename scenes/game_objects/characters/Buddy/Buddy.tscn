@@ -133,7 +133,6 @@ filters = [ "BodyLeftHand", "Skin/BodyLeftHand" ]
 animation = "punch"
 
 [sub_resource type="AnimationNodeBlendTree" id=18]
-graph_offset = Vector2( -49, -126.5 )
 nodes/Animation/node = SubResource( 7 )
 nodes/Animation/position = Vector2( 400, 260 )
 nodes/Hit/node = SubResource( 8 )
@@ -153,9 +152,7 @@ node_connections = [ "output", 0, "Hit", "Hit", 0, "HoldObject", "Hit", 1, "HitA
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=19]
 
-[node name="Buddy" type="KinematicBody" groups=[
-"character",
-]]
+[node name="Buddy" type="KinematicBody" groups=["character"]]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource( 1 )
@@ -170,7 +167,7 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0.71
 script = ExtResource( 41 )
 
 [node name="Body" type="Spatial" parent="Skin"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00636771, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0208455, 0 )
 
 [node name="Body" type="MeshInstance" parent="Skin/Body"]
 transform = Transform( 0.4, 0, 0, 0, -1.94131e-08, -0.44, 0, 0.44412, -1.9233e-08, 0, 0, 0 )
@@ -196,6 +193,7 @@ material = ExtResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0450835, 0.0211042, 0.078396 )
 
 [node name="DamageSource" parent="Skin/BodyLeftHand/LeftHand" instance=ExtResource( 61 )]
+damage = 5
 
 [node name="CollisionShape" parent="Skin/BodyLeftHand/LeftHand/DamageSource" index="0"]
 disabled = true
@@ -249,7 +247,6 @@ one_shot = true
 [node name="HitBox" parent="." instance=ExtResource( 48 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.779715, 0 )
 combat_stats_path = NodePath("../CombatStats")
-particles_scene = null
 
 [node name="CollisionShape" parent="HitBox" index="0"]
 transform = Transform( 1, 0, 0, 0, -0.0374984, 0.999297, 0, -0.999297, -0.0374984, 0, -0.0792805, 0 )
@@ -341,7 +338,6 @@ world_state = {
 "see_heal": false
 }
 goal_state = {
-
 }
 goap_state_machine_path = NodePath("../GoapSM")
 
@@ -446,6 +442,7 @@ parameters/Hit/active = false
 parameters/HoldObject/blend_amount = 0.0
 parameters/Move/playback = SubResource( 19 )
 parameters/Punch/active = false
+
 [connection signal="on_health_change" from="." to="Overlay/HealthProgressBar" method="_on_Buddy_on_health_change"]
 [connection signal="hit" from="Skin/BodyLeftHand/LeftHand/DamageSource" to="Skin" method="_on_DamageSource_hit"]
 [connection signal="timeout" from="Skin/PunchTimer" to="Skin" method="_on_PuchTimer_timeout"]
@@ -457,5 +454,4 @@ parameters/Punch/active = false
 [connection signal="health_depleted" from="CombatStats" to="." method="_on_CombatStats_health_depleted"]
 
 [editable path="Skin/BodyLeftHand/LeftHand/DamageSource"]
-
 [editable path="HitBox"]

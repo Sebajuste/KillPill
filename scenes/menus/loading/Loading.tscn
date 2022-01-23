@@ -29,4 +29,5 @@ margin_bottom = 40.0
 rect_min_size = Vector2( 0, 40 )
 
 [node name="ProgressTween" type="Tween" parent="."]
+
 [connection signal="visibility_changed" from="." to="." method="_on_Loading_visibility_changed"]

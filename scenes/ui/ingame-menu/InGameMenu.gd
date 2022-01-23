@@ -45,7 +45,9 @@ func _on_ReturnMenuButton_pressed():
 	
 	get_tree().paused = false
 	
-	Loading.load_scene("res://scenes/menus/main/MainMenu.tscn", {"switch": true})
+	Loading.load_level({
+		"path": "res://scenes/menus/main/MainMenu.tscn",
+	})
 	
 
 

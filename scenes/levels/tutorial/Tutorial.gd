@@ -1,4 +1,4 @@
-extends Level
+extends Node
 
 
 const STEPS = [
@@ -17,6 +17,7 @@ var next_step_index = 0
 
 
 onready var level = $Level
+onready var player = $Characters/Player
 
 
 """

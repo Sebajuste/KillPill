@@ -15,6 +15,7 @@ func _process(_delta):
 	
 	var cam = get_tree().get_root().get_camera()
 	
-	var screen_pos = cam.unproject_position(pos + Vector3.UP * y_offset)
-	set_position( Vector2(screen_pos.x - rect_size.x/2, screen_pos.y - rect_size.y/2) )
+	if cam:
+		var screen_pos = cam.unproject_position(pos + Vector3.UP * y_offset)
+		set_position( Vector2(screen_pos.x - rect_size.x/2, screen_pos.y - rect_size.y/2) )
 	

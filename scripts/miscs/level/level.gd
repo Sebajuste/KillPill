@@ -16,5 +16,5 @@ func init(context : Dictionary = {}):
 	
 	initialized = true
 	
-	print("Level INIT OK")
+	print("Level %s INIT OK" % name )
 	

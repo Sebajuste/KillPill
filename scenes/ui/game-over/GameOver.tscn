@@ -52,5 +52,6 @@ margin_right = 275.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 100, 30 )
 text = "btn_restart"
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/BackMainButton" to="." method="_on_BackMainButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/RestartButton" to="." method="_on_RestartButton_pressed"]

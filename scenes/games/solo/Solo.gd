@@ -5,7 +5,12 @@ const PILL_SCENE = preload("res://scenes/game_objects/characters/Buddy/Buddy.tsc
 const TEAM_SCENE = preload("res://scenes/miscs/team/Team.tscn")
 
 
-#onready var player_team = get_node("Teams/TeamBlue")
+onready var camera := $Level/CameraRig
+onready var player_ui = $PlayerUI
+
+
+var parameters := {}
+
 
 var player_team
 var player_team_member
@@ -23,8 +28,11 @@ func _ready():
 	
 	#switch_player(null, player_team_member)
 	
+	init(parameters)
 	
 	pass # Replace with function body.
+
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -69,33 +77,37 @@ func init(context : Dictionary):
 	
 	print("Solo::init -> ", context)
 	
-	
-	#var player_team = context.player_team
-	
-	for team_name in context.teams:
+	if context.has("teams"):
 		
-		var team = TEAM_SCENE.instance()
-		team.team = team_name
-		team.color = team_name
-		
-		$Teams.add_child(team)
-		
-		var pill = PILL_SCENE.instance()
-		pill.team = team_name
-		pill.color = team_name
-		
-		pill.transform.origin = get_start_position(team_name)
-		
-		if team_name == context.player_team:
-			pill.handler = "Player"
-			player_team = team
-			switch_player(null, pill)
-		else:
-			pill.handler = "AI"
-		
-		$Level.add_child(pill)
-		
-		pass
+		for team_name in context.teams:
+			
+			var team = TEAM_SCENE.instance()
+			team.team = team_name
+			team.color = team_name
+			
+			$Teams.add_child(team)
+			
+			print("Create Pill")
+			
+			var pill = PILL_SCENE.instance()
+			pill.team = team_name
+			pill.color = team_name
+			
+			pill.transform.origin = get_start_position(team_name)
+			
+			$Level.add_child(pill)
+			
+			if context.has("player_team") && team_name == context.player_team:
+				pill.handler = "Player"
+				player_team = team
+				
+				switch_player(null, pill)
+			else:
+				pill.handler = "AI"
+			
+			
+			
+			pass
 	
 	
 	
@@ -105,6 +117,7 @@ func init(context : Dictionary):
 
 func switch_player(old_char, new_char):
 	
+	"""
 	if old_char:
 		old_char.handler = "AI"
 		old_char.disconnect("on_death", self, "_on_Player_on_death")
@@ -112,16 +125,21 @@ func switch_player(old_char, new_char):
 		old_char.disconnect("on_drop_object", $PlayerUI, "_on_Player_on_drop_object")
 		old_char.disconnect("on_health_change", $PlayerUI, "_on_Player_on_health_change")
 	
-	new_char.handler = "Player"
-	
 	new_char.connect("on_death", self, "_on_Player_on_death")
 	new_char.connect("on_take_object", $PlayerUI, "_on_Player_on_take_object")
 	new_char.connect("on_drop_object", $PlayerUI, "_on_Player_on_drop_object")
 	new_char.connect("on_health_change", $PlayerUI, "_on_Player_on_health_change")
+	"""
+	
+	if old_char:
+		old_char.handler = "AI"
+	
+	new_char.handler = "Player"
 	
 	player_team_member = new_char
 	
-	$Level/CameraRig.set_target(new_char)
+	player_ui.buddy = new_char
+	camera.set_target(new_char)
 	
 	new_char.emit_status()
 	
